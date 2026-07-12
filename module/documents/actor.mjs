@@ -392,7 +392,7 @@ export default class Actor4e extends Actor {
 						system.details.surgeBon.value += parseInt(b.value);
 					}
 					else if (b.active) {
-						let val = Roll.replaceFormulaData(b.value, system);
+						let val = utils.evaluateFormula(b.value, system);
 						if (utils.isNumber(val)) {
 							system.details.surgeBon.value += parseInt(val);
 						}
@@ -415,14 +415,8 @@ export default class Actor4e extends Actor {
 			if (isNaN(parseInt(system.details.secondwindbon?.absolute))) { //All logic only required if there is no usable absolute value
 				if (!((system.details.secondwindbon.bonus.length === 1) && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
 					for (const b of system.details.secondwindbon.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							system.details.secondwindbon.value += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								system.details.secondwindbon.value += parseInt(val);
-							}
+						if (b.active) {
+							system.details.secondwindbon.value += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -452,14 +446,8 @@ export default class Actor4e extends Actor {
 			
 				if (!((system.details.surgeEnv.bonus.length === 1) && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
 					for (const b of system.details.surgeEnv.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							system.details.surgeEnv.value += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								system.details.surgeEnv.value += parseInt(val);
-							}
+						if (b.active) {
+							system.details.surgeEnv.value += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -504,14 +492,8 @@ export default class Actor4e extends Actor {
 			let bonusValue = 0;
 			if (!((system.details.saves.bonus.length === 1) && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 				for (const b of system.details.saves.bonus) {
-					if (b.active && utils.isNumber(b.value)) {
-						bonusValue += parseInt(b.value);
-					}
-					else if (b.active) {
-						let val = Roll.replaceFormulaData(b.value, system);
-						if (utils.isNumber(val)) {
-							bonusValue += parseInt(val);
-						}
+					if (b.active) {
+						bonusValue += utils.evaluateFormula(b.value, system);
 					}
 				}
 			}
@@ -535,14 +517,8 @@ export default class Actor4e extends Actor {
 	
 			if (!((system.details.deathsavebon.bonus.length === 1) && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
 				for (const b of system.details.deathsavebon.bonus) {
-					if (b.active && utils.isNumber(b.value)) {
-						system.details.deathsavebon.value += parseInt(b.value);
-					}
-					else if (b.active) {
-						let val = Roll.replaceFormulaData(b.value, system);
-						if (utils.isNumber(val)) {
-							system.details.deathsavebon.value += parseInt(val);
-						}
+					if (b.active) {
+						system.details.deathsavebon.value += utils.evaluateFormula(b.value, system);
 					}
 				}
 			}
@@ -566,14 +542,8 @@ export default class Actor4e extends Actor {
 			let modifierBonusValue = 0;
 			if (!((mod.bonus.length === 1) && jQuery.isEmptyObject(mod.bonus[0]))) {
 				for (const b of mod.bonus) {
-					if (b.active && utils.isNumber(b.value)) {
-						modifierBonusValue += parseInt(b.value);
-					}
-					else if (b.active) {
-						let val = Roll.replaceFormulaData(b.value, system);
-						if (utils.isNumber(val)) {
-							modifierBonusValue += parseInt(val);
-						}
+					if (b.active) {
+						modifierBonusValue += utils.evaluateFormula(b.value, system);
 					}
 				} 
 			}
@@ -631,14 +601,8 @@ export default class Actor4e extends Actor {
 
 				if (!((system.attributes.init.bonus.length === 1) && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
 					for (const b of system.attributes.init.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							initBonusValue += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								initBonusValue += parseInt(val);
-							}
+						if (b.active) {
+							initBonusValue += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -671,14 +635,8 @@ export default class Actor4e extends Actor {
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		if (!((system.movement.base.bonus.length === 1) && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
 			for (const b of system.movement.base.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					baseMoveBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						baseMoveBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					baseMoveBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -686,14 +644,8 @@ export default class Actor4e extends Actor {
 		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if (!((system.movement.walk.bonus.length === 1) && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
 			for (const b of system.movement.walk.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					walkBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						walkBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					walkBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -701,14 +653,8 @@ export default class Actor4e extends Actor {
 		let runBonusValue = system.movement.run.bonusValue || 0;
 		if (!((system.movement.run.bonus.length === 1) && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
 			for (const b of system.movement.run.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					runBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						runBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					runBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -716,14 +662,8 @@ export default class Actor4e extends Actor {
 		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if (!((system.movement.charge.bonus.length === 1) && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
 			for (const b of system.movement.charge.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					chargeBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						chargeBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					chargeBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -731,14 +671,8 @@ export default class Actor4e extends Actor {
 		let shiftBonusValue = system.movement.shift.bonusValue || 0;
 		if (!((system.movement.shift.bonus.length === 1) && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
 			for (const b of system.movement.shift.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					shiftBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						shiftBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					shiftBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -746,14 +680,8 @@ export default class Actor4e extends Actor {
 		let burrowBonusValue = system.movement.burrow.bonusValue || 0;
 		if (!((system.movement.burrow.bonus.length === 1) && jQuery.isEmptyObject(system.movement.burrow.bonus[0]))) {
 			for (const b of system.movement.burrow.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					burrowBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						burrowBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					burrowBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -761,14 +689,8 @@ export default class Actor4e extends Actor {
 		let climbBonusValue = system.movement.climb.bonusValue || 0;
 		if (!((system.movement.climb.bonus.length === 1) && jQuery.isEmptyObject(system.movement.climb.bonus[0]))) {
 			for (const b of system.movement.climb.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					climbBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						climbBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					climbBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -776,14 +698,8 @@ export default class Actor4e extends Actor {
 		let flyBonusValue = system.movement.fly.bonusValue || 0;
 		if (!((system.movement.fly.bonus.length === 1) && jQuery.isEmptyObject(system.movement.fly.bonus[0]))) {
 			for (const b of system.movement.fly.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					flyBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						flyBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					flyBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}        
@@ -791,14 +707,8 @@ export default class Actor4e extends Actor {
 		let swimBonusValue = system.movement.swim.bonusValue || 0;
 		if (!((system.movement.swim.bonus.length === 1) && jQuery.isEmptyObject(system.movement.swim.bonus[0]))) {
 			for (const b of system.movement.swim.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					swimBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						swimBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					swimBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -806,14 +716,8 @@ export default class Actor4e extends Actor {
 		let teleportBonusValue = system.movement.teleport.bonusValue || 0;
 		if (!((system.movement.teleport.bonus.length === 1) && jQuery.isEmptyObject(system.movement.teleport.bonus[0]))) {
 			for (const b of system.movement.teleport.bonus) {
-				if (b.active && utils.isNumber(b.value)) {
-					teleportBonusValue += parseInt(b.value);
-				}
-				else if (b.active) {
-					let val = Roll.replaceFormulaData(b.value, system);
-					if (utils.isNumber(val)) {
-						teleportBonusValue += parseInt(val);
-					}
+				if (b.active) {
+					teleportBonusValue += utils.evaluateFormula(b.value, system);
 				}
 			}
 		}
@@ -848,7 +752,7 @@ export default class Actor4e extends Actor {
 		
 			system.movement.walk.bonusValue = walkBonusValue;
 			
-			let walkForm = eval(Roll.replaceFormulaData(system.movement.walk.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let walkForm = utils.evaluateFormula(system.movement.walk.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.walk.value += walkForm + walkBonusValue + system.movement.base?.temp || 0;
 			system.movement.walk.value += system.movement.walk.feat || 0;
 			system.movement.walk.value += system.movement.walk.item || 0;
@@ -867,7 +771,7 @@ export default class Actor4e extends Actor {
 		//Run Speed
 		if (isNaN(parseInt(system.movement.run?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.run.bonusValue = runBonusValue;
-			let runForm = eval(Roll.replaceFormulaData(system.movement.run.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let runForm = utils.evaluateFormula(system.movement.run.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.run.value = runForm + runBonusValue + system.movement.run?.temp || 0;
 			system.movement.run.value += system.movement.run.feat || 0;
 			system.movement.run.value += system.movement.run.item || 0;
@@ -886,7 +790,7 @@ export default class Actor4e extends Actor {
 		//Charge Speed
 		if (isNaN(parseInt(system.movement.charge?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.charge.bonusValue = chargeBonusValue;
-			let chargeForm = eval(Roll.replaceFormulaData(system.movement.charge.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let chargeForm = utils.evaluateFormula(system.movement.charge.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
 			system.movement.charge.value += system.movement.charge.feat || 0;
 			system.movement.charge.value += system.movement.charge.item || 0;
@@ -905,7 +809,7 @@ export default class Actor4e extends Actor {
 		//Shift Speed
 		if (isNaN(parseInt(system.movement.shift?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.shift.bonusValue = shiftBonusValue;		
-			let shiftForm = eval(Roll.replaceFormulaData(system.movement.shift.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let shiftForm = utils.evaluateFormula(system.movement.shift.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
 			system.movement.shift.value += system.movement.shift.feat || 0;
 			system.movement.shift.value += system.movement.shift.item || 0;
@@ -924,7 +828,7 @@ export default class Actor4e extends Actor {
 		//Burrow Speed
 		if (isNaN(parseInt(system.movement.burrow?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.burrow.bonusValue = burrowBonusValue;
-			let burrowForm = eval(Roll.replaceFormulaData(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let burrowForm = utils.evaluateFormula(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
 			system.movement.burrow.value += system.movement.burrow.feat || 0;
 			system.movement.burrow.value += system.movement.burrow.item || 0;
@@ -943,7 +847,7 @@ export default class Actor4e extends Actor {
 		//Climb Speed
 		if (isNaN(parseInt(system.movement.climb?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.climb.bonusValue = climbBonusValue;
-			let climbForm = eval(Roll.replaceFormulaData(system.movement.climb.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let climbForm = utils.evaluateFormula(system.movement.climb.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb?.temp || 0;
 			system.movement.climb.value += system.movement.climb.feat || 0;
 			system.movement.climb.value += system.movement.climb.item || 0;
@@ -962,7 +866,7 @@ export default class Actor4e extends Actor {
 		//Burrow Speed
 		if (isNaN(parseInt(system.movement.burrow?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.burrow.bonusValue = burrowBonusValue;
-			let burrowForm = eval(Roll.replaceFormulaData(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let burrowForm = utils.evaluateFormula(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
 			system.movement.burrow.value += system.movement.burrow.feat || 0;
 			system.movement.burrow.value += system.movement.burrow.item || 0;
@@ -981,7 +885,7 @@ export default class Actor4e extends Actor {
 		//Fly Speed
 		if (isNaN(parseInt(system.movement.fly?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.fly.bonusValue = flyBonusValue;
-			let flyForm = eval(Roll.replaceFormulaData(system.movement.fly.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let flyForm = utils.evaluateFormula(system.movement.fly.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.fly.value = flyForm + flyBonusValue + system.movement.fly?.temp || 0;
 			system.movement.fly.value += system.movement.fly.feat || 0;
 			system.movement.fly.value += system.movement.fly.item || 0;
@@ -1000,7 +904,7 @@ export default class Actor4e extends Actor {
 		//Swim Speed
 		if (isNaN(parseInt(system.movement.swim?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.swim.bonusValue = swimBonusValue;		
-			let swimForm = eval(Roll.replaceFormulaData(system.movement.swim.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let swimForm = utils.evaluateFormula(system.movement.swim.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim?.temp || 0;
 			system.movement.swim.value += system.movement.swim.feat || 0;
 			system.movement.swim.value += system.movement.swim.item || 0;
@@ -1019,7 +923,7 @@ export default class Actor4e extends Actor {
 		//Teleport Speed
 		if (isNaN(parseInt(system.movement.teleport?.absolute))) { //All logic only required if there is no usable absolute value
 			system.movement.teleport.bonusValue = teleportBonusValue;		
-			let teleportForm = eval(Roll.replaceFormulaData(system.movement.teleport.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ""));
+			let teleportForm = utils.evaluateFormula(system.movement.teleport.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
 			system.movement.teleport.value = teleportForm + teleportBonusValue + system.movement.teleport?.temp || 0;
 			system.movement.teleport.value += system.movement.teleport.feat || 0;
 			system.movement.teleport.value += system.movement.teleport.item || 0;
@@ -1055,14 +959,8 @@ export default class Actor4e extends Actor {
 
 				if (!((abl.check.bonus.length === 1) && jQuery.isEmptyObject(abl.check.bonus[0]))) {
 					for (const b of abl.check.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							ablBonusValue += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								ablBonusValue += parseInt(val);
-							}
+						if (b.active) {
+							ablBonusValue += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -1112,14 +1010,8 @@ export default class Actor4e extends Actor {
 			let passiveBonusValue = 0;
 			if (!((pas.bonus.length === 1) && jQuery.isEmptyObject(pas.bonus[0]))) {
 				for (const b of pas.bonus) {
-					if (b.active && utils.isNumber(b.value)) {
-						passiveBonusValue += parseInt(b.value);
-					}
-					else if (b.active) {
-						let val = Roll.replaceFormulaData(b.value, system);
-						if (utils.isNumber(val)) {
-							passiveBonusValue += parseInt(val);
-						}
+					if (b.active) {
+						passiveBonusValue += utils.evaluateFormula(b.value, system);
 					}
 				}
 			}
@@ -1259,14 +1151,8 @@ export default class Actor4e extends Actor {
 				let defBonusValue = 0;
 				if (!((def.bonus.length === 1) && jQuery.isEmptyObject(def.bonus[0]))) {
 					for (const b of def.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							defBonusValue += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, data);
-							if (utils.isNumber(val)) {
-								defBonusValue += parseInt(val);
-							}
+						if (b.active) {
+							defBonusValue += utils.evaluateFormula(b.value, data);
 						}
 					}
 				}
@@ -1378,14 +1264,8 @@ export default class Actor4e extends Actor {
 					let defBonusValue = 0;
 					if (!((def.bonus.length === 1) && jQuery.isEmptyObject(def.bonus[0]))) {
 						for (const b of def.bonus) {
-							if (b.active && utils.isNumber(b.value)) {
-								defBonusValue += parseInt(b.value);
-							}
-							else if (b.active) {
-								let val = Roll.replaceFormulaData(b.value, data);
-								if (utils.isNumber(val)) {
-									defBonusValue += parseInt(val);
-								}
+							if (b.active) {
+								defBonusValue += utils.evaluateFormula(b.value, data);
 							}
 						}
 					}
@@ -1455,14 +1335,8 @@ export default class Actor4e extends Actor {
 
 				if (!((skl.bonus.length === 1) && jQuery.isEmptyObject(skl.bonus[0]))) {
 					for (const b of skl.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							sklBonusValue += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								sklBonusValue += parseInt(val);
-							}
+						if (b.active) {
+							sklBonusValue += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -1567,14 +1441,8 @@ export default class Actor4e extends Actor {
 				let sklArmourPenalty = 0;
 				if (!((skl.bonus.length === 1) && jQuery.isEmptyObject(skl.bonus[0]))) {
 					for (const b of skl.bonus) {
-						if (b.active && utils.isNumber(b.value)) {
-							sklBonusValue += parseInt(b.value);
-						}
-						else if (b.active) {
-							let val = Roll.replaceFormulaData(b.value, system);
-							if (utils.isNumber(val)) {
-								sklBonusValue += parseInt(val);
-							}
+						if (b.active) {
+							sklBonusValue += utils.evaluateFormula(b.value, system);
 						}
 					}
 				}
@@ -1706,14 +1574,8 @@ export default class Actor4e extends Actor {
 
 					if (!((condition.bonus.length === 1) && jQuery.isEmptyObject(condition.bonus[0]))) {
 						for (const b of condition.bonus) {
-							if (b.active && utils.isNumber(b.value)) {
-								bonusValue += parseInt(b.value);
-							}
-							else if (b.active) {
-								let val = Roll.replaceFormulaData(b.value, system);
-								if (utils.isNumber(val)) {
-									bonusValue += parseInt(val);
-								}
+							if (b.active) {
+								bonusValue += utils.evaluateFormula(b.value, system);
 							}
 						}
 					}
@@ -2419,9 +2281,9 @@ export default class Actor4e extends Actor {
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 
-		const max = eval(Roll.replaceFormulaData(actorData.encumbrance.formulaNorm, actorData).toString().replace(/[^-()\d/*+. ]/g, ""));
-		const maxHeavy = eval(Roll.replaceFormulaData(actorData.encumbrance.formulaHeavy, actorData).toString().replace(/[^-()\d/*+. ]/g, ""));
-		const maxMax = eval(Roll.replaceFormulaData(actorData.encumbrance.formulaMax, actorData).toString().replace(/[^-()\d/*+. ]/g, ""));
+		const max = utils.evaluateFormula(actorData.encumbrance.formulaNorm, actorData);
+		const maxHeavy = utils.evaluateFormula(actorData.encumbrance.formulaHeavy, actorData);
+		const maxMax = utils.evaluateFormula(actorData.encumbrance.formulaMax, actorData);
 
 		//set ppc Percentage Base Carry-Capasity
 		const pbc = Math.clamp(weight / max * 100, 0, 99.7);
