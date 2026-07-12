@@ -1980,6 +1980,12 @@ export default class Actor4e extends Actor {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		const rollData = this.getRollData();
+		if (options.save) {		
+			parts.push(Roll.replaceFormulaData(options.save, rollData));
+			partsExpressionReplacements.push({ value: options.save, target: parts[0] });
+			// add the substitutions that were used in the expression to the data object for later
+			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
+		}
 		
 		await utils.applySaveEffects(rollData, this, this.effects.get(options.effectId), "save", options);
 
@@ -2022,7 +2028,10 @@ export default class Actor4e extends Actor {
 	async rollDeathSave(event, form, options) {
 		const updateData = {};
 		
-		const parts = this.system.details.deathsavebon.value ? [this.system.details.deathsavebon.value] : [];
+		const parts = [this.system.details.deathsavebon.value];
+		if (options.save) {
+			parts.push(options.save);
+		}
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
 			actor: this,
@@ -2743,14 +2752,14 @@ export default class Actor4e extends Actor {
 	}
 
 	async promptEoTSavesSocket() {
-		utils.debugLog("socket reached");
+		utils.debugLog("EoT saves socket reached");
 		const saveReminders = game.settings.get("dnd4e", "saveReminders");
 		if (!saveReminders) return;
 		
 		let toSave = [];
 		for (const e of this.effects) {
 			if (e.system.durationType === "saveEnd") {
-				toSave.push(e.id);
+				toSave.push(e);
 			}
 		}
 		
@@ -2758,9 +2767,9 @@ export default class Actor4e extends Actor {
 			const isFF = utils.isRollFastForwarded(event);
 			for (let i of toSave) {
 				if (isFF) {
-					let save = await this.rollSave(event, { effectSave: true, effectId: i });
+					let save = await this.rollSave(event, { effectSave: true, effectId: i.id, saveDC: i.system?.saveDC || 0 });
 				} else {
-					let save = await SaveThrowDialog.create({ document: this, effectSave: true, effectId: i });
+					let save = await SaveThrowDialog.create({ document: this, effectSave: true, effectId: i.id, saveDC: i.system?.saveDC || 0 });
 				}
 			}
 		}
