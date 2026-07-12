@@ -29,8 +29,12 @@ export default class FormulaField extends foundry.data.fields.StringField {
 			}
 			if (value.includes("@scale")) {
 				// Convert @scaleX to scale(@lv, X).
-				value = value.replace(/@scale(\d*)/gm, "(scale(@lv, $1))");
+				value = value.replace(/@scale(\d+)/gm, "(scale(@lv, $1))");
 				value = value.replace(/@scale/gm, "(scale(@lv))");
+			}
+			if (value.includes("scale(@lv, )")) {
+				// Try to fix a prior error in the above.
+				value = value.replace(/scale\(@lv, \)/gm, "scale(@lv)");
 			}
 			const operatorRegex = /\s*([+\-*/])\s*/g;
 			value = value.replace(operatorRegex, " $1 ");
