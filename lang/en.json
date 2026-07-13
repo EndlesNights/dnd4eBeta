@@ -357,7 +357,7 @@
 "DND4E.DefaultAbilitySkillCheck": "Ability or Skill Check",
 "DND4E.DefaultSkillCheck": "Default Skill Check",
 "DND4E.Defence": "Defense",
-"DND4E.DefenceBonus": "Bonuses to {def} Defence",
+"DND4E.DefenceBonus": "Bonuses to {def} Defense",
 "DND4E.Defences": "Defenses",
 "DND4E.DefenceAC": "Armor Class",
 "DND4E.DefenceACShort": "AC",
@@ -709,7 +709,7 @@
 "DND4E.ModifierAttack": "Global Attack Modifier",
 "DND4E.ModifierAttackNote": "Note: Equipped armor not marked proficient",
 "DND4E.ModifierDamage": "Global Damage Modifier",
-"DND4E.ModifierDefences": "Global Defence Modifier",
+"DND4E.ModifierDefences": "Global Defense Modifier",
 "DND4E.ModifierSkills": "Global Skill Check Modifier",
 "DND4E.ModifierSaves": "Global Saving Throw Modifier",
 "DND4E.ModifiersGlobal": "Global Modifiers",
@@ -1410,7 +1410,7 @@
 				"Attacker": "Hook: Pre Attack Roll - Attacker",
 				"Target": "Hook: Pre Attack Roll - Target"
 			},
-		"HookEvalDef": "Hook: Evaluate Target Defence"
+		"HookEvalDef": "Hook: Evaluate Target Defense"
 	}
 },
 
