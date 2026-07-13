@@ -144,16 +144,16 @@ export function getWeaponUse(itemData, actor) {
  * @returns {Item4e|null} The ammo details, or null if either no suitable ammo is found or itemData.consume.target is set to none.
  */
 export function getAmmoUse(itemData, actor) {
-	if (!itemData || itemData.consume?.type !== "ammo" || itemData.consume?.target === "none") return null;
+	if (!itemData || (itemData.consume?.type !== "ammo") || (itemData.consume?.target === "none")) return null;
 	let ammoUse = null;
 	//If ammo is automatic, find a suitable consumable
 	if (itemData.consume.target === "auto") {
 		return actor.itemTypes.consumable.find((i) =>	{
-			if (i.system.consumableType === "ammo" && i.system.equipped) return i;
+			if ((i.system.consumableType === "ammo") && i.system.equipped) return i;
 		}, {});
 	} else {
-    ammoUse = actor?.items.get(itemData.consume.target);
-  }
+		ammoUse = actor?.items.get(itemData.consume.target);
+	}
 	return ammoUse;
 }
 
@@ -188,8 +188,8 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 	const suitableKeywords = ["global"];
 	const effectsToProcess = [];
 	const actorEffects = actor.appliedEffects;
-  //console.debug(powerData);
-  const ammo = weaponData ? getAmmoUse(weaponData, actor) : getAmmoUse(powerData, actor);
+	//console.debug(powerData);
+	const ammo = weaponData ? getAmmoUse(weaponData, actor) : getAmmoUse(powerData, actor);
   
 	if (actorEffects.length) {
 		if (debug) {
@@ -197,8 +197,8 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 		}
     
 		let enhValue = weaponData?.enhance || 0;
-    //Ammo enhancement should override weapon enhancement, if it has one
-    if(ammo && ammo?.system?.enhance > 0) enhValue = ammo.system.enhance;
+		//Ammo enhancement should override weapon enhancement, if it has one
+		if (ammo && (ammo?.system?.enhance > 0)) enhValue = ammo.system.enhance;
 		//Using inherent enhancements?
 		if (game.settings.get("dnd4e", "inhEnh")) {
 			//If our enhancement is lower than the inherent level, adjust it upward
@@ -249,11 +249,11 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				}
 				options.weaponUuid = weaponData.uuid;
 			}
-      if (ammo) {
-        options.ammoUuid = ammo.uuid;
+			if (ammo) {
+				options.ammoUuid = ammo.uuid;
 				_addKeywords(suitableKeywords, ammo.system.damageType);
-        _addKeywords(suitableKeywords, ammo.system.effectType);
-      }
+				_addKeywords(suitableKeywords, ammo.system.effectType);
+			}
 			if (powerData.powersource) {
 				suitableKeywords.push(powerData.powersource);
 			}
@@ -364,23 +364,6 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 					if (isWeapon) {
 						suitableKeywords.push("one");
 					}
-				}
-			}
-				
-			if (powerData.attack?.def) {
-				switch (powerData.attack.def) {
-					case "ac":
-						suitableKeywords.push("vsAC");
-						break;
-					case "fort":
-						suitableKeywords.push("vsFort");
-						break;
-					case "ref":
-						suitableKeywords.push("vsRef");
-						break;
-					case "will":
-						suitableKeywords.push("vsWill");
-						break;
 				}
 			}
 				
@@ -544,7 +527,7 @@ async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, 
 			const keywords = keyParts.slice(2, -1);
 			for (const keyword of keywords) {
 				if (keyword === "self") {
-					if ([options.weaponUuid,options.ammoUuid].includes(effect.itemUuid)) {
+					if ([options.weaponUuid, options.ammoUuid].includes(effect.itemUuid)) {
 						continue;
 					} else {
 						return false;
