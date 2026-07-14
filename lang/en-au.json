@@ -1033,6 +1033,10 @@
 "DND4E.SpokenSupernal": "Supernal",
 "DND4E.Stance": "Stance",
 "DND4E.StatusConditions": "Status Conditions",
+"DND4E.StatusDescription": "Status Description",
+"DND4E.StatusId": "Status ID",
+"DND4E.StatusImage": "Status Image",
+"DND4E.StatusName": "Status Name",
 "DND4E.SubName": "Class Name Attack 1",
 "DND4E.Summoning": "Summoning",
 "DND4E.Supply": "Supply",
@@ -1762,7 +1766,8 @@
 
 "DND4EUI": {
 	"AddNew": "Add New",
-	"AddNewSkill": "Add new Skill",
+	"AddNewSkill": "Add New Skill",
+	"AddNewStatus": "Add New Status",
 	"All": "All",
 	"AttackDetails": "Attack Details",
 	"AttackDetailsText": "Attack Text",
