@@ -56,7 +56,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 				initialKeysOnly: true,
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
-			enhance: new NumberField({ initial: 0, integer: true })
+			enhance: new NumberField({ initial: 0, integer: true }),
 		};
 	}
 

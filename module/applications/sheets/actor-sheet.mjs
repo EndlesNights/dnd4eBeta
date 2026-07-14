@@ -582,7 +582,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			this._checkItemAvailable(i);
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0) && (item.system.uses.per != "");
 			i.isDepleted = i.hasUses && (item.system.uses.value === 0);
-			i.isUnavailable = i.isDepleted || i.system.notAvailable || (["weapon", "equipment","consumable"].includes(item.type) && !item.system?.equipped);
+			i.isUnavailable = i.isDepleted || i.system.notAvailable || (["weapon", "equipment", "consumable"].includes(item.type) && !item.system?.equipped);
 			inventory[i.type].items.push(i);
 		}
 
