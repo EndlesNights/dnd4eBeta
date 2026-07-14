@@ -370,5 +370,4 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	_refresh(event) {
 		return this.submit({ preventClose: true }).then(() => this.render());
 	}
-	
 }
