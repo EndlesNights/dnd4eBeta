@@ -90,10 +90,10 @@ export default class CustomSkillConfig extends foundry.applications.api.Handleba
 	}
 
 	/**
+     * @this {CustomSkillConfig}
      * @param {Event} event
      * @param {Object} form
      * @param {Object} formData
-     * @this {CustomSkillConfig}
      */
 	static async #onSubmit(event, form, formData) {
 		const validSkills = this.#customSkills.filter(i => i.id.trim().length && i.label.trim().length);

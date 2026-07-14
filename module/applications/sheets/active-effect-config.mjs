@@ -167,9 +167,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/**
 	* Handling for mouse clicks on DOT control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
+	* @this {ActiveEffectConfig4e}
 	* @param {PointerEvent} event      	The originating click event
 	* @param {HTMLElement} target				The target of the event
-	* @this {ActiveEffectConfig4e}
 	*/
 	static #onEffectDotControl(event, target) {
 		event.preventDefault();
@@ -187,9 +187,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/**
 	* Handling for mouse clicks on status control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
+	* @this {ActiveEffectConfig4e}
 	* @param {PointerEvent} event      	The originating click event
 	* @param {HTMLElement} target				The target of the event
-	* @this {ActiveEffectConfig4e}
 	*/
 	static #onEffectStatusControl(event, target) {
 		event.preventDefault();
@@ -215,9 +215,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/**
 	* Handling for mouse clicks on Keyword control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
+	* @this {ActiveEffectConfig4e}
 	* @param {PointerEvent} event      	The originating click event
 	* @param {HTMLElement} target				The target of the event
-	* @this {ActiveEffectConfig4e}
 	*/
 	static #onEffectKeywordControl(event, target) {
 		event.preventDefault();

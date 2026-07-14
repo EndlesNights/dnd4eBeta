@@ -52,8 +52,8 @@ export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.
 
 	/**
    * Apply the Active Effects when the Token enters the Region.
-   * @param {RegionTokenEnterEvent} event
    * @this {ApplyActiveEffect4eRegionBehaviorType}
+   * @param {RegionTokenEnterEvent} event
    */
 	static async #onTokenEnter(event) {
 		if (!event.user.isSelf) return;
@@ -71,8 +71,8 @@ export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.
 
 	/**
    * Un-apply the Active Effects when the Token exits the Region.
-   * @param {RegionTokenExitEvent} event
    * @this {ApplyActiveEffect4eRegionBehaviorType}
+   * @param {RegionTokenExitEvent} event
    */
 	static async #onTokenExit(event) {
 		if (!event.user.isSelf) return;

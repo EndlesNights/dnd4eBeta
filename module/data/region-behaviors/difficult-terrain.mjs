@@ -32,8 +32,8 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
 	/**
    * Called when the difficult terrain behavior is viewed.
-   * @param {RegionBehaviorViewedEvent} event
    * @this {DifficultTerrainRegionBehaviorType}
+   * @param {RegionBehaviorViewedEvent} event
    */
 	static async #onBehaviorViewed(event) {
 		canvas.tokens.recalculatePlannedMovementPaths();
@@ -43,8 +43,8 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
 	/**
    * Called when the difficult terrain behavior is unviewed.
-   * @param {RegionBehaviorUnviewedEvent} event
    * @this {DifficultTerrainRegionBehaviorType}
+   * @param {RegionBehaviorUnviewedEvent} event
    */
 	static async #onBehaviorUnviewed(event) {
 		canvas.tokens.recalculatePlannedMovementPaths();
@@ -54,8 +54,8 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
 	/**
    * Called when the boundary of an event has changed.
-   * @param {RegionRegionBoundryEvent} event
    * @this {DifficultTerrainRegionBehaviorType}
+   * @param {RegionRegionBoundryEvent} event
    */
 	static async #onRegionBoundary(event) {
 		if (!this.behavior.viewed) return;
