@@ -7,6 +7,7 @@ export { default as AttributeBonusDialog } from "./attribute-bonuses.mjs";
 export { default as ConBonConfig } from "./con-bon-config.mjs";
 export { default as CustomRolldDescriptions } from "./custom-roll-descriptions.mjs";
 export { default as CustomSkillConfig } from "./custom-skill-config.mjs";
+export { default as CustomStatusConfig } from "./custom-status-config.mjs";
 export { default as DeathSaveDialog } from "./death-save.mjs";
 export { default as EncumbranceDialog } from "./encumbrance-dialog.mjs";
 export { default as HealMenuDialog } from "./heal-menu-dialog.mjs";

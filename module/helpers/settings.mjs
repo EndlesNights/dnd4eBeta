@@ -1,4 +1,4 @@
-import CustomSkillConfig from "../applications/apps/custom-skill-config.mjs";
+import { CustomSkillConfig, CustomStatusConfig } from "../applications/apps/_module.mjs";
 import { updateApplyEffectsTooltips } from "../helpers/chat.mjs";
 
 export const registerSystemSettings = function() {
@@ -131,6 +131,25 @@ export const registerSystemSettings = function() {
 	// Anchor for custom skills input
 	game.settings.register("dnd4e", "custom-skills", {
 		name: "Custom Skills",
+		scope: "world",
+		config: false,
+		type: Object,
+		default: [],
+	});
+
+	// Custom Statuses
+	game.settings.registerMenu("dnd4e", "show-custom-status", {
+		name: "SETTINGS.4eCustomStatusesN",
+		label: "SETTINGS.4eCustomStatusesL",
+		hint: "SETTINGS.4eCustomStatusesH",
+		icon: "fas fa-cog",
+		type: CustomStatusConfig,
+		restricted: true,
+	});
+
+	// Anchor for custom skills input
+	game.settings.register("dnd4e", "custom-statuses", {
+		name: "Custom Statuses",
 		scope: "world",
 		config: false,
 		type: Object,

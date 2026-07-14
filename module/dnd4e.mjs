@@ -55,15 +55,6 @@ Hooks.once("init", async function() {
 	CONFIG.Combat.documentClass = documents.Combat4e;
 	CONFIG.Token.documentClass = documents.TokenDocument4e;
 
-	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
-		const newEffect = {
-			id,
-			...data,
-		};
-		arr.push(newEffect);
-		return arr;
-	}, []);
-
 	CONFIG.ActiveEffect.expiryAction = "delete";
 	CONFIG.ActiveEffect.expiryEvents.dayEnd = "DND4E.DurationEndOfDay";
 	CONFIG.ActiveEffect.expiryEvents.save = "DND4E.DurationSaveEnd";
@@ -202,7 +193,17 @@ Hooks.once("init", async function() {
 	utils.registerHandlebarsHelpers();
 	helpers.templates.preloadHandlebarsTemplates();
 
-	helpers.customSkillSetup();
+	helpers.customization.customSkillSetup();
+
+	helpers.customization.customStatusSetup();
+	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
+		const newEffect = {
+			id,
+			...data,
+		};
+		arr.push(newEffect);
+		return arr;
+	}, []);
 
 	// Set up token movement actions
 	documents.TokenDocument4e.registerMovementActions();
