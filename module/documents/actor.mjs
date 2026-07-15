@@ -180,6 +180,10 @@ export default class Actor4e extends Actor {
 		const data = super.getRollData();
 
 		data.name = this.name;
+		data.statuses = {};
+		for (const status of Object.keys(CONFIG.DND4E.statusEffect)) {
+			data.statuses[status] = this.statuses.has(status) ? 1 : 0;
+		}
 
 		data.strMod = data?.abilities?.str.mod || 0;
 		data.conMod = data?.abilities?.con.mod || 0;
