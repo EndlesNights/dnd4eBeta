@@ -107,8 +107,11 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 				targetBonuses.comAdv.shouldApply = true;
 			}
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
-			if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
-			if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+
+			const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
+			if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+			if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+
 			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
             
@@ -359,8 +362,11 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				}
 
 				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
-				if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
-				if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+
+				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
+				if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+				if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+
 				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
 			}
