@@ -3,6 +3,129 @@ export default class CustomStatusConfig extends foundry.applications.api.Handleb
 	#originalIds;
 	#needsReload = false;
 
+	static LEGACY_STATUSES = {
+		curse: {
+			name: "EFFECT.statusCurse",
+			img: "systems/dnd4e/icons/statusEffects/curse.svg",
+			description: "EFFECTDESC.curse",
+		},
+		oath: {
+			name: "EFFECT.statusOath",
+			img: "systems/dnd4e/icons/statusEffects/oath.svg",
+			description: "EFFECTDESC.oath",
+		},
+		hunter_mark: {
+			name: "EFFECT.statusHunterMark",
+			img: "systems/dnd4e/icons/statusEffects/hunter_mark.svg",
+			description: "EFFECTDESC.huntermark",
+		},
+		sneaking: {
+			name: "EFFECT.statusSneaking",
+			img: "systems/dnd4e/icons/statusEffects/sneaking.svg",
+			description: "EFFECTDESC.sneaking",
+		},
+		target: {
+			name: "EFFECT.statusTarget",
+			img: "systems/dnd4e/icons/statusEffects/target.svg",
+			description: "EFFECTDESC.target",
+		},
+		ongoing_1: {
+			name: "EFFECT.statusOngoing1",
+			img: "systems/dnd4e/icons/statusEffects/ongoing_1.svg",
+			description: "EFFECTDESC.ongoing",
+		},
+		ongoing_2: {
+			name: "EFFECT.statusOngoing2",
+			img: "systems/dnd4e/icons/statusEffects/ongoing_2.svg",
+			description: "EFFECTDESC.ongoing",
+		},
+		ongoing_3: {
+			name: "EFFECT.statusOngoing3",
+			img: "systems/dnd4e/icons/statusEffects/ongoing_3.svg",
+			description: "EFFECTDESC.ongoing",
+		},
+		regen: {
+			name: "EFFECT.statusRegen",
+			img: "systems/dnd4e/icons/statusEffects/regen.svg",
+			description: "EFFECTDESC.regen",
+		},
+		attack_up: {
+			name: "EFFECT.statusAttackUp",
+			img: "systems/dnd4e/icons/statusEffects/attack_up.svg",
+			description: "EFFECTDESC.attackUp",
+		},
+		attack_down: {
+			name: "EFFECT.statusAttackDown",
+			img: "systems/dnd4e/icons/statusEffects/attack_down.svg",
+			description: "EFFECTDESC.attackDown",
+		},
+		defUp: {
+			name: "EFFECT.statusDefUp",
+			img: "systems/dnd4e/icons/statusEffects/def_up.svg",
+			description: "EFFECTDESC.defUp",
+		},
+		defDown: {
+			name: "EFFECT.statusDefDown",
+			img: "systems/dnd4e/icons/statusEffects/def_down.svg",
+			description: "EFFECTDESC.defDown",
+		},
+		mark_2: {
+			name: "EFFECT.statusMark2",
+			img: "systems/dnd4e/icons/statusEffects/mark_2.svg",
+			description: "EFFECTDESC.mark",
+		},
+		mark_3: {
+			name: "EFFECT.statusMark3",
+			img: "systems/dnd4e/icons/statusEffects/mark_3.svg",
+			description: "EFFECTDESC.mark",
+		},
+		mark_4: {
+			name: "EFFECT.statusMark4",
+			img: "systems/dnd4e/icons/statusEffects/mark_4.svg",
+			description: "EFFECTDESC.mark",
+		},
+		mark_5: {
+			name: "EFFECT.statusMark5",
+			img: "systems/dnd4e/icons/statusEffects/mark_5.svg",
+			description: "EFFECTDESC.mark",
+		},
+		mark_6: {
+			name: "EFFECT.statusMark6",
+			img: "systems/dnd4e/icons/statusEffects/mark_6.svg",
+			description: "EFFECTDESC.mark",
+		},
+		mark_7: {
+			name: "EFFECT.statusMark7",
+			img: "systems/dnd4e/icons/statusEffects/mark_7.svg",
+			description: "EFFECTDESC.mark",
+		},
+		ammo_count: {
+			name: "EFFECT.statusAmmoCount",
+			img: "systems/dnd4e/icons/statusEffects/ammo_count.svg",
+			description: "EFFECTDESC.ammoCount",
+		},
+		torch: {
+			name: "EFFECT.statusTorch",
+			img: "systems/dnd4e/icons/statusEffects/torch.svg",
+			description: "EFFECTDESC.torch",
+		},
+		drunk: {
+			name: "EFFECT.statusDrunk",
+			img: "systems/dnd4e/icons/statusEffects/drunk.svg",
+			description: "EFFECTDESC.drunk",
+		},
+		sleeping: {
+			name: "EFFECT.statusSleeping",
+			img: "systems/dnd4e/icons/statusEffects/sleeping.svg",
+			description: "EFFECTDESC.sleeping",
+		},
+		disarmed: {
+			name: "EFFECT.statusDisarmed",
+			img: "systems/dnd4e/icons/statusEffects/disarmed.svg",
+			description: "EFFECTDESC.disarmed",
+		},
+	};
+
 	constructor(...args) {
 		super(...args);
 		this.#customStatuses = foundry.utils.duplicate(game.settings.get("dnd4e", "custom-statuses"));
@@ -31,6 +154,7 @@ export default class CustomStatusConfig extends foundry.applications.api.Handleb
 			editImage: CustomStatusConfig.#onEditImage,
 			createStatus: CustomStatusConfig.#onCreateStatus,
 			deleteStatus: CustomStatusConfig.#onDeleteStatus,
+			restoreLegacy: CustomStatusConfig.#onRestoreLegacyStatuses,
 			cancel: CustomStatusConfig.#onCancel,
 		},
 	};
@@ -92,6 +216,24 @@ export default class CustomStatusConfig extends foundry.applications.api.Handleb
 		if (!li) return;
 		const rowId = li.dataset.rowId;
 		this.#customStatuses.splice(rowId, 1);
+		this.#needsReload = true;
+		this.render();
+	}
+
+	/**
+	 * @this {CustomStatusConfig}
+	 */
+	static #onRestoreLegacyStatuses(event, target) {
+		for (const statusId of Object.keys(this.constructor.LEGACY_STATUSES)) {
+			const status = this.constructor.LEGACY_STATUSES[statusId];
+			if (this.#customStatuses.some((s) => s.id === statusId)) continue;
+			this.#customStatuses.push({
+				name: _loc(status.name),
+				id: statusId,
+				description: _loc(status.description),
+				img: status.img,
+			});
+		}
 		this.#needsReload = true;
 		this.render();
 	}

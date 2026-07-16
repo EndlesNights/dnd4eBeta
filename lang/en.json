@@ -1821,6 +1821,7 @@
 	"PowerTextFieldsPlaceholder": "For Rolls and Formulae, use double square brackets: e.g. [[1d4 + @chaMod]]",
 	"RequirementsText": "Requirement Text",
 	"ResistancesTip": "Nonmagical damage resistance(s) connected to this item",
+    "RestoreLegacyStatuses": "Restore Legacy Statuses",
 	"RollVariants": "Variant Roll Modes",
 	"RollVariantsTip": "Adds extra context menu options to roll this attack in a special way. When rolled this way, the attack will gain the specified property and activate any associated bonuses/penalties.",
 	"SearchFor": "Search for {term}",

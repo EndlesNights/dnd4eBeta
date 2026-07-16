@@ -1,0 +1,46 @@
+{
+  "name": "Removed from Play",
+  "_id": "HRR6JL1Fm69G39Cn",
+  "img": "systems/dnd4e/icons/statusEffects/removed.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<p>The creature can't take actions. It has neither line of sight nor line of effect to anything, and nothing has line of sight or line of effect to it.</p>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "removed"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 125000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053753979,
+    "modifiedTime": 1784053924763,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!HRR6JL1Fm69G39Cn"
+}

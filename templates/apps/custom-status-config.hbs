@@ -1,4 +1,4 @@
-<div id="custom-status-config" class="dialogue-content" onsubmit="event.preventDefault();">
+<div id="custom-status-config" class="dialogue-content scrollable" onsubmit="event.preventDefault();">
 	
   <div class="form-group vertical">
     <h1 class="form-title">{{localize 'SETTINGS.4eCustomStatusesN'}}</h1>
@@ -48,6 +48,9 @@
     </tbody>
   </table>
 
-  <a class="custom-status-control custom-status-add right label" data-action="createStatus">{{localize 'DND4EUI.AddNewStatus'}} <i class="fas fa-plus"></i></a>
+  <div class="flexrow">
+    <a class="custom-status-control custom-status-restore left label" data-action="restoreLegacy">{{localize 'DND4EUI.RestoreLegacyStatuses'}} <i class="fa-solid fa-arrow-rotate-left"></i></a>
+    <a class="custom-status-control custom-status-add right label" data-action="createStatus">{{localize 'DND4EUI.AddNewStatus'}} <i class="fas fa-plus"></i></a>
+  </div>
 	
 </div>

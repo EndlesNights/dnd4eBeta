@@ -1,0 +1,46 @@
+{
+  "name": "Prone",
+  "_id": "jHmK9eOVXNdASHhi",
+  "img": "systems/dnd4e/icons/statusEffects/prone.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<ul><li><p>The creature is lying down.</p></li><li><p>If the creature is climbing or flying, it falls.</p></li><li><p>The creature cannot move except by crawling or teleporting. It can still be pulled, pushed, or slid.</p></li><li><p>The creature takes a -2 penalty to attack rolls.</p></li><li><p>The creature grants combat advantage to attackers making melee attacks against it, but it gains a +2 bonus to all defenses against ranged attacks from attackers that aren't adjacent to it.</p></li></ul>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "prone"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 150000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053743442,
+    "modifiedTime": 1784053924110,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!jHmK9eOVXNdASHhi"
+}

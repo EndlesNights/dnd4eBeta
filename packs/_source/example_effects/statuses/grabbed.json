@@ -1,0 +1,46 @@
+{
+  "name": "Grabbed",
+  "_id": "p8wqewerrekUT17g",
+  "img": "systems/dnd4e/icons/statusEffects/grabbed.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<ul><li><p>The creature is immobilized.</p></li><li><p>The creature can attempt to escape as a move action.</p></li><li><p>The grab ends immediately if the grabber is subjected to an effect that prevents it from taking actions, or if the creature ends up outside the range of the grabbing power or effect.</p></li></ul>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "grabbed"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 1000000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053622351,
+    "modifiedTime": 1784053923518,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!p8wqewerrekUT17g"
+}

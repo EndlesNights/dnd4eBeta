@@ -1,0 +1,46 @@
+{
+  "name": "Dominated",
+  "_id": "r9cP3uL6pKBCnh8B",
+  "img": "systems/dnd4e/icons/statusEffects/dominated.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<ul><li><p>The creature can't take actions voluntarily. Instead, the dominator chooses a single action for the creature to take on the creature's turn: a standard, a move, a minor, or a free action. The dominator can only make the creature use At-Will powers or features.</p></li><li><p>If the dominator tries to force the creature to enter dangerous terrain (such as leaping from a height or a space that would cause other harm) the creature gets a saving throw to resist entering the terrain.</p></li><li><p>The creature cannot take opportunity or immediate actions.</p></li><li><p>The creature can't flank.</p></li><li><p>The creature grants combat advantage.</p></li><li><p>The creature's disposition does not change; its allies remain its allies, and its enemies remain its enemies.</p></li></ul>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "dominated"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 1400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053565034,
+    "modifiedTime": 1784053923518,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!r9cP3uL6pKBCnh8B"
+}
