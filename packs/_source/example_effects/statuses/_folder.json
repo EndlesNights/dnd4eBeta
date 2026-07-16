@@ -1,0 +1,22 @@
+{
+  "type": "ActiveEffect",
+  "folder": null,
+  "name": "Statuses",
+  "color": null,
+  "sorting": "a",
+  "_id": "taBy8HUxznsopE42",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053904911,
+    "modifiedTime": 1784053904911,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!taBy8HUxznsopE42"
+}

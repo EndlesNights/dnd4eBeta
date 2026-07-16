@@ -44,7 +44,7 @@
 		},
 		{
 			"name": "featuresPack",
-			"label": "Classes, Race, & Features",
+			"label": "Classes, Races, & Features",
 			"path": "./packs/featuresPack",
 			"type": "Item",
 			"private": false,
@@ -70,10 +70,19 @@
 		},		
 		{
 			"name": "example_character",
-			"label": "Example Character",
+			"label": "Example Characters",
 			"system": "dnd4e",
 			"path": "./packs/example_character",
 			"type": "Actor",
+			"private": false,
+			"flags": {}
+		},
+        {
+			"name": "example_effects",
+			"label": "Example Active Effects",
+			"system": "dnd4e",
+			"path": "./packs/example_effects",
+			"type": "ActiveEffect",
 			"private": false,
 			"flags": {}
 		},

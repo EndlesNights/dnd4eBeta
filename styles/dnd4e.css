@@ -3424,6 +3424,32 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 :is(th,td).custom-skill-control{
 	text-align:right;
 }
+.dnd4e:is(.default, .standard-form) .window-content table.custom-status-list th{
+	padding:0.2em 0.5em;
+}
+:is(th,td).custom-status-id{
+	width:7em;
+}
+:is(th,td).custom-status-description{
+	width:9em;
+}
+:is(th,td).custom-status-name{
+	width:7em;
+}
+:is(th,td).custom-status-control{
+	width:2em;
+}
+:is(th,td).custom-status-control{
+	text-align:right;
+}
+:is(th,td).custom-status-image {
+    width: 32px;
+    align-items:center;
+}
+:is(th,td).custom-status-image .status-image{
+	width:32px;
+    height:32px;
+}
 .hitpoint-config input[type="text"]{
 	width:40px;
 	text-align:center;

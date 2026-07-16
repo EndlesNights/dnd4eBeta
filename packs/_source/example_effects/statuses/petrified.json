@@ -1,0 +1,46 @@
+{
+  "name": "Petrified",
+  "_id": "bxvXol10ewEOI0lK",
+  "img": "systems/dnd4e/icons/statusEffects/petrified.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<ul><li><p>The creature is unconscious.</p></li><li><p>The creature has resist 20 to all damage.</p></li><li><p>The creature doesn't age.</p></li></ul>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "petrified"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 200000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053718245,
+    "modifiedTime": 1784053923517,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!bxvXol10ewEOI0lK"
+}

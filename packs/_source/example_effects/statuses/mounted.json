@@ -1,0 +1,46 @@
+{
+  "name": "Mounted",
+  "_id": "NDpAGjJIR4gQ6Tkn",
+  "img": "systems/dnd4e/icons/statusEffects/mounted.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<p>The creature is mounted upon another creature.</p>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "mounted"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 300000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053707138,
+    "modifiedTime": 1784053923517,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!NDpAGjJIR4gQ6Tkn"
+}

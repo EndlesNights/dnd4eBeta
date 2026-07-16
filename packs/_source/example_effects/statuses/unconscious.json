@@ -1,0 +1,46 @@
+{
+  "name": "Unconscious",
+  "_id": "jkRrVqehPG2E1O2d",
+  "img": "systems/dnd4e/icons/statusEffects/unconscious.svg",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "durationType": "",
+    "powerEffectType": "misc",
+    "dots": [],
+    "equippedRec": false,
+    "keywords": [],
+    "keywordsCustom": "",
+    "useSourceActorData": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<ul><li><p>The creature is helpless.</p></li><li><p>The creature can't take actions.</p></li><li><p>The creature takes a -5 penalty to all defenses.</p></li><li><p>The creature is unaware of its surroundings.</p></li><li><p>The creature falls prone, if possible.</p></li><li><p>The creature can't flank.</p></li></ul>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [
+    "unconscious"
+  ],
+  "showIcon": 1,
+  "folder": "taBy8HUxznsopE42",
+  "sort": 100098,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.10",
+    "createdTime": 1784053878668,
+    "modifiedTime": 1784053933900,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!jkRrVqehPG2E1O2d"
+}

@@ -1060,8 +1060,7 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 				}
 
 				if (e.statuses[0] && game.settings.get("dnd4e", "markAutomation")) {
-					const marks = new Set(["mark_1", "mark_2", "mark_3", "mark_4", "mark_5", "mark_6", "mark_7"]);
-					const hasMark = marks.intersection(new Set(e.statuses)).size;
+					const hasMark = e.statuses.has("mark");
 						
 					if (hasMark) {
 						// If the effect already has `system.marker` assume it's for a reason
@@ -1077,7 +1076,7 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 							
 						if (t?.actor?.allApplicableEffects) {
 							for (let effect of t.actor.allApplicableEffects()) {
-								if (marks.intersection(effect.statuses).size) effect.delete();
+								if (effect.statuses.has("mark")) effect.delete();
 							}
 						}
 					}
