@@ -2257,6 +2257,12 @@ DND4E.characterFlags = {
 };
 preLocalize("characterFlags", { keys: ["name", "hint"], sort: true });
 
+DND4E.LIGHT_LEVEL = {
+	DARK: 0,
+	DIM: 1,
+	BRIGHT: 2,
+};
+
 // Configure allowed status flags
 DND4E.allowedActorFlags = [
 	"isPolymorphed", "originalActor",

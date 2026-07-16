@@ -1,6 +1,10 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
 /**
+ * @import { TokenMeasureMovementPathOptions, TokenMovementActionCostFunction } from "@client/_types.mjs";
+ */
+
+/**
  * Extend the base TokenDocument class to implement system-specific HP bar logic.
  */
 export default class TokenDocument4e extends TokenDocument {

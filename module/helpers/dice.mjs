@@ -81,11 +81,14 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			const targetBonuses = foundry.utils.deepClone(userBonuses);
 			const targName = targetArr[targ]?.name || "";
 			targDataArray.targNameArray.push(targName);
-			const targetStatus = Array.from(targetArr[targ]?.actor.statuses || []);
+			const attacker = utils.tokenForActor(actor);
+			const target = targetArr[targ];
+			const targetStatus = Array.from(target?.actor.statuses || []);
 				
 			//Target conditions
 			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
-			const targetDist = targetArr[targ] ? utils.computeDistance(actor, targetArr[targ]) : 0;
+			const targetDist = target ? utils.computeDistance(attacker, target) : 0;
+			//console.debug(data);
 			if (targetArr[targ]?.actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 				let meleeVsProne = true;
 				if (item?.system.rangeType === "weapon") {
@@ -102,20 +105,18 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
 				targetBonuses.longRange.shouldApply = true;
 			}
-			if (targetArr[targ] && utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
+			if (target && utils.computeFlankingStatus(attacker, target)) {
 				targetBonuses.comAdv.shouldApply = true;
 			}
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 			const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-			if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-			if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+			if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+			if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
             
-			const attacker = utils.tokenForActor(actor);
-			const target = targetArr[targ];
 			for (const actorItem of [...actor.items]) {
 				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
 					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
@@ -257,7 +258,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			for (let [k, v] of Object.entries(form)) {
 				if (v.checked !== undefined) {
 					let tabIndex = v.name.split(".")[0];
-          // check if Individual Attack Bonuses otherwise just use Unified Attack Bonuses
+					// check if Individual Attack Bonuses otherwise just use Unified Attack Bonuses
 					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) || !individualAttack) {
 						let bonusName = v.name.split(".")[1];
 						if (v.checked) {
@@ -360,8 +361,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-				if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-				if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+				if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+				if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
@@ -435,41 +436,41 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 	const itemData = item?.getRollData({ variance: options.variance }).item;
 	const weaponData = weaponUse?.getRollData().item;
-  const attacker = await fromUuid(options.parent);
+	const attacker = await fromUuid(options.parent);
   
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
-    const attacker = utils.tokenForActor(actor);
+		const attacker = utils.tokenForActor(actor);
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
 		try {
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
-      // const targetOptions = foundry.utils.deepClone(options);
-      // Deep clone fails on the options object because it contains more complex structures, and silently returns the original object instead. It seems that some rolls are dependent on this fallback behaviour, but attack rolls need a unique object to calc bonuses between rolls. Fixing this by creating an empty variable that can be filled as necessary with only the stuff we need. - Fox
-      let targetOptions;
+			// const targetOptions = foundry.utils.deepClone(options);
+			// Deep clone fails on the options object because it contains more complex structures, and silently returns the original object instead. It seems that some rolls are dependent on this fallback behaviour, but attack rolls need a unique object to calc bonuses between rolls. Fixing this by creating an empty variable that can be filled as necessary with only the stuff we need. - Fox
+			let targetOptions;
       
 			if (isAttackRoll) {
-        targetOptions = {
-          "attackedDef": options?.attackedDef,
-          "bonuses": options?.bonuses,
-          "formulaInnerData": options?.formulaInnerData,
-          "variance": options?.variance,
-          "weaponUuid": options?.weaponUuid,
-          "powerEffects": options?.powerEffects
-        };
-        // Get actor bonuses here, in case they change between rolls
-        targetOptions.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
-        await utils.applyEffects({ ...data, ...targetOptions.variance }, actor, itemData, weaponData, "attack", null, false, targetOptions);
-        // ...Then add target bonuses
-        if (targetActor) await utils.applyEffects({ ...data, ...targetOptions.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
+				targetOptions = {
+					attackedDef: options?.attackedDef,
+					bonuses: options?.bonuses,
+					formulaInnerData: options?.formulaInnerData,
+					variance: options?.variance,
+					weaponUuid: options?.weaponUuid,
+					powerEffects: options?.powerEffects,
+				};
+				// Get actor bonuses here, in case they change between rolls
+				targetOptions.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
+				await utils.applyEffects({ ...data, ...targetOptions.variance }, actor, itemData, weaponData, "attack", null, false, targetOptions);
+				// ...Then add target bonuses
+				if (targetActor) await utils.applyEffects({ ...data, ...targetOptions.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
         
-        // populate the common attack bonuses into data
-        const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
-        if (commonAttackBonuses) {
-          Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-            data[key] = commonAttackBonuses[key].value;
-          });
-        }
+				// populate the common attack bonuses into data
+				const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
+				if (commonAttackBonuses) {
+					Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+						data[key] = commonAttackBonuses[key].value;
+					});
+				}
 				const target = targets[rollExpressionIdx];
 				for (const actorItem of [...actor.items]) {
 					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
@@ -488,7 +489,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			}
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions || options);
-      if (isAttackRoll) await utils.endEffects(actor, ["attack"]);
+			if (isAttackRoll) await utils.endEffects(actor, ["attack"]);
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -575,15 +576,15 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfHit", attacker);
-				utils.endEffectsOnTokens(targetData.targetHit,"attackedhit");
-				utils.endEffectsOnTokens(targetData.targetHit,"attacked");
+				utils.endEffectsOnTokens(targetData.targetHit, "attackedhit");
+				utils.endEffectsOnTokens(targetData.targetHit, "attacked");
 			}
 			if (targetData.targetMissed.length) {
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfMiss", attacker);
-				utils.endEffectsOnTokens(targetData.targetMissed,"attackedmiss");
-				utils.endEffectsOnTokens(targetData.targetMissed,"attacked");
+				utils.endEffectsOnTokens(targetData.targetMissed, "attackedmiss");
+				utils.endEffectsOnTokens(targetData.targetMissed, "attacked");
 			}
 		}
 	}
