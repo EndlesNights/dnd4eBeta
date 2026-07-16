@@ -81,11 +81,13 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			const targetBonuses = foundry.utils.deepClone(userBonuses);
 			const targName = targetArr[targ]?.name || "";
 			targDataArray.targNameArray.push(targName);
-			const targetStatus = Array.from(targetArr[targ]?.actor.statuses || []);
+			const attacker = utils.tokenForActor(actor);
+			const target = targetArr[targ];
+			const targetStatus = Array.from(target?.actor.statuses || []);
 				
 			//Target conditions
 			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
-			const targetDist = targetArr[targ] ? utils.computeDistance(actor, targetArr[targ]) : 0;
+			const targetDist = target ? utils.computeDistance(attacker, target) : 0;
 			//console.debug(data);
 			if (targetArr[targ]?.actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 				let meleeVsProne = true;
@@ -103,20 +105,18 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
 				targetBonuses.longRange.shouldApply = true;
 			}
-			if (targetArr[targ] && utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
+			if (target && utils.computeFlankingStatus(attacker, target)) {
 				targetBonuses.comAdv.shouldApply = true;
 			}
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 			const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-			if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-			if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+			if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+			if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
             
-			const attacker = utils.tokenForActor(actor);
-			const target = targetArr[targ];
 			for (const actorItem of [...actor.items]) {
 				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
 					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
@@ -364,8 +364,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-				if (targetStatus.includes("concealed") && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-				if (targetStatus.includes("concealedTotal") && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+				if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+				if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;

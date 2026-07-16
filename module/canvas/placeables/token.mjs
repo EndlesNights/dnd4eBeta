@@ -20,6 +20,28 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 	/* -------------------------------------------- */
 
+	/**
+     * @type {Number}
+     */
+	get lightLevel() {
+		if (this.document.parent.environment.globalLight.enabled) return CONFIG.DND4E.LIGHT_LEVEL.BRIGHT;
+		let c = Object.values(this.center);
+		let lights = canvas.effects.lightSources.filter(src => !(src instanceof foundry.canvas.sources.GlobalLightSource) && src.shape.contains(...c));
+		if (!lights.length) return CONFIG.DND4E.LIGHT_LEVEL.DARK;
+		let inBright = lights.some(light => {
+			let { data: { x, y }, ratio } = light;
+			let bright = foundry.canvas.geometry.ClockwiseSweepPolygon.create({ x: x, y: y }, {
+				type: "light",
+				boundaryShapes: [new PIXI.Circle(x, y, ratio * light.shape.config.radius)],
+			});
+			return bright.contains(...c);
+		});
+		if (inBright) return CONFIG.DND4E.LIGHT_LEVEL.BRIGHT;
+		return CONFIG.DND4E.LIGHT_LEVEL.DIM;
+	}
+
+	/* -------------------------------------------- */
+
 	/** @inheritDoc */
 	_drawBar(number, bar, data) {
 		if (data.attribute === "attributes.hp") return this._drawHPBar(number, bar, data);

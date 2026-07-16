@@ -1801,6 +1801,27 @@ export function computeFlankedStatus(token) {
 }
 
 /**
+ * Computes the concealment status of a target relative to its attacker
+ * @param {Token4e} token                   Attacking token
+ * @param {Token4e} target                  Target token
+ * @returns {string}                        Calculated concealment level of the target relative to the attacking token
+ */
+export function computeConcealment(token, target) {
+	const targetLight = target.lightLevel;
+	switch (targetLight) {
+		case 0:
+			if (token.actor.system.senses.special.dv.value) return "concealed";
+			else return "concealedTotal";
+		case 1:
+			if (token.actor.system.senses.special.dv.value) return "none";
+			if (token.actor.system.senses.special.lv.value) return "none";
+			else return "concealed";
+		case 2:
+			return "none";
+	}
+}
+
+/**
  * Convenience method to get the unique actors of an array of tokens.
  * @param {(Token4e | TokenDocument4e)[]} [tokens] Defaults to canvas.tokens.controlled.
  * @returns {Set<Actor4e>}    The set of actors of the controlled tokens.
