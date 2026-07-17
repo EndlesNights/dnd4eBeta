@@ -128,11 +128,9 @@
 </div>
 
 {{#if isPhysical}}
-<fieldset>
+<fieldset class="item-powers">
   <legend>{{localize 'DND4E.ItemPowers'}}</legend>
-  <div class="form-group">
-    {{formField itemPowersField value=system.itemPowers localize=true model=../../model}}
-  </div>
+  {{formField itemPowersField value=system.itemPowers localize=true model=../../model}}
 </fieldset>
 {{/if}}
 
