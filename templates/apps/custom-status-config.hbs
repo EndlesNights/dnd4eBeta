@@ -1,56 +1,60 @@
-<div id="custom-status-config" class="dialogue-content scrollable" onsubmit="event.preventDefault();">
+<div id="custom-status-config" class="dialogue-content nonscrolling flexcol" onsubmit="event.preventDefault();">
 	
-  <div class="form-group vertical">
-    <h1 class="form-title">{{localize 'SETTINGS.4eCustomStatusesN'}}</h1>
-    <p>{{localize 'SETTINGS.4eCustomStatusesH'}}</p>
-  </div>
-	
-  <table id="custom-status-list" class="custom-status-list">
-    <thead>
-      <tr class="custom-status-line" data-row-id="{{s}}">
-        <th class="custom-status-name">
-          {{localize 'DND4E.StatusName'}}
-        </th>
-        <th class="custom-status-id">
-          {{localize 'DND4E.StatusId'}}
-        </th>
-        <th class="custom-status-description">
-          {{localize 'DND4E.StatusDescription'}}
-        </th>
-        <th class="custom-status-image">
-          {{localize 'DND4E.StatusImage'}}
-        </th>
-        <th class="custom-status-control">
-        </th>
-      </tr>
-    </thead>
-		
-    <tbody>
-      {{#each customStatuses as |status s|}}
-      <tr class="custom-status-line" data-row-id="{{s}}">
-        <td class="custom-status-name">
-          <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusName'}}" />
-        </td>
-        <td class="custom-status-id">
-          <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusId'}}" />
-        </td>
-        <td class="custom-status-description">
-          <input id="custom-status-description-{{s}}" class="custom-status-description" type="text" name="description" value="{{status.description}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusDescription'}}" />
-        </td>
-        <td class="custom-status-image">
-          <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" class="custom-status-img" type="checkbox" name="img" data-action="editImage" data-edit="img" {{disabled (contains status.id ../originalIds)}} alt="{{localize 'DND4E.StatusImage'}}" />
-        </td>
-        <td class="custom-status-control">
-          <a class="custom-status-control" data-action="deleteStatus" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  <header class="flexrow">
+    <div class="info">
+      <h1 class="form-title">{{localize 'SETTINGS.4eCustomStatusesN'}}</h1>
+      <p class="hint">{{localize 'SETTINGS.4eCustomStatusesH'}}</p>
+    </div>
 
-  <div class="flexrow">
-    <a class="custom-status-control custom-status-restore left label" data-action="restoreLegacy">{{localize 'DND4EUI.RestoreLegacyStatuses'}} <i class="fa-solid fa-arrow-rotate-left"></i></a>
-    <a class="custom-status-control custom-status-add right label" data-action="createStatus">{{localize 'DND4EUI.AddNewStatus'}} <i class="fas fa-plus"></i></a>
+    <div class="config-list-buttons right flexcol">
+      <a class="custom-status-control custom-status-add right label" data-action="createStatus">{{localize 'DND4EUI.AddNewStatus'}} <i class="fas fa-plus"></i></a>
+      <a class="custom-status-control custom-status-restore right label" data-action="restoreLegacy" data-tooltip="{{localize 'DND4EUI.RestoreLegacyStatusesTip'}}">{{localize 'DND4EUI.RestoreLegacyStatuses'}} <i class="fa-solid fa-arrow-rotate-left"></i></a>
+    </div>
+  </header>
+	
+  <div class="table-holder">
+    <table id="custom-status-list" class="custom-status-list">
+      <thead>
+        <tr class="custom-status-line" data-row-id="{{s}}">
+          <th class="custom-status-image">
+            {{localize 'Icon'}}
+          </th>
+          <th class="custom-status-name">
+            {{localize 'Name'}}
+          </th>
+          <th class="custom-status-id" data-tooltip="{{localize 'DND4EUI.StatusIDTip'}}">
+            {{localize 'ID'}} <i class="fa-solid fa-circle-question"></i>
+          </th>
+          <th class="custom-status-description" data-tooltip="{{localize 'DND4EUI.StatusDescTip'}}">
+            {{localize 'Description'}} <i class="fa-solid fa-circle-question"></i>
+          </th>
+          <th class="custom-status-control">
+          </th>
+        </tr>
+      </thead>
+      
+      <tbody class="scrollable">
+        {{#each customStatuses as |status s|}}
+        <tr class="custom-status-line" data-row-id="{{s}}">
+          <td class="custom-status-image">
+            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" class="custom-status-img" type="checkbox" name="img" data-action="editImage" data-edit="img" {{disabled (contains status.id ../originalIds)}} alt="{{localize 'DND4E.StatusImage'}}" />
+          </td>
+          <td class="custom-status-name">
+            <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusName'}}" />
+          </td>
+          <td class="custom-status-id">
+            <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusId'}}" />
+          </td>
+          <td class="custom-status-description">
+            <textarea id="custom-status-description-{{s}}" class="custom-status-description" name="description" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusDescription'}}">{{status.description}}</textarea>
+          </td>
+          <td class="custom-status-control">
+            <a class="custom-status-control" data-action="deleteStatus" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
 	
 </div>

@@ -205,7 +205,9 @@ body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.th
 	--checkbox-background-color:var(--color-cool-4);
 	--checkbox-checked-color:#253c5e;
 	--checkbox-checkmark-color:#fff;
-	/* Handle light/dakr mode for buttons and stuff. My god why does Foundry set the variables in the elemenets themselves*/
+  --table-background-color:transparent;
+  --table-row-color-even:var(--color-cool-5-50);
+	/* Handle light/dark mode for buttons and stuff. My god why does Foundry set the variables in the elements themselves*/
 	--override-input-background-color:var(--color-cool-4);
 	--override-input-border-color:var(--border-faint);
 	--override-input-box-shadow:none;
@@ -246,7 +248,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	--checkbox-background-color:#c3b3ae;
 	--checkbox-checked-color:#253c5e;
 	--checkbox-checkmark-color:#fff;
-	/* Handle light/dakr mode for buttons and stuff. My god why does Foundry set the variables in the elemenets themselves*/
+  --table-background-color:transparent;
+	/* Handle light/dark mode for buttons and stuff. My god why does Foundry set the variables in the elements themselves*/
 	--override-input-background-color:rgba(0,0,0,0.05);
 	--override-input-border-color:#c3b3ae;
 	--override-input-box-shadow:none;
@@ -296,6 +299,14 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			padding-right:2px;
 		}
 	}
+  document-tags{
+    flex-direction:row;
+    justify-content:stretch;
+    .input-element-tags{
+      flex:0;
+      min-width:fit-content;
+    }
+  }
 	.collapsible{
 		.collapsible-content{
 			display:grid;
@@ -952,6 +963,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
     flex-basis:fit-content;
     width:fit-content;
     flex-grow:0;
+    &+.right{
+      margin-left:revert;
+    }
 	}
 	table{
 		margin:0;
@@ -2593,10 +2607,10 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			gap:0.5em;
 			
 			.inputs{
-                display:flex;
-                justify-content:space-between;
-                flex-direction:column;
-                gap:3px;
+        display:flex;
+        justify-content:space-between;
+        flex-direction:column;
+        gap:3px;
 				
 				ul{
 					display:flex;
@@ -2710,6 +2724,18 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			}
 		}
 	}
+  .tab.effects{
+    .item-powers{
+      margin-top:auto;
+      margin-bottom:2px;
+      .form-group>label{
+        display:none;
+      }
+      .form-group>.hint{
+        order:-1;
+      }
+    }
+  }
 	.sheet-navigation{
 		margin-bottom:5px;
 	}
@@ -2916,11 +2942,11 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 }
 
 /* ----------------------------------------- */
-/*  Active Effect Sheets					 */
+/*  Active Effect Sheets					           */
 /* ----------------------------------------- */
 
 .dnd4e.active-effect-config .sheet-header{
-	flex: unset;
+	flex:unset;
 }
 .dnd4e.active-effect-config.default .window-content{
 	section.tab{
@@ -3016,7 +3042,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			height:100%;
 			overflow-y:auto;
 		}
-		&:is(.details) header{
+		&.details header{
 			align-items:center;
 			display:grid;
 			gap:0.25rem;
@@ -3030,12 +3056,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 }
 
 /* ----------------------------------------- */
-/*  Other Dialogues
+/*  Other Dialogues                          */
 /* ----------------------------------------- */
 
-#token-hud .status-effects{
-	grid-template-columns:25px 25px 25px 25px 25px 25px 25px
-}
 #trait-selector .window-content{
 	.trait.has-children .trait-list{
 		columns:2;
@@ -3076,17 +3099,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	display:flex;
 	flex-direction:column;
 	gap:0.5em;
-	/*
-	header{
-		display:flex;
-		justify-content:space-between;
-		align-items:center;
-		font-weight:600;
-		> h1{
-			font-size:x-large;
-			margin-bottom:0;
-		}
-	} */
+  flex-basis:100%;
+  flex-shrink:10;
 	h1.form-title{
 		font-size:medium;
 		padding:0;
@@ -3095,6 +3109,10 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	}
 	+footer,+.form-footer{
 		padding-top:0.5em;
+    margin-top:auto;
+    flex-shrink:0;
+    flex-basis:fit-content;
+    min-height:fit-content;
 	}
 }
 
@@ -3280,10 +3298,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		}
 	}
 }
-.custom-skill-config .custom-skill-control{
-	margin:0 5px;
-	flex:0;
-}
+
+/* Movement Config */
 .dnd4e.movement-dialog.default{
 	fieldset.move-table{
 		&.movement-base>.flexrow{
@@ -3396,6 +3412,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	display:inline-block;
 	font-weight:bold;
 }
+
+/* Custom Rolls */
 #custom-roll-descriptions{
 	overflow-y:auto;
 }
@@ -3406,50 +3424,98 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 #custom-roll-descriptions h2{
 	margin-top:0.5em;
 }
-.dnd4e:is(.default, .standard-form) .window-content table.custom-skill-list th{
-	padding:0.2em 0.5em;
+
+/* Custom Config Lists */
+.dnd4e:is(.default, .standard-form):is(.custom-skill-config,.custom-status-config){
+  .dialogue-content.nonscrolling{
+    height: calc(100% - 10em);
+    overflow:clip;
+    & .config-list-buttons{
+      align-items:flex-end;
+    }
+    & .table-holder{
+      height:100%;
+      overflow-y:auto;
+      & table{
+        overflow:clip;
+      }
+      & thead{
+        top:0;
+        position:sticky;
+      }
+    }
+  }
 }
-:is(th,td).custom-skill-id{
-	width:7em;
+
+/* Custom Skills */
+.dnd4e:is(.default, .standard-form).custom-skill-config .window-content{
+  & table.custom-skill-list th{
+    padding:0.2em 0.5em;
+  }
+  & :is(th,td).custom-skill-id{
+    width:7em;
+  }
+  & :is(th,td).custom-skill-ability{
+    width:9em;
+  }
+  & :is(th,td).custom-skill-control{
+    width:2em;
+  }
+  & :is(th,td).custom-skill-acp{
+    text-align:center;
+  }
+  & :is(th,td).custom-skill-control{
+    text-align:right;
+  }
 }
-:is(th,td).custom-skill-ability{
-	width:9em;
+
+/* Custom Conditions */
+.dnd4e:is(.default,.standard-form).custom-status-config .window-content{
+  & table.custom-status-list{
+    & th{
+      padding:0.2em 0.5em;
+    }
+    & :is(th,td).custom-status-image{
+      width:25px;
+    }
+    & :is(th,td).custom-status-name{
+      max-width:5em;
+      min-width:4em;
+    }
+    & :is(th,td).custom-status-id{
+      max-width:3em;
+      min-width:2.5em;
+    }
+    & :is(th,td).custom-status-control{
+      width:2em;
+    }
+    & :is(th,td).custom-status-control{
+      text-align:right;
+    }
+    & td.custom-status-image img{
+      display:block;
+      margin:auto;
+    }
+    & :is(th,td).custom-status-description{
+      & textarea{
+        width:100%;
+        height:var(--input-height);
+        min-height:var(--input-height);
+        padding:0 0.5rem;
+        display:block;
+        &:focus{
+          min-height:5em;
+        }
+      }
+    }
+    & :is(th,td).custom-status-image .status-image{
+      width:25px;
+      height:25px;
+    }
+  }
 }
-:is(th,td).custom-skill-control{
-	width:2em;
-}
-:is(th,td).custom-skill-acp{
-	text-align:center;
-}
-:is(th,td).custom-skill-control{
-	text-align:right;
-}
-.dnd4e:is(.default, .standard-form) .window-content table.custom-status-list th{
-	padding:0.2em 0.5em;
-}
-:is(th,td).custom-status-id{
-	width:7em;
-}
-:is(th,td).custom-status-description{
-	width:9em;
-}
-:is(th,td).custom-status-name{
-	width:7em;
-}
-:is(th,td).custom-status-control{
-	width:2em;
-}
-:is(th,td).custom-status-control{
-	text-align:right;
-}
-:is(th,td).custom-status-image {
-    width: 32px;
-    align-items:center;
-}
-:is(th,td).custom-status-image .status-image{
-	width:32px;
-    height:32px;
-}
+
+/* HP Config */
 .hitpoint-config input[type="text"]{
 	width:40px;
 	text-align:center;
@@ -3503,6 +3569,8 @@ input[type="text"].dice-count{
 		flex:5em 0 10;
 	}
 }
+
+/* Source Config */
 .dnd4e:is(.standard-form,.default).source-config .window-content{
 	gap:1em;
 	
