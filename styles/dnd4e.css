@@ -3434,7 +3434,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
       align-items:flex-end;
     }
     & .table-holder{
-      height:100%;
+      height:calc(100% - 4.2em);
       overflow-y:auto;
       & table{
         overflow:clip;
