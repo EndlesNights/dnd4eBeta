@@ -18,7 +18,8 @@ export default class CustomSkillConfig extends foundry.applications.api.Handleba
 		},
 		position: {
 			width: 480,
-			height: "auto",
+      //Must set an explicit height to make sure table scrolling works. User can still resize window without issue.
+			height: 480, 
 		},
 		tag: "form",
 		form: {
