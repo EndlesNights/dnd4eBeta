@@ -326,8 +326,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.damageTypeOptions = { ...CONFIG.DND4E.damageTypes };
 			delete context.damageTypeOptions.damage;
 			delete context.damageTypeOptions.ongoing;
-      context.equippable = ['trinket','wondrous','other'].includes(itemData.system.consumableType);
-			context.hasEnhance = ['ammo'].includes(itemData.system.consumableType);
+			context.equippable = ["trinket", "wondrous", "other"].includes(itemData.system.consumableType);
+			context.hasEnhance = ["ammo"].includes(itemData.system.consumableType);
 		}
 
 		if (itemData.type === "equipment") {
@@ -394,7 +394,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.itemData = context.itemData.toSorted((a, b) => (a.sort || 0) - (b.sort || 0));
 		}
 
-		if (itemData.system?.rangeType && itemData.system?.consumableType != 'ammo') {
+		if (itemData.system?.rangeType && (itemData.system?.consumableType != "ammo")) {
 			if (!["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
 			if (["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
 			if (["none", "enemies"].includes(itemData.system.autoTarget.mode)) itemData.system.excludeUserFromTargeting = true;
@@ -656,8 +656,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.item, keyPath: "system.source" }));
 	}
-  
-
 
 	async shareItem() {
 		let changeBack = false;
@@ -774,7 +772,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
 		if ((consume.type === "attribute") || (consume.type === "resource") || (consume.type === "currency") || (consume.type === "ritualcomp")) {
 			
-		/* Removed the logic to use token bar attributes in v13, as this was no longer returning the full set of attributes. Instead using the actor model for all cases. - Fox
+			/* Removed the logic to use token bar attributes in v13, as this was no longer returning the full set of attributes. Instead using the actor model for all cases. - Fox
 		if (actor) {
 			const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
 			attributes.bar.forEach(a => a.push("value"));
@@ -859,7 +857,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// Ammunition
 		else if (consume.type === "ammo") {
-			return { "": _loc("DND4E.None"), "auto": _loc("DND4EUI.Auto"), ...actor.itemTypes.consumable.reduce((ammo, i) => {
+			return { "": _loc("DND4E.None"), auto: _loc("DND4EUI.Auto"), ...actor.itemTypes.consumable.reduce((ammo, i) => {
 				if (i.system.consumableType === "ammo") {
 					ammo[i.id] = `${i.name} (${i.system.quantity})`;
 				}
@@ -1047,12 +1045,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			if (labels.category) props.push(`<li class="category">${labels.category}</li>`);
 		}
     
-		else if (item.type === "consumable"){
+		else if (item.type === "consumable") {
 			if (labels.enh) props.push(`<li class="enhancement">${labels.enh}</li>`);
-    }
+		}
 		
 		// Action type
-		if ((item.type !== "power") && item.system?.actionType && item.system?.consumableType != 'ammo') {
+		if ((item.type !== "power") && item.system?.actionType && (item.system?.consumableType != "ammo")) {
 			if (item.system.actionType) {
 				const actionTypeLabel = CONFIG.DND4E.itemActionTypes[item.system.actionType] ?? CONFIG.DND4E.abilityActivationTypes[item.system.actionType]?.label;
 				props.push(`<li class="action ${item.system.actionType}">${actionTypeLabel ?? item.system.actionType}</li>`);
@@ -1171,20 +1169,20 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
-	static async #onExecuteMacro(event, target){
+	static async #onExecuteMacro(event, target) {
 		await this.submit({ preventClose: true });
-    const macroIndex = event.target.getAttribute("data-macro-index");
-		return macros.executeMacro(this.document,this.document.system.macros[macroIndex]);
+		const macroIndex = event.target.getAttribute("data-macro-index");
+		return macros.executeMacro(this.document, this.document.system.macros[macroIndex]);
 	}
 	
 	/* -------------------------------------------- */
 
 	/**
 	 * Add or remove a damage part from the damage formula
+	 * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
 	 * @param {HTMLElement} target	The target of the event
 	 * @returns {Promise}
-	 * @this {ItemSheet4e}
 	 */
 	static async #onDamageControl(event, target) {
 		const action = target.dataset.action;
@@ -1301,10 +1299,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/**
 	 * Add or remove a damage part from the damage formula
+     * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
 	 * @param {HTMLElement} target	The target of the event
 	 * @returns {Promise}
-	 * @this {ItemSheet4e}
 	 */
 	static async #onOneTextControl(event, target) {
 		const action = target.dataset.action;
@@ -1561,10 +1559,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/**
 	 * Add or remove a macro
+	 * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
 	 * @param {HTMLElement} target	The target of the event
 	 * @returns {Promise}
-	 * @this {ItemSheet4e}
 	 */
 	static async #onMacroControl(event, target) {
 		const action = target.dataset.action;
@@ -1573,30 +1571,30 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			await this.submit(event); // Submit any unsaved changes
 			const macros = this.item.system.macros;
 			return this.item.update({ "system.macros": macros.concat([{
-        "type": "script",
-        "scope": "global",
-        "launchOrder": "off",
-        "command": "",
-        "author": "",
-        "autoanimationHook": "",
-        "enabled": true
-      }])});
+				type: "script",
+				scope: "global",
+				launchOrder: "off",
+				command: "",
+				author: "",
+				autoanimationHook: "",
+				enabled: true,
+			}]) });
 		}
 
 		// Remove a damage component
 		if (action === "deleteMacro") {
 			await this.submit(event); // Submit any unsaved changes
 			const macro = target.closest(".macro");
-      const index = macro.getAttribute("data-macro-number");
-      const macros = foundry.utils.duplicate(this.item.system.macros);
+			const index = macro.getAttribute("data-macro-number");
+			const macros = foundry.utils.duplicate(this.item.system.macros);
 			macros.splice(macro.getAttribute("data-macro-number"), 1);
 			return this.item.update({ "system.macros": macros });
 		}
     
 		// Expand macro text
 		if (action === "expandMacro") {
-      target.parentElement.classList.toggle("collapsed");
-    }
+			target.parentElement.classList.toggle("collapsed");
+		}
 	
 	}
 
