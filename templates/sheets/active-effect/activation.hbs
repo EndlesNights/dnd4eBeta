@@ -1,4 +1,4 @@
-<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+<section class="tab scrollable{{#if tab.active}} active{{/if}} activation" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
   {{#if powerParent}}
   <div class="form-group">
@@ -82,7 +82,7 @@
   {{formGroup fields.disabled value=source.disabled rootId=rootId}}
 
   {{#if isActorEffect}}
-  {{formGroup fields.origin value=source.origin rootId=rootId disabled=true}}
+  {{formGroup fields.origin value=source.origin rootId=rootId disabled=true classes="origin"}}
   {{else if isItemEffect}}
   <div class="form-group">
     <label>{{localize 'DND4E.EffectWhenEquipped'}}?</label>
@@ -90,7 +90,7 @@
       <input type="checkbox" name="system.equippedRec" data-dtype="Boolean" {{checked document.system.equippedRec}}>
     </div>
   </div>
-  {{formGroup fields.transfer value=source.transfer rootId=rootId}}
+  {{formGroup fields.transfer value=source.transfer rootId=rootId classes="transfer"}}
   {{#unless source.transfer}}
   <div class="form-group">
     <label>{{localize 'DND4E.SourceActorData'}}?</label>
