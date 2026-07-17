@@ -324,64 +324,6 @@ Hooks.on("renderChatPopout", (app, html, data) => {
 	helpers.chat.chatMessageListener(html);
 });
 
-Hooks.on("renderTokenHUD", (app, html, data) => {
-	// inject element and script for displaying name of status effect when mousing over
-	const messageTemplate = document.createElement("template");
-	messageTemplate.innerHTML = `
-		<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
-
-		<script>
-		$(".effect-control ").hover(
-			function(eventObj) {
-				document.getElementById("displayStatLine").innerHTML = eventObj.target.getAttribute('data-tooltip');
-				document.getElementById("displayStatLine").classList.add("active");
-			},
-			function(eventObj) {
-				document.getElementById("displayStatLine").innerHTML = '';
-				document.getElementById("displayStatLine").classList.remove("active");
-			}
-		);
-		</script>
-		`;
-	const messageElement = messageTemplate.content.children[0];
-
-	html.querySelectorAll(".effect-control").forEach(el => {
-		el.addEventListener("mouseenter", (eventObj) => {
-			messageElement.innerHTML = eventObj.target.getAttribute("data-tooltip-text");
-			messageElement.classList.add("active");
-		});
-		el.addEventListener("mouseleave", (eventObj) => {
-			messageElement.innerHTML = "";
-			messageElement.classList.remove("active");
-		});
-	});
-	[...html.querySelectorAll(".effect-control")].at(-1).after(messageElement);
-});
-
-Hooks.on("getSceneControlButtons", function(controls) {
-	//sets what the default activeTool is
-	const templates = controls.templates;
-	templates.activeTool = "burst";
-
-	//create additional buttons in measure templates for Burst and Blast
-	const tools = templates.tools;
-	for (const key in tools) {
-		tools[key].order += 2;
-	}
-	tools.burst = {
-		name: "burst",
-		order: 1,
-		title: "Area Burst (Square from Center)",
-		icon: "dnd4e-burst-svg",
-	};
-	tools.blast = {
-		name: "blast",
-		order: 2,
-		title: "Area Blast (Square from corner)",
-		icon: "dnd4e-blast-svg",
-	};
-});
-
 Hooks.on("renderCombatTracker", (app, html, context) => {
 	// Mask initaitive tiebreaker digits in combat tracker
 	if (!app?.viewed) return; // Skip entirely if there's no currently viewed combat
