@@ -578,7 +578,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	}
 
 	// Convert the roll to a chat message and return the roll
-	messageMode = form ? form.messageMode.value : messageMode;
+	messageMode = form?.messageMode ? form.messageMode.value : messageMode;
 
 	await roll.toMessage({
 		speaker: speaker,

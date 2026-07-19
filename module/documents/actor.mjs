@@ -1862,7 +1862,7 @@ export default class Actor4e extends Actor {
 			speaker: ChatMessage.getSpeaker({ actor: this }),
 			messageData: { "options.flags.dnd4e.roll": { type: "save", actorId: this.id } },
 			fastForward: true,
-			messageMode: options.messageMode,
+			messageMode: options.messageMode ?? "public",
 			options,
 		});
 		rollConfig.event = event;
