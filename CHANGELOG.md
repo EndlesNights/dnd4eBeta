@@ -5,7 +5,7 @@
 * __Custom Status Conditions:__ You can now customise status conditions in the system settings! (SagaTympana + Fox)
   * You cannot _remove_ existing system conditions, as the system increasingly relies on them for automation. However, you can override them (to provide your own icon/label/description) by using the same ID as the the system default.
   * Because of this, conditions not actually part of the system definition (e.g. drunk, disarmed, ammo count etc.) have been removed from the default set. For those who find them useful, we have included a button to restore them by importing them into your custom configuration.
-* Added a new compendium of Active Effects, intended to provide drag-and-drop application of system status conditions with modifiers.
+* Added a new compendium of Active Effects, intended to provide drag-and-drop application of system status conditions, with modifiers where appropriate.
 * Manual input bonus arrays can now accept formulae and variables in their values (SagaTympana)
 * Made status conditions available in actor rollData (SagaTympana)
   * Statuses are stored under @statuses and are referenced via the status id, e.g.: `@statuses.slowed`, `@statuses.dazed` etc.
