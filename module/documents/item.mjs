@@ -4,7 +4,7 @@ import * as utils from "../utils/utils.mjs";
 import * as macros from "../helpers/macros.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
 import Roll4e from "../rolls/roll.mjs";
-import SourceField from "../data/item/fields/source-field.mjs";
+import SourceField from "../data/fields/source-field.mjs";
 
 /**
  * @import Actor4e from "../documents/actor.mjs";
@@ -157,7 +157,7 @@ export default class Item4e extends Item {
 				break;
 		}
 		if (updates) {
-			utils.debugLog(updates);
+			//utils.debugLog(updates);
 			return this.updateSource(updates);
 		} 
 	}
@@ -2289,9 +2289,9 @@ export default class Item4e extends Item {
 	
 		// Ammunition Damage from weapon
 		if (weaponUse) {
-			console.debug(weaponUse?._ammo);
+			//console.debug(weaponUse?._ammo);
 			if (weaponAmmo) {
-				console.debug(weaponAmmo);
+				//console.debug(weaponAmmo);
 				if (weaponAmmo.system?.damage.parts.length > 0) {
 					parts.push("@ammo");
 					rollData["ammo"] = weaponAmmo.system.damage.parts.map(p => p.formula).join("+");

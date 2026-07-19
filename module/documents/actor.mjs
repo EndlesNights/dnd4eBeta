@@ -3,6 +3,7 @@ import { DND4E } from "../config.mjs";
 import * as utils from "../utils/utils.mjs";
 import SaveThrowDialog from "../applications/apps/save-throw.mjs";
 import Roll4e from "../rolls/roll.mjs";
+import SourceField from "../data/fields/source-field.mjs";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -311,7 +312,9 @@ export default class Actor4e extends Actor {
 			system.encumbrance = this._computeEncumbrance(actorData.system);
 			this._prepareDerivedDataDeathThrow(actorData, system);
 			this._prepareDerivedDataMagicItemUse(actorData, system);
-		}
+		} else {
+      SourceField.prepareData.call(this.system.source);
+    }
 		
 		if (isCombatant) {
 			//console.debug('Combatant');
