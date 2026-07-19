@@ -1,10 +1,16 @@
 import { BonusField, Dnd4eBonusesField } from "./fields/_module.mjs";
 import MappingField from "../fields/mapping-field.mjs";
+import SourceField from "../fields/source-field.mjs";
+import IdentifierField from "../fields/identifier-field.mjs";
 import { AttributesField, CombatantTemplate, CreatureTemplate, DetailsField, SpeedTemplate, WealthTemplate } from "./templates/_module.mjs";
 
-const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
+const { BooleanField, DocumentUUIDField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class NPCData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @inheritDoc */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+  
 	/** @inheritDoc */
 	static defineSchema() {
 		const { details: creatureDetails, ...creatureSchema } = CreatureTemplate.defineSchema();
@@ -24,8 +30,6 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 					secondary: new StringField({ initial: "standard" }),
 					leader: new BooleanField({ initial: false }),
 				}),
-				source: new StringField({ initial: "" }),
-				controller: new StringField({ initial: "" }),
 			}),
 			advancedCals: new BooleanField({ initial: false }),
 			attributes: new SchemaField({
@@ -47,6 +51,11 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 				initialValue: CombatantTemplate._initialDefencesValue,
 				label: "DND4E.Defences",
 			}),
+			controller: new DocumentUUIDField({
+				type: "Actor",
+			}),
+			identifier: new IdentifierField({ required: true, label: "DND4E.Identifier" }),
+			source: new SourceField(),
 		};
 	}
 
@@ -55,7 +64,7 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
 
 	/** @inheritdoc */
-	static migrateData(source) {
+	static migrateData(source) {    
 		const needsACMigration = typeof source.defences?.ac?.light === "boolean";
     
 		if (!source.senses?.special?.value && !needsACMigration) return super.migrateData(source);
@@ -64,13 +73,18 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 		delete source.senses?.special?.value;
 		if (!oldSenses.length && !needsACMigration) return super.migrateData(source);
 
-		const flattenedSource = foundry.utils.flattenObject(source);
+		const flattenedSource = foundry.utils.flattenObject(source);    
+
 		delete flattenedSource["senses.special.value"];    
 		for (const sense of oldSenses) {
 			flattenedSource[`senses.special.${sense[0]}`] = { value: true, range: sense[1] };
 		}
 
 		if (needsACMigration) flattenedSource["defences.ac.light"] = "auto";
+    
+		if (("source" in source) && (foundry.utils.getType(source.source) !== "Object")) {
+			flattenedSource.source = { custom: source.source };
+		}
 
 		return super.migrateData(foundry.utils.expandObject(flattenedSource));
 	}

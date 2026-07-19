@@ -7,13 +7,16 @@
   <div class="npc-details flexrow">
     {{#if (eq system.details.role.secondary 'companion')}}
     <div class="npc-controller flexrow">
-      <label>{{localize 'DND4E.ControllingActor'}}:</label>
-      <input name="system.details.controller" type="text" value="{{system.details.controller}}" placeholder="{{localize 'DND4E.ControllingActor'}}" data-tooltip="{{localize 'DND4E.ControllingActor'}}">
+      {{formGroup systemFields.controller value=system.controller classes="controller flexrow" localize=true label="DND4EUI.Handler"}}
     </div>
     {{/if}}
-    <div class="npc-source flexrow">
-      <label>{{localize 'DND4E.Source'}}:</label>
-      <input name="system.details.source" type="text" value="{{system.details.source}}" data-tooltip="{{localize 'DND4E.Source'}}" placeholder="{{localize 'DND4E.Source'}}">
+    <div class="npc-source flexrow">    
+      <div class="source">
+        <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong> 
+        <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
+        {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}} <i class="icon fa-solid fa-cog"></i>
+        </button>
+      </div>
     </div>
   </div>
   {{/if}}

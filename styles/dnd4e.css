@@ -300,6 +300,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		}
 	}
   document-tags{
+    display:flex;
     flex-direction:row;
     justify-content:stretch;
     .input-element-tags{
@@ -2413,7 +2414,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		}
 		.tab.biography,.tab.description{
 			& prose-mirror[name='system.biography']{
-				height:calc(100% - 2em);
+				height:calc(100% - 2.3em);
 			}
 			& .desc-main{
 				height:calc(100% - 2.3em);
@@ -2421,23 +2422,41 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			& .npc-details{
 				height:2em;
 				justify-content:space-between;
-				align-items:center;
-				
+				align-items:stretch;
+        margin-top:0.2em;
+        gap:1em;
+        >*{
+          flex:50% 10 10;
+        }				
 				& label,input[type="text"]{
-					flex-basis:fit-content;
+					min-width:fit-content;
 					flex-grow:0;
-					padding:0 1em;
 				}
 				& label{
 					font-weight:bold;
+          padding-right:0.5em;
 				}
 				& .npc-source{
 					justify-content:flex-end;
 					align-items:center;
+          flex:fit-content 0 0;
+          font-size:1em;
+          & button{
+            text-transform:uppercase;
+            border:unset;
+            background:unset;
+            display:inline;
+            width:fit-content;
+            padding:1px;
+          }
 				}
 				& .npc-controller{
 					justify-content:flex-start;
 					align-items:center;
+          padding-left:0.2em;
+          document-tags .input-group{
+            max-width:14em;
+          }
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-import { formatIdentifier } from "../../../utils/utils.mjs";
+import { formatIdentifier } from "../../utils/utils.mjs";
 
 const { NumberField, SchemaField, StringField } = foundry.data.fields;
 

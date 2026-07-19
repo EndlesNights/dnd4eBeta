@@ -1,4 +1,5 @@
 import ActorSheet4e from "./actor-sheet.mjs";
+import SourceConfig from "../apps/source-config.mjs";
 
 export default class ActorSheet4eHazard extends ActorSheet4e {
 
@@ -8,6 +9,9 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 			width: 510,
 			height: 680,
 		},
+		actions: {
+			configureSource: ActorSheet4eHazard.#onConfigureSource,
+    }
 	};
 
 	static PARTS = {
@@ -64,7 +68,38 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 			relativeTo: this.actor,
 		});
 		
+		hazardData.sourceLabel = this.document.system.source.label;
+    
 		let combinedData = { ...context, ...hazardData };		
 		return combinedData;
+	}
+  
+	/* -------------------------------------------- */
+
+	/**
+   * Handle opening a configuration application.
+   * @this {ItemSheet4e}
+   * @param {Event} event         Triggering click event.
+   * @param {HTMLElement} target  Button that was clicked.
+   * @returns {any}
+   */
+	static #onConfigureSource(event, target) {
+		return this._renderChild(new SourceConfig({ document: this.actor, keyPath: "system.source" }));
+	}
+  
+	/* -------------------------------------------- */
+
+	/**
+     * Render an application in the same workspace as this one.
+     * @param {ApplicationV2} app        The application to render.
+     * @param {RenderOptions} [options]  Options passed to render.
+     * @returns {Promise<ApplicationV2>}
+     */
+	_renderChild(app, options = {}) {
+		if (this.parent) return this.parent.renderChild(app, options);
+		if (this.window?.windowId) return app.render({
+			force: true, window: { detached: true, windowId: this.window.windowId }, ...options,
+		});
+		return app.render({ force: true, ...options });
 	}
 }
