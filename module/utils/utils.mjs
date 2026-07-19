@@ -1060,7 +1060,7 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 				}
 
 				if (e.statuses[0] && game.settings.get("dnd4e", "markAutomation")) {
-					const hasMark = e.statuses.has("mark");
+					const hasMark = e.statuses.some(s => s === "mark");
 						
 					if (hasMark) {
 						// If the effect already has `system.marker` assume it's for a reason
