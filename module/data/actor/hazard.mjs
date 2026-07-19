@@ -1,10 +1,16 @@
 import { BonusField, Dnd4eBonusesField } from "./fields/_module.mjs";
 import MappingField from "../fields/mapping-field.mjs";
+import SourceField from "../fields/source-field.mjs";
+import IdentifierField from "../fields/identifier-field.mjs";
 import { AttributesField, CombatantTemplate, DetailsField, SpeedTemplate } from "./templates/_module.mjs";
 
-const { BooleanField, HTMLField, NumberField, StringField, SchemaField } = foundry.data.fields;
+const { BooleanField, DocumentUUIDField, HTMLField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class HazardData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @inheritDoc */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+  
 	/** @inheritDoc */
 	static defineSchema() {
 		const numberConfig = { required: true, nullable: false, integer: true };
@@ -25,7 +31,6 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
 					secondary: new StringField({ initial: "standard" }),
 					tertiary: new StringField({ initial: "lurker" }),
 				}),
-				source: new StringField({ initial: "" }),
 				size: new StringField({ initial: "med" }),
 				bloodied: new NumberField({ initial: 0 }),
 				notes: new StringField({ initial: "" }),
@@ -63,6 +68,11 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
 				initialValue: CombatantTemplate._initialDefencesValue,
 				label: "DND4E.Defences",
 			}),
+			controller: new DocumentUUIDField({
+				type: "Actor",
+			}),
+			identifier: new IdentifierField({ required: true, label: "DND4E.Identifier" }),
+			source: new SourceField(),
 		};
 	}
 
@@ -72,6 +82,10 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
 
 	/** @inheritdoc */
 	static migrateData(source) {
+		if (("source" in source) && (foundry.utils.getType(source.source) !== "Object")) {
+			source.source = { custom: source.source };
+		}
+    
 		if (typeof source.defences?.ac?.light === "boolean") source.defences.ac.light = "auto";
 		return super.migrateData(source);
 	}
