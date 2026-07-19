@@ -9,9 +9,8 @@
     <div class="npc-controller flexrow">
       {{formGroup systemFields.controller value=system.controller classes="controller flexrow" localize=true label="DND4EUI.Handler"}}
     </div>
-    {{/if}}{{log "FART"}}{{log this}}{{log sourceLabel}}
-    <div class="npc-source flexrow">
-    
+    {{/if}}
+    <div class="npc-source flexrow">    
       <div class="source">
         <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong> 
         <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
