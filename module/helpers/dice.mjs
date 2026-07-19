@@ -68,7 +68,7 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 		targDataArray.hasTarget = !!targetArr.length;
 		if (game.settings.get("dnd4e", "markAutomation") && actor.system?.marker) {
 			targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
-			userBonuses.marked.shouldApply = true;
+			userBonuses.marked.shouldApply = targDataArray.ignoringMark;
 		}
 		// User conditions
 		if (userStatus.has("prone")) userBonuses.prone.shouldApply = true;
