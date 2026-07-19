@@ -26,18 +26,19 @@
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
-    "invisible"
+    "invisible",
+    "concealedFull"
   ],
   "showIcon": 1,
   "folder": "taBy8HUxznsopE42",
   "sort": 500000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053682089,
-    "modifiedTime": 1784053923517,
+    "modifiedTime": 1784446451488,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

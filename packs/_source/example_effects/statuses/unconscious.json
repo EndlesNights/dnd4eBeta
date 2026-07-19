@@ -4,7 +4,15 @@
   "img": "systems/dnd4e/icons/statusEffects/unconscious.svg",
   "type": "base",
   "system": {
-    "changes": [],
+    "changes": [
+      {
+        "key": "system.modifiers.defences.untyped",
+        "type": "add",
+        "value": -5,
+        "phase": "initial",
+        "priority": null
+      }
+    ],
     "durationType": "",
     "powerEffectType": "misc",
     "dots": [],
@@ -33,11 +41,11 @@
   "sort": 100098,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053878668,
-    "modifiedTime": 1784053933900,
+    "modifiedTime": 1784448301598,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

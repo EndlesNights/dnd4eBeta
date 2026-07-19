@@ -4,7 +4,78 @@
   "img": "systems/dnd4e/icons/statusEffects/petrified.svg",
   "type": "base",
   "system": {
-    "changes": [],
+    "changes": [
+      {
+        "key": "system.resistances.damage.res",
+        "type": "upgrade",
+        "value": 20,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.defences.untyped",
+        "type": "add",
+        "value": -5,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.walk.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.run.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.swim.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.shift.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.fly.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.climb.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.charge.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.movement.burrow.absolute",
+        "type": "override",
+        "value": 0,
+        "phase": "initial",
+        "priority": null
+      }
+    ],
     "durationType": "",
     "powerEffectType": "misc",
     "dots": [],
@@ -26,18 +97,19 @@
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
-    "petrified"
+    "petrified",
+    "unconscious"
   ],
   "showIcon": 1,
   "folder": "taBy8HUxznsopE42",
   "sort": 200000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053718245,
-    "modifiedTime": 1784053923517,
+    "modifiedTime": 1784447377095,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
