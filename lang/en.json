@@ -1802,6 +1802,8 @@
 	"EffectHTMLInput": "Use Rich Text Editor?",
 	"EffectHTMLTip": "Good for complex effects",
 	"GroupBy": "Group By",
+  "Handler": "Handler",
+  "HandlerHint": "For companions, summons, and other creatures controlled by another character, this is the controlling character.",
 	"HitDetails": "Hit Details",
 	"HitDetailsText": "Hit Text",
 	"HitEffects": "Hit Effects",
