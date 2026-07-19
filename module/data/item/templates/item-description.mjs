@@ -1,5 +1,5 @@
 import IdentifierField from "../../fields/identifier-field.mjs";
-import SourceField from "../fields/source-field.mjs";
+import SourceField from "../../fields/source-field.mjs";
 const { NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class ItemDescriptionTemplate extends foundry.abstract.DataModel {
