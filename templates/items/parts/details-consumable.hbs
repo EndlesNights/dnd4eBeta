@@ -27,294 +27,294 @@
 
 {{#if (eq system.consumableType 'ammo')}}{{!-- Ammo needs special fields --}}
 
-  {{!-- Enhancement --}}
-  <div class="form-group">    
-    <label data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}">{{ localize 'DND4E.BonusTypeEnhancement' }}:</label>
-    <div class="form-fields">
-      <input type="text" name="system.enhance" value="{{system.enhance}}" data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}" placeholder="0" data-dtype="String" onClick="this.select();">
-    </div>
+{{!-- Enhancement --}}
+<div class="form-group">    
+  <label data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}">{{ localize 'DND4E.BonusTypeEnhancement' }}:</label>
+  <div class="form-fields">
+    <input type="text" name="system.enhance" value="{{system.enhance}}" data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}" placeholder="0" data-dtype="String" onClick="this.select();">
   </div>
+</div>
 
 {{else}}
 
-  <h3 class="form-header">{{ localize "DND4E.ItemConsumableUsage" }}</h3>
+<h3 class="form-header">{{ localize "DND4E.ItemConsumableUsage" }}</h3>
 
-  {{!-- Action Type --}}
-  <div class="form-group select">
-    <label>{{ localize "DND4E.ItemActionType" }}</label>
-    <select name="system.actionType">
-      {{selectOptions config.abilityActivationTypes selected=system.actionType labelAttr="label"}}
-    </select>
-  </div>
+{{!-- Action Type --}}
+<div class="form-group select">
+  <label>{{ localize "DND4E.ItemActionType" }}</label>
+  <select name="system.actionType">
+    {{selectOptions config.abilityActivationTypes selected=system.actionType labelAttr="label"}}
+  </select>
+</div>
     
-  <div class="form-group range">
-    <label>{{ localize "DND4E.Range" }}</label>
-    <div class="form-fields item-range">
-      <select name="system.rangeType">
-        {{selectOptions config.rangeTypeNoWeapon selected=system.rangeType labelAttr="label"}}
-      </select>
-      {{#if system.isArea}}
-      <span>{{ localize "DND4E.AreaOf" }}</span>
-      <input type="text" name="system.area" value="{{system.area}}">
-      {{/if}}					
+<div class="form-group range">
+  <label>{{ localize "DND4E.Range" }}</label>
+  <div class="form-fields item-range">
+    <select name="system.rangeType">
+      {{selectOptions config.rangeTypeNoWeapon selected=system.rangeType labelAttr="label"}}
+    </select>
+    {{#if system.isArea}}
+    <span>{{ localize "DND4E.AreaOf" }}</span>
+    <input type="text" name="system.area" value="{{system.area}}">
+    {{/if}}					
         
-      {{#if system.isRange}}
-      {{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
+    {{#if system.isRange}}
+    {{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
+        
+    {{#unless system.isArea}}
+    <div class="form-fields">
+      {{/unless}}
+        
+      <input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="String">
         
       {{#unless system.isArea}}
-      <div class="form-fields">
-        {{/unless}}
-        
-        <input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="String">
-        
-        {{#unless system.isArea}}
-        <input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="String">
-        {{#if (eq system.rangeType 'range')}}
-        <span class="sep">/</span>
-        <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();">
-        {{/if}}
-        {{/unless}}
-        
-        {{#unless system.isArea}}
-      </div>
-      {{/unless}}					
+      <input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="String">
+      {{#if (eq system.rangeType 'range')}}
+      <span class="sep">/</span>
+      <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();">
       {{/if}}
-        
-    </div>
-  </div>
-
-  {{#if system.isArea}}
-  <div class="form-group short">
-    <label>{{ localize "DND4E.AutoTarget" }}</label>
-    <div class="form-fields auto-target">
-      <select name="system.autoTarget.mode">
-        {{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
-      </select>
-      {{#unless system.excludeUserFromTargeting}}
-      <label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
-      <span class="checkbox">
-        <input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}>
-      </span>
       {{/unless}}
+        
+      {{#unless system.isArea}}
     </div>
+    {{/unless}}					
+    {{/if}}
+        
   </div>
-  {{/if}}
-    
-  {{!-- Limited Uses --}}
-  <div class="vertical">
-    <div class="form-group uses-per">
-      <label>{{ localize "DND4E.LimitedUses" }}</label>
-      <div class="form-fields">
-        <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number">
-        <span class="sep"> {{ localize "DND4E.of" }} </span>
-        <input type="text" name="system.uses.max" value="{{system.uses.max}}">
-        <select name="system.uses.per">
-          {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
-        </select>
-      </div>
-    </div>
-      
-    <div class="form-group right">
-      <label class="checkbox">
-        <input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}>
-        {{ localize "DND4E.ItemDestroyEmpty" }}
-      </label>
-    </div>
-  </div>
-    
-  {{!-- Consumption --}}
-  <div class="form-group uses-per">
-    <label>{{ localize "DND4E.ConsumeTitle" }}</label>
-    <div class="form-fields consumption">
-      <select class="consume-type" name="system.consume.type">
-        {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
-      </select>
-      {{#if system.consume.type}}
-      <select name="system.consume.target">
-        {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
-      </select>
-      <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number">
-      {{/if}}
-    </div>
-  </div>
+</div>
 
-  {{#if system.activation.type}}
-  <div class="form-group">
+{{#if system.isArea}}
+<div class="form-group short">
+  <label>{{ localize "DND4E.AutoTarget" }}</label>
+  <div class="form-fields auto-target">
+    <select name="system.autoTarget.mode">
+      {{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
+    </select>
+    {{#unless system.excludeUserFromTargeting}}
+    <label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
+    <span class="checkbox">
+      <input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}>
+    </span>
+    {{/unless}}
+  </div>
+</div>
+{{/if}}
+    
+{{!-- Limited Uses --}}
+<div class="vertical">
+  <div class="form-group uses-per">
+    <label>{{ localize "DND4E.LimitedUses" }}</label>
+    <div class="form-fields">
+      <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number">
+      <span class="sep"> {{ localize "DND4E.of" }} </span>
+      <input type="text" name="system.uses.max" value="{{system.uses.max}}">
+      <select name="system.uses.per">
+        {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
+      </select>
+    </div>
+  </div>
+      
+  <div class="form-group right">
     <label class="checkbox">
       <input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}>
       {{ localize "DND4E.ItemDestroyEmpty" }}
     </label>
   </div>
-  {{/if}}
+</div>
+    
+{{!-- Consumption --}}
+<div class="form-group uses-per">
+  <label>{{ localize "DND4E.ConsumeTitle" }}</label>
+  <div class="form-fields consumption">
+    <select class="consume-type" name="system.consume.type">
+      {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
+    </select>
+    {{#if system.consume.type}}
+    <select name="system.consume.target">
+      {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
+    </select>
+    <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number">
+    {{/if}}
+  </div>
+</div>
+
+{{#if system.activation.type}}
+<div class="form-group">
+  <label class="checkbox">
+    <input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}>
+    {{ localize "DND4E.ItemDestroyEmpty" }}
+  </label>
+</div>
+{{/if}}
 {{/if}}
     
-  {{!-- Other Formula --}}
-  <div class="form-group">
-    <label>{{ localize "DND4E.OtherFormula" }}</label>
-    <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.Formula' }}">
-  </div>
+{{!-- Other Formula --}}
+<div class="form-group">
+  <label>{{ localize "DND4E.OtherFormula" }}</label>
+  <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.Formula' }}">
+</div>
 
 {{#unless (eq system.consumableType 'ammo')}}
 
-  {{!------------ ATTACK ------------}}
+{{!------------ ATTACK ------------}}
 
-  {{!-- Attack Details--}}
-  <h3 class="form-header checkbox flexrow">
-    {{ localize "DND4E.Attack" }}
-    <input type="checkbox" name="system.attack.isAttack" data-dtype="Boolean" {{checked system.attack.isAttack}} data-tooltip="{{ localize 'DND4E.IsAttack' }}">
-  </h3>
+{{!-- Attack Details--}}
+<h3 class="form-header checkbox flexrow">
+  {{ localize "DND4E.Attack" }}
+  <input type="checkbox" name="system.attack.isAttack" data-dtype="Boolean" {{checked system.attack.isAttack}} data-tooltip="{{ localize 'DND4E.IsAttack' }}">
+</h3>
     
-  {{#if system.attack.isAttack}}
+{{#if system.attack.isAttack}}
     
-  {{!-- Attack--}}
-  <div class="form-group attack">
-    <label>{{ localize "DND4E.FormulaAttack" }}</label>
-    <div class="form-fields">
-      <input type="text" name="system.attack.formula" value="{{system.attack.formula}}" placeholder="5 + @dexMod">
-      {{ localize "DND4E.VS" }}
-      <select class="tight" name="system.attack.def">
-        {{selectOptions config.defensives selected=system.attack.def labelAttr="abbreviation"}}
-      </select>
-    </div>
+{{!-- Attack--}}
+<div class="form-group attack">
+  <label>{{ localize "DND4E.FormulaAttack" }}</label>
+  <div class="form-fields">
+    <input type="text" name="system.attack.formula" value="{{system.attack.formula}}" placeholder="5 + @dexMod">
+    {{ localize "DND4E.VS" }}
+    <select class="tight" name="system.attack.def">
+      {{selectOptions config.defensives selected=system.attack.def labelAttr="abbreviation"}}
+    </select>
   </div>
+</div>
 
-  {{/if}}
+{{/if}}
   
 {{/unless}}
 
-  <h3 class="form-header checkbox flexrow">
-    {{ localize "DND4E.Damage" }}
-    <input type="checkbox" name="system.hit.isDamage" data-dtype="Boolean" {{#if (eq system.consumableType 'ammo')}}checked="true" disabled{{else}}{{checked system.hit.isDamage}}{{/if}} data-tooltip="{{ localize 'DND4E.IsDamage' }}">
-  </h3>
+<h3 class="form-header checkbox flexrow">
+  {{ localize "DND4E.Damage" }}
+  <input type="checkbox" name="system.hit.isDamage" data-dtype="Boolean" {{#if (eq system.consumableType 'ammo')}}checked="true" disabled{{else}}{{checked system.hit.isDamage}}{{/if}} data-tooltip="{{ localize 'DND4E.IsDamage' }}">
+</h3>
   
-  {{#if system.hit.isDamage}}
+{{#if system.hit.isDamage}}
     
-  {{!-- Hit Details --}}
-  {{!-- Damage --}}
-  {{#unless (eq system.consumableType 'ammo')}}
-    <div class="form-group">
-      <label>{{ localize 'DND4E.FormulaDamage' }}</label>
-      <input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
-    </div>
+{{!-- Hit Details --}}
+{{!-- Damage --}}
+{{#unless (eq system.consumableType 'ammo')}}
+<div class="form-group">
+  <label>{{ localize 'DND4E.FormulaDamage' }}</label>
+  <input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
+</div>
 
-    {{!-- Damage Type --}}
-    <fieldset class="form-group stacked columns-4">
-      <legend>{{ localize 'DND4E.Damage' }} {{ localize 'DND4E.Type' }}</legend>
-      {{#each config.damageTypes as |name type|}}
-      <label class="checkbox">
-        <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/>
-        {{ name }}
-      </label>
-      {{/each}}
-    </fieldset>
-  {{/unless}}
-  <fieldset>
-    <legend>{{ localize 'DND4EUI.SecondaryDamageForm' }}</legend>
-    <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryDamageTip' }}
-      <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a>
-    </label>
-    <ol class="damage-parts form-group">
-      {{#each system.damage.parts as |part i| }}
-      <li class="damage-part flexrow" data-damage-part="{{i}}">
-        <input type="text" name="system.damage.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
-        <multi-select name="system.damage.parts.{{i}}.type" class="inline">
-          {{selectOptions ../damageTypeOptions selected=part.type}}			
-        </multi-select>
-        <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
-      </li>
-      {{/each}}
-    </ol>
-  </fieldset>
+{{!-- Damage Type --}}
+<fieldset class="form-group stacked columns-4">
+  <legend>{{ localize 'DND4E.Damage' }} {{ localize 'DND4E.Type' }}</legend>
+  {{#each config.damageTypes as |name type|}}
+  <label class="checkbox">
+    <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/>
+    {{ name }}
+  </label>
+  {{/each}}
+</fieldset>
+{{/unless}}
+<fieldset>
+  <legend>{{ localize 'DND4EUI.SecondaryDamageForm' }}</legend>
+  <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryDamageTip' }}
+    <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a>
+  </label>
+  <ol class="damage-parts form-group">
+    {{#each system.damage.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damage.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
+      <multi-select name="system.damage.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}			
+      </multi-select>
+      <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+</fieldset>
 
-  {{!-- Crit Damage --}}
-  {{#unless (eq system.consumableType 'ammo')}}
-  <div class="form-group ">
-    <label>{{ localize 'DND4E.Critical' }} {{ localize 'DND4E.FormulaDamage' }}</label>
-    <input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="{{ localize 'DND4E.FormulaDamageCritExample' }}">
+{{!-- Crit Damage --}}
+{{#unless (eq system.consumableType 'ammo')}}
+<div class="form-group ">
+  <label>{{ localize 'DND4E.Critical' }} {{ localize 'DND4E.FormulaDamage' }}</label>
+  <input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="{{ localize 'DND4E.FormulaDamageCritExample' }}">
+</div>
+{{/unless}}
+  
+<fieldset>
+  <legend>{{ localize 'DND4EUI.SecondaryCritForm' }}</legend>
+  <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryCritTip' }}
+    <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a>
+  </label>
+  <ol class="damage-parts form-group">
+    {{#each system.damageCrit.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damageCrit.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
+      <multi-select name="system.damageCrit.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}			
+      </multi-select>
+      <a class="damage-control" data-action="deleteCriticalDamage"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+</fieldset>
+  
+{{!-- Miss Damage --}}
+{{#if system.attack.isAttack}}
+<fieldset>
+  <legend>{{ localize 'DND4E.Miss' }} {{ localize 'DND4E.Damage' }}</legend>
+  <div class="form-group">
+    <label>{{ localize "DND4E.MissHalfDamage" }} <i data-tooltip="{{ localize 'DND4E.MissHalfDamageTooltip'}}" class="fa-solid fa-circle-question"></i></span></label> 
+    <input type="checkbox" name="system.miss.halfDamage" data-dtype="Boolean" {{checked system.miss.halfDamage}}>
+  </div>
+
+  {{#unless system.miss.halfDamage}}
+  <div class="form-group">
+    <label>{{ localize 'DND4E.Miss' }} {{ localize 'DND4E.FormulaDamage' }} <i data-tooltip="{{ localize 'DND4EUI.MissFormulaTip' }}" class="fa-solid fa-circle-question"></i></label>
+    <input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="@halfDamageFormula">
   </div>
   {{/unless}}
+</fieldset>
+{{/if}}
   
-  <fieldset>
-    <legend>{{ localize 'DND4EUI.SecondaryCritForm' }}</legend>
-    <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryCritTip' }}
-      <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a>
-    </label>
-    <ol class="damage-parts form-group">
-      {{#each system.damageCrit.parts as |part i| }}
-      <li class="damage-part flexrow" data-damage-part="{{i}}">
-        <input type="text" name="system.damageCrit.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
-        <multi-select name="system.damageCrit.parts.{{i}}.type" class="inline">
-          {{selectOptions ../damageTypeOptions selected=part.type}}			
-        </multi-select>
-        <a class="damage-control" data-action="deleteCriticalDamage"><i class="fas fa-minus"></i></a>
-      </li>
-      {{/each}}
-    </ol>
-  </fieldset>
-  
-  {{!-- Miss Damage --}}
-  {{#if system.attack.isAttack}}
-  <fieldset>
-    <legend>{{ localize 'DND4E.Miss' }} {{ localize 'DND4E.Damage' }}</legend>
-    <div class="form-group">
-      <label>{{ localize "DND4E.MissHalfDamage" }} <i data-tooltip="{{ localize 'DND4E.MissHalfDamageTooltip'}}" class="fa-solid fa-circle-question"></i></span></label> 
-      <input type="checkbox" name="system.miss.halfDamage" data-dtype="Boolean" {{checked system.miss.halfDamage}}>
-    </div>
-
-    {{#unless system.miss.halfDamage}}
-    <div class="form-group">
-      <label>{{ localize 'DND4E.Miss' }} {{ localize 'DND4E.FormulaDamage' }} <i data-tooltip="{{ localize 'DND4EUI.MissFormulaTip' }}" class="fa-solid fa-circle-question"></i></label>
-      <input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="@halfDamageFormula">
-    </div>
-    {{/unless}}
-  </fieldset>
-  {{/if}}
-  
-  {{#if (eq system.consumableType 'ammo')}}
-    <fieldset>
-      <legend>{{ localize 'DND4EUI.SecondaryMissForm' }}</legend>
-      <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryMissTip' }}
-        <a class="damage-control" data-action="addMissDamage"><i class="fas fa-plus"></i></a>
-      </label>
-      <ol class="damage-parts form-group">
-        {{#each system.damageMiss.parts as |part i| }}
-        <li class="damage-part flexrow" data-damage-part="{{i}}">
-          <input type="text" name="system.damageMiss.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
-          <multi-select name="system.damageMiss.parts.{{i}}.type" class="inline">
-            {{selectOptions ../damageTypeOptions selected=part.type}}			
-          </multi-select>
-          <a class="damage-control" data-action="deleteMissDamage"><i class="fas fa-minus"></i></a>
-        </li>
-        {{/each}}
-      </ol>
-    </fieldset>
-  {{/if}}
+{{#if (eq system.consumableType 'ammo')}}
+<fieldset>
+  <legend>{{ localize 'DND4EUI.SecondaryMissForm' }}</legend>
+  <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryMissTip' }}
+    <a class="damage-control" data-action="addMissDamage"><i class="fas fa-plus"></i></a>
+  </label>
+  <ol class="damage-parts form-group">
+    {{#each system.damageMiss.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damageMiss.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
+      <multi-select name="system.damageMiss.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}			
+      </multi-select>
+      <a class="damage-control" data-action="deleteMissDamage"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+</fieldset>
+{{/if}}
 
 {{/if}}
 
 {{#unless (eq system.consumableType 'ammo')}}
-  <h3 class="form-header checkbox flexrow">
-    {{ localize "DND4E.Healing" }}
-    <input type="checkbox" name="system.hit.isHealing" data-dtype="Boolean" {{checked system.hit.isHealing}} data-tooltip="{{ localize 'DND4E.IsHealing' }}">
-  </h3>
+<h3 class="form-header checkbox flexrow">
+  {{ localize "DND4E.Healing" }}
+  <input type="checkbox" name="system.hit.isHealing" data-dtype="Boolean" {{checked system.hit.isHealing}} data-tooltip="{{ localize 'DND4E.IsHealing' }}">
+</h3>
 
-  {{#if system.hit.isHealing}}
-  <div class="form-group">
-    <label>{{ localize 'DND4E.Healing' }} {{ localize "DND4E.Formula" }}</label>
-    <input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}">
-  </div>
+{{#if system.hit.isHealing}}
+<div class="form-group">
+  <label>{{ localize 'DND4E.Healing' }} {{ localize "DND4E.Formula" }}</label>
+  <input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}">
+</div>
 
-  <div class="form-group select">
-    <label>{{ localize "DND4E.HealingSurgeSpending" }}</label>
-    <select name="system.hit.healSurge">
-      <option value=""{{#if (eq system.hit.healSurge "")}} selected{{/if}}>{{ localize "DND4E.None" }}</option>
-      <option value="surge"{{#if (eq system.hit.healSurge "surge")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeSpend" }}</option>
-      <option value="surgeCost"{{#if (eq system.hit.healSurge "surgeCost")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeCost" }}</option>
-      <option value="surgeValue"{{#if (eq system.hit.healSurge "surgeValue")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeValue" }}</option>
-    </select>
-  </div>
+<div class="form-group select">
+  <label>{{ localize "DND4E.HealingSurgeSpending" }}</label>
+  <select name="system.hit.healSurge">
+    <option value=""{{#if (eq system.hit.healSurge "")}} selected{{/if}}>{{ localize "DND4E.None" }}</option>
+    <option value="surge"{{#if (eq system.hit.healSurge "surge")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeSpend" }}</option>
+    <option value="surgeCost"{{#if (eq system.hit.healSurge "surgeCost")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeCost" }}</option>
+    <option value="surgeValue"{{#if (eq system.hit.healSurge "surgeValue")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeValue" }}</option>
+  </select>
+</div>
 
-  {{/if}}
+{{/if}}
   
 {{/unless}}
   
@@ -340,49 +340,49 @@
 <fieldset class="form-group stacked weapon-properties columns-4">
   <legend class="damage-type">{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</legend>
   {{#if system.damageTypeOverride}}
-    {{#each config.damageTypes as |name type|}}
-    {{#unless (eq type "ongoing")}}
-    {{#unless (eq type "damage")}}
-    <label class="checkbox">
-      <input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/>
-      {{ name }}
-    </label>
-    {{/unless}}
-    {{/unless}}
-    {{/each}}
+  {{#each config.damageTypes as |name type|}}
+  {{#unless (eq type "ongoing")}}
+  {{#unless (eq type "damage")}}
+  <label class="checkbox">
+    <input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/>
+    {{ name }}
+  </label>
+  {{/unless}}
+  {{/unless}}
+  {{/each}}
   {{else}}
-    {{#each config.damageTypes as |name type|}}
-    {{#unless (eq type "ongoing")}}
-    {{#unless (eq type "damage")}}
-    <label class="checkbox">
-      <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/>
-      {{ name }}
-    </label>
-    {{/unless}}
-    {{/unless}}
-    {{/each}}
+  {{#each config.damageTypes as |name type|}}
+  {{#unless (eq type "ongoing")}}
+  {{#unless (eq type "damage")}}
+  <label class="checkbox">
+    <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/>
+    {{ name }}
+  </label>
+  {{/unless}}
+  {{/unless}}
+  {{/each}}
   {{/if}}
 </fieldset>
 {{/unless}}
     
-  <div class="form-group">
-    <legend>{{localize 'DND4EUI.AutoFromConfig'}}</legend>
-    <ul class="auto-keywords inline-list" data-tooltip="{{localize 'DND4EUI.AutoFromConfigTip'}}">
-      {{#if labels.damageTypes}}
-      <li>{{labels.damageTypes}}</li>
-      {{/if}}
+<div class="form-group">
+  <legend>{{localize 'DND4EUI.AutoFromConfig'}}</legend>
+  <ul class="auto-keywords inline-list" data-tooltip="{{localize 'DND4EUI.AutoFromConfigTip'}}">
+    {{#if labels.damageTypes}}
+    <li>{{labels.damageTypes}}</li>
+    {{/if}}
       
-      {{#each system.autoKeys as |kw|}}
-      <li>{{localize kw.label}}</li>
-      {{/each}}
+    {{#each system.autoKeys as |kw|}}
+    <li>{{localize kw.label}}</li>
+    {{/each}}
       
-    </ul>
-  </div>
+  </ul>
+</div>
     
-  <div class="form-group long">
-    <label>{{ localize "DND4E.Custom" }}</label>
-    <input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}">
-  </div>
+<div class="form-group long">
+  <label>{{ localize "DND4E.Custom" }}</label>
+  <input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}">
+</div>
 {{!------------ DISPLAY ------------}}
 
 <h3 class="form-header checkbox flexrow">
@@ -395,79 +395,79 @@
 
 {{#if system.autoGenChatPowerCard}}
 
-  {{!-- Chat Message Flavor --}}
-  <div class="form-group vertical">
-    <label>{{ localize "DND4EUI.ChatFlavor" }}</label>
-    <textarea class="no-mono" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavorPlaceholder'}}">{{system.description.chat}}</textarea>
-  </div>
+{{!-- Chat Message Flavor --}}
+<div class="form-group vertical">
+  <label>{{ localize "DND4EUI.ChatFlavor" }}</label>
+  <textarea class="no-mono" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavorPlaceholder'}}">{{system.description.chat}}</textarea>
+</div>
 
-  {{!-- Effect --}}
-  <fieldset>
-    <legend>{{ localize "DND4EUI.EffectDetailsText" }}</legend>
-    <div class="form-group right">
-      <label class="label long">{{ localize "DND4EUI.EffectHTMLInput" }} <span class="label-hint hint">({{ localize "DND4EUI.EffectHTMLTip" }})</span></label>
-      <input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}} {{ localize "DND4EUI.EffectHTMLInput" }}></span>
-    </div>
-    {{#if system.effectHTML}}
-    {{!--{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable engine="prosemirror"}}--}}
-    <prose-mirror class="rich-effect {{#if system.effect.detail}} has-content{{/if}}" toggled name="system.effect.detail" {{disabled (not editable)}} value="{{system.effect.detail}}">
-      {{{effectDetailHTML}}}
-    </prose-mirror>
-    {{else}}
-    <textarea class="no-mono" name="system.effect.detail" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
-      {{system.effect.detail}}</textarea>
-    {{/if}}
+{{!-- Effect --}}
+<fieldset>
+  <legend>{{ localize "DND4EUI.EffectDetailsText" }}</legend>
+  <div class="form-group right">
+    <label class="label long">{{ localize "DND4EUI.EffectHTMLInput" }} <span class="label-hint hint">({{ localize "DND4EUI.EffectHTMLTip" }})</span></label>
+    <input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}} {{ localize "DND4EUI.EffectHTMLInput" }}></span>
+  </div>
+  {{#if system.effectHTML}}
+  {{!--{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable engine="prosemirror"}}--}}
+  <prose-mirror class="rich-effect {{#if system.effect.detail}} has-content{{/if}}" toggled name="system.effect.detail" {{disabled (not editable)}} value="{{system.effect.detail}}">
+    {{{effectDetailHTML}}}
+  </prose-mirror>
+  {{else}}
+  <textarea class="no-mono" name="system.effect.detail" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
+    {{system.effect.detail}}</textarea>
+  {{/if}}
     
-    {{#unless (eq system.consumableType 'ammo')}}
-      <div class="form-group right">
-        <label>{{ localize "DND4EUI.DisplayEffect" }}</label> 
-        <input type="checkbox" name="system.postEffect" data-dtype="Boolean" {{checked system.postEffect}}>
-      </div>
-    {{/unless}}
-  </fieldset>
+  {{#unless (eq system.consumableType 'ammo')}}
+  <div class="form-group right">
+    <label>{{ localize "DND4EUI.DisplayEffect" }}</label> 
+    <input type="checkbox" name="system.postEffect" data-dtype="Boolean" {{checked system.postEffect}}>
+  </div>
+  {{/unless}}
+</fieldset>
   
 {{#unless (eq system.consumableType 'ammo')}}
-  {{!-- Optional Parameters --}}
-  <div class="form-group">
-    <label>{{ localize "DND4EUI.RequirementsText" }}</label>
-    <div class="form-fields">
-      <input type="text" name="system.requirement" value="{{system.requirement}}">
-    </div>
+{{!-- Optional Parameters --}}
+<div class="form-group">
+  <label>{{ localize "DND4EUI.RequirementsText" }}</label>
+  <div class="form-fields">
+    <input type="text" name="system.requirement" value="{{system.requirement}}">
   </div>
+</div>
 
-  <div class="form-group">
-    <label>{{ localize "DND4EUI.TriggerText" }}</label>
-    <div class="form-fields">
-      <input type="text" name="system.trigger" value="{{system.trigger}}">
-    </div>
+<div class="form-group">
+  <label>{{ localize "DND4EUI.TriggerText" }}</label>
+  <div class="form-fields">
+    <input type="text" name="system.trigger" value="{{system.trigger}}">
   </div>
+</div>
 
-  <div class="form-group">
-    <label>{{ localize "DND4EUI.TargetText" }}</label>
-    <div class="form-fields">
-      <input type="text" name="system.target" value="{{system.target}}">
-    </div>
+<div class="form-group">
+  <label>{{ localize "DND4EUI.TargetText" }}</label>
+  <div class="form-fields">
+    <input type="text" name="system.target" value="{{system.target}}">
   </div>
+</div>
   
-  {{#if system.attack.isAttack}}
-    {{!-- Attack Text --}}
-    <div class="form-group">
-      <label>{{ localize "DND4EUI.AttackDetailsText" }} <i data-tooltip="{{ localize 'DND4EUI.AttackDetailsTextHint' }}" class="fa-solid fa-circle-question"></i></label>
-      <input type="text" name="system.attack.detail" value="{{system.attack.detail}}" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
-    </div>
+{{#if system.attack.isAttack}}
+{{!-- Attack Text --}}
+<div class="form-group">
+  <label>{{ localize "DND4EUI.AttackDetailsText" }} <i data-tooltip="{{ localize 'DND4EUI.AttackDetailsTextHint' }}" class="fa-solid fa-circle-question"></i></label>
+  <input type="text" name="system.attack.detail" value="{{system.attack.detail}}" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
+</div>
   
-    {{!-- Hit Text --}}
-    <div class="form-group vertical">
-      <label>{{ localize "DND4EUI.HitDetailsText" }}</label>
-      <textarea name="system.hit.detail" class="no-mono" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">{{system.hit.detail}}</textarea>
-    </div>
+{{!-- Hit Text --}}
+<div class="form-group vertical">
+  <label>{{ localize "DND4EUI.HitDetailsText" }}</label>
+  <textarea name="system.hit.detail" class="no-mono" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">{{system.hit.detail}}</textarea>
+</div>
       
-    {{!-- Miss Text --}}
-    <div class="form-group vertical">
-      <label>{{ localize "DND4EUI.MissDetailsText" }}</label>
-      <textarea name="system.miss.detail" class="no-mono" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">{{system.miss.detail}}</textarea>
-    </div>
-  {{/if}}
+{{!-- Miss Text --}}
+<div class="form-group vertical">
+  <label>{{ localize "DND4EUI.MissDetailsText" }}</label>
+  <textarea name="system.miss.detail" class="no-mono" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">{{system.miss.detail}}</textarea>
+</div>
+{{/if}}
   
 {{/unless}}
 

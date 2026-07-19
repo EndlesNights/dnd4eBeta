@@ -1059,7 +1059,7 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 					newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
 				}
 
-				if (e.statuses[0] && game.settings.get("dnd4e", "markAutomation")) {
+				if (e.statuses.length && game.settings.get("dnd4e", "markAutomation")) {
 					const hasMark = e.statuses.some(s => s === "mark");
 						
 					if (hasMark) {

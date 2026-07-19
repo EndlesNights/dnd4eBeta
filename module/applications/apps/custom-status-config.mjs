@@ -141,7 +141,7 @@ export default class CustomStatusConfig extends foundry.applications.api.Handleb
 		},
 		position: {
 			width: 680,
-      //Must set an explicit height to make sure table scrolling works. User can still resize window without issue.
+			//Must set an explicit height to make sure table scrolling works. User can still resize window without issue.
 			height: 680,
 		},
 		tag: "form",

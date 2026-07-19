@@ -37,7 +37,7 @@
         {{#each customStatuses as |status s|}}
         <tr class="custom-status-line" data-row-id="{{s}}">
           <td class="custom-status-image">
-            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" class="custom-status-img" type="checkbox" name="img" data-action="editImage" data-edit="img" {{disabled (contains status.id ../originalIds)}} alt="{{localize 'DND4E.StatusImage'}}" />
+            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" type="checkbox" data-action="editImage" data-edit="img" alt="{{localize 'DND4E.StatusImage'}}" {{disabled (contains status.id ../originalIds)}} />
           </td>
           <td class="custom-status-name">
             <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusName'}}" />
