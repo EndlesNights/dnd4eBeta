@@ -1,5 +1,26 @@
 # Changelog
 
+## Version 0.8.11
+### 🎉New Features/Upgrades
+* __Custom Status Conditions:__ You can now customise status conditions in the system settings! (SagaTympana + Fox)
+  * You cannot _remove_ existing system conditions, as the system increasingly relies on them for automation. However, you can override them (to provide your own icon/label/description) by using the same ID as the the system default.
+  * Because of this, conditions not actually part of the system definition (e.g. drunk, disarmed, ammo count etc.) have been removed from the default set. For those who find them useful, we have included a button to restore them by importing them into your custom configuration.
+* Added a new compendium of Active Effects, intended to provide drag-and-drop application of system status conditions with modifiers.
+* Manual input bonus arrays can now accept formulae and variables in their values (SagaTympana)
+* Made status conditions available in actor rollData (SagaTympana)
+  * Statuses are stored under @statuses and are referenced via the status id, e.g.: `@statuses.slowed`, `@statuses.dazed` etc.
+  * Each has a value of 1 if the status is currently affecting the actor and 0 if it isn't.
+* Updated the Source and Controller (now called "Handler") fields for NPCs and Hazards, to match item source config (Fox)
+### Bug Fixes & Under the Hood
+* Fixed a bug where the ignoringMark penalty would always applying (SagaTympana)
+* Fixed a bug where the proficiency selector for implements was setting the wrong value (SagaTympana)
+* Fixed a bug where the button to copy in status data for an AE didn't work until saving and reopening the form (SagaTympana)
+* Updated status labels "Concealment" to "Partial Concealment" and "Full Concealment" to "Total Concealment", to better match RAW and remove ambiguity (SagaTympana)
+* Fixed an oversight where concealment automation was applied against close and areas attacks (SagaTympana)
+* Ensured we properly handle the Apply Active Effect region behavior being changed while tokens are inside it (SagaTympana)
+* Removed an accidental duplicate of processing for defence bonuses. This also made `vsWill` work as an AE property key, which should be `vsWil`; please update your effects if necessary. (SagaTympana)
+* Removed some obsolete hooks (SagaTympana)
+
 ## Version 0.8.10 hotfix
 * Fixed a bug where improperly formed `@scale` objects failed migration in a game-breaking way (SagaTympana)
 * Fixed a bug where attacking a marked target broke the attack roll (SagaTympana)
