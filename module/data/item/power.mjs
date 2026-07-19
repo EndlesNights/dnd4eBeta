@@ -1,5 +1,5 @@
 import { FormulaField, MappingField } from "../fields/_module.mjs";
-import SourceField from "./fields/source-field.mjs";
+import SourceField from "../fields/source-field.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
