@@ -811,7 +811,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	/* -------------------------------------------- */
-
+	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
 	_sortPowers(powers) {
 		const sort = this.document.system.powerSortTypes || "actionType";
 		for (const [keyy, group] of Object.entries(powers)) {
@@ -832,7 +832,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	/* -------------------------------------------- */
-
+	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
 	_groupPowers(power, powerGroups) {
 		if ((this.document.system.powerGroupTypes === "action") || !this.document.system.powerGroupTypes) {
 			if (Object.keys(powerGroups).includes(power.system.actionType)) return power.system.actionType;
@@ -858,6 +858,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return "other";
 	}
 
+	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
 	_generatePowerGroups() {
 		const actorData = this.document.system;
 		const powerGroupTypes = actorData.powerGroupTypes ?? "usage";
@@ -877,6 +878,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return displayConfig;
 	};
 
+	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
 	_checkItemAvailable(itemData) {
 		if ((!itemData.system.uses.value && itemData.system.preparedMaxUses && itemData.system.uses.per) || ((itemData.type === "power") && !itemData.system.prepared)) {
 			itemData.system.notAvailable = true;
@@ -1407,6 +1409,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onHealMenuDialog(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
+		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
 		new apps.HealMenuDialog({ document: this.actor }).render(true);
 	}
 
@@ -1460,6 +1463,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.secondWind(event, { isFF });
 		}
+		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
 		new apps.SecondWindDialog({ document: this.actor }).render(true);		
 	}
 	
@@ -1472,6 +1476,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.actionPoint(event, { isFF });
 		}
+		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
 		new apps.ActionPointDialog({ document: this.actor }).render(true);
 	}
 
@@ -1519,6 +1524,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.rollDeathSave(event, { isFF });
 		}
+		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
 		new apps.DeathSaveDialog({ document: this.actor }).render(true);
 	}
 
@@ -1533,8 +1539,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		event.preventDefault();
 		const isFF = utils.isRollFastForwarded(event);
 		if (isFF) {
-			return this.actor.rollSave(event, { isFF });
+			// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
+			return this.actor.rollSave(event, { isFF }, {});
 		}
+		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
 		return new apps.SaveThrowDialog({ document: this.actor }).render(true);
 	}
 
@@ -1634,7 +1642,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const isFF = utils.isRollFastForwarded(event);
 		
 		if (isFF) {
-			return this.actor.rollSave(event, { isFF, effectSave: true, dc: saveDC, effectId: effectId });
+			return this.actor.rollSave(event, { isFF, effectSave: true, dc: saveDC, effectId: effectId }, {});
 		}
 
 		let save = new apps.SaveThrowDialog({ document: this.actor, effectSave: true, saveDC: saveDC, effectId: effectId }).render(true);
@@ -1646,10 +1654,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/* -------------------------------------------- */
 
 	static async #onItemRecharge(event, target) {
-		event.preventDefault();
 		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
+		return this._onItemRecharge(event, item)
+	}
 
+	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
+	async _onItemRecharge(event, item) {
+		event.preventDefault();
+		const itemId = item.id
 		if (item.type === "power") {
 
 			if (item.system.rechargeRoll || (!item.system.rechargeRoll && !item.system.rechargeCondition)) {

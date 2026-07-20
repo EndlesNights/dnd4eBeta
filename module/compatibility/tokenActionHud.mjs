@@ -1,5 +1,6 @@
 import { Actor4e, Item4e } from "../documents/_module.mjs";
 import * as utils from "../utils/utils.mjs";
+import * as apps from "../applications/apps/_module.mjs";
 
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.
@@ -19,13 +20,13 @@ TokenBarHooks.isPowerAvailable = (actor, power) => {
 	return !power.system.notAvailable;
 };
 
-TokenBarHooks.quickSave = (actor, event) => actor.rollSave(event, { isFF: true });
+TokenBarHooks.quickSave = (actor, event) => actor.rollSave(event, { isFF: true }, {});
 
-TokenBarHooks.saveDialog = (actor, event) => actor.sheet._onSavingThrow(event);
+TokenBarHooks.saveDialog = (actor, event) => new apps.SaveThrowDialog({ document: actor }).render(true);
 
-TokenBarHooks.healDialog = (actor, event) => actor.sheet._onHealMenuDialog(event);
+TokenBarHooks.healDialog = (actor, event) => new apps.HealMenuDialog({ document: actor }).render(true);
 
-TokenBarHooks.rechargePower = (actor, power, event) => actor.sheet._onItemRecharge(event);
+TokenBarHooks.rechargePower = (actor, power, event) => actor.sheet._onItemRecharge(event, power);
 
 TokenBarHooks.rollPower = (actor, power, event) => {
 	const fastForward = utils.isRollFastForwarded(event);
@@ -38,11 +39,11 @@ TokenBarHooks.rollAbility = (actor, checkId, event) => actor.rollAbility(checkId
 
 TokenBarHooks.rollItem = (actor, item, event) => item.roll();
 
-TokenBarHooks.deathSave = (actor, event) => actor.sheet._onDeathSave(event);
+TokenBarHooks.deathSave = (actor, event) => new apps.DeathSaveDialog({ document: actor }).render(true);
 
-TokenBarHooks.secondWind = (actor, event) => actor.sheet._onSecondWind(event);
+TokenBarHooks.secondWind = (actor, event) => new apps.SecondWindDialog({ document: actor }).render(true);
 
-TokenBarHooks.actionPoint = (actor, event) => actor.sheet._onActionPointDialog(event);
+TokenBarHooks.actionPoint = (actor, event) => new apps.ActionPointDialog({ document: actor }).render(true);
 
 //v3 hook - get all the powers back grouped by sheet selection
 TokenBarHooks.powersBySheetGroup = (actor) => {
