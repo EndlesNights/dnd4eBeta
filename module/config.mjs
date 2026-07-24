@@ -1879,9 +1879,10 @@ DND4E.tokenRingColors = {
  */
 DND4E.tokenRulerColors = {
 	walk: 0x00FF00,
-	run: 0xFFFF66,
-	doubleWalk: 0xFF9966,
-	doubleRun: 0xFF99FF,
+	run: 0xFFFF00,
+	charge: 0x9851FF,
+	doubleWalk: 0x00E8A6,
+	doubleRun: 0xFF9A00,
 	cannotReach: 0xFF0000,
 };
 
@@ -1925,13 +1926,23 @@ DND4E.conditionTypes = {
 preLocalize("conditionTypes", { sort: true });
 
 DND4E.statusEffect = {
-	// Row - Marks
+	// Targeting and Vulnerability
 	mark: {
 		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_1.svg",
 		description: "EFFECTDESC.mark",
 	},
-	// Row - Health
+  grantingCA: {
+		name: "EFFECT.statusGrantingCA",
+		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
+		description: "EFFECTDESC.grantingCA",
+	},
+  helpless: {
+		name: "EFFECT.statusHelpless",
+		img: "systems/dnd4e/icons/statusEffects/helpless.svg",
+		description: "EFFECTDESC.helpless",
+	},
+	// Health
 	bloodied: {
 		name: "EFFECT.statusBloodied",
 		img: "systems/dnd4e/icons/statusEffects/bloodied.svg",
@@ -1952,7 +1963,7 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/unconscious.svg",
 		description: "EFFECTDESC.unconscious",
 	},
-	// Row - Action Restrictions
+	// Action Restrictions
 	dazed: {
 		name: "EFFECT.statusDazed",
 		img: "systems/dnd4e/icons/statusEffects/dazed.svg",
@@ -1973,7 +1984,7 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/surprised.svg",
 		description: "EFFECTDESC.surprised",
 	},
-	// Row - Movement Restrictions
+	// Movement Restrictions
 	slowed: {
 		name: "EFFECT.statusSlowed",
 		img: "systems/dnd4e/icons/statusEffects/slowed.svg",
@@ -1994,13 +2005,13 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/grabbed.svg",
 		description: "EFFECTDESC.grabbed",
 	},
-	// Row - Penalties
-	prone: {
-		name: "EFFECT.statusProne",
-		img: "systems/dnd4e/icons/statusEffects/prone.svg",
-		description: "EFFECTDESC.prone",
+	petrified: {
+		name: "EFFECT.statusPetrified",
+		img: "systems/dnd4e/icons/statusEffects/petrified.svg",
+		description: "EFFECTDESC.petrified",
 	},
-	weakened: {
+	// Penalties
+  weakened: {
 		name: "EFFECT.statusWeakened",
 		img: "systems/dnd4e/icons/statusEffects/weakend.svg",
 		description: "EFFECTDESC.weakened",
@@ -2015,28 +2026,17 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/deafened.svg",
 		description: "EFFECTDESC.deafened",
 	},
-	// Row - Misc 
-	insubstantial: {
-		name: "EFFECT.statusInsubstantial",
-		img: "systems/dnd4e/icons/statusEffects/insubstantial.svg",
-		description: "EFFECTDESC.insubstantial",
+	// Visibility & Corporeality
+ 	invisible: {
+		name: "EFFECT.statusInvisible",
+		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
+		description: "EFFECTDESC.invisible",
 	},
-	removed: {
-		name: "EFFECT.statusRemoved",
-		img: "systems/dnd4e/icons/statusEffects/removed.svg",
-		description: "EFFECTDESC.removed",
+	hidden: {
+		name: "EFFECT.statusHidden",
+		img: "systems/dnd4e/icons/statusEffects/hidden.svg",
+		description: "EFFECTDESC.hidden",
 	},
-	petrified: {
-		name: "EFFECT.statusPetrified",
-		img: "systems/dnd4e/icons/statusEffects/petrified.svg",
-		description: "EFFECTDESC.petrified",
-	},
-	grantingCA: {
-		name: "EFFECT.statusGrantingCA",
-		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
-		description: "EFFECTDESC.grantingCA",
-	},
-	// Row - Visibility
 	concealed: {
 		name: "EFFECT.statusConceal",
 		img: "systems/dnd4e/icons/statusEffects/concealment.svg",
@@ -2057,37 +2057,36 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/cover-sup.svg",
 		description: "EFFECTDESC.coversup",
 	},
-	// Row - Stealth
-	invisible: {
-		name: "EFFECT.statusInvisible",
-		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
-		description: "EFFECTDESC.invisible",
+	insubstantial: {
+		name: "EFFECT.statusInsubstantial",
+		img: "systems/dnd4e/icons/statusEffects/insubstantial.svg",
+		description: "EFFECTDESC.insubstantial",
 	},
-	hidden: {
-		name: "EFFECT.statusHidden",
-		img: "systems/dnd4e/icons/statusEffects/hidden.svg",
-		description: "EFFECTDESC.hidden",
+	removed: {
+		name: "EFFECT.statusRemoved",
+		img: "systems/dnd4e/icons/statusEffects/removed.svg",
+		description: "EFFECTDESC.removed",
 	},
-	// Row - Movement
+	// Movement & Positioning
+	prone: {
+		name: "EFFECT.statusProne",
+		img: "systems/dnd4e/icons/statusEffects/prone.svg",
+		description: "EFFECTDESC.prone",
+	},	
 	running: {
 		name: "EFFECT.statusRunning",
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
 		description: "EFFECTDESC.running",
 	},
+  charging: {
+		name: "EFFECT.statusCharging",
+		img: "systems/dnd4e/icons/statusEffects/charging.svg",
+		description: "EFFECTDESC.charging",
+	},
 	squeezing: {
 		name: "EFFECT.statusSqueezing",
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing",
-	},
-	mounted: {
-		name: "EFFECT.statusMounted",
-		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
-		description: "EFFECTDESC.mounted",
-	},
-	flying: {
-		name: "EFFECT.statusFlying",
-		img: "systems/dnd4e/icons/statusEffects/flying.svg",
-		description: "EFFECTDESC.flying",
 	},
 };
 
