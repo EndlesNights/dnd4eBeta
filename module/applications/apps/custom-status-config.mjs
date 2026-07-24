@@ -124,6 +124,16 @@ export default class CustomStatusConfig extends foundry.applications.api.Handleb
 			img: "systems/dnd4e/icons/statusEffects/disarmed.svg",
 			description: "EFFECTDESC.disarmed",
 		},
+    flying: {
+      name: "EFFECT.statusFlying",
+      img: "systems/dnd4e/icons/statusEffects/flying.svg",
+      description: "EFFECTDESC.flying",
+    },
+    mounted: {
+      name: "EFFECT.statusMounted",
+      img: "systems/dnd4e/icons/statusEffects/mounted.svg",
+      description: "EFFECTDESC.mounted",
+    },
 	};
 
 	constructor(...args) {
