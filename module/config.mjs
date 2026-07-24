@@ -2088,6 +2088,11 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing",
 	},
+  mounted: {
+    name: "EFFECT.statusMounted",
+    img: "systems/dnd4e/icons/statusEffects/mounted.svg",
+    description: "EFFECTDESC.mounted",
+  },
 };
 
 // Languages
