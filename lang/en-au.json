@@ -1741,6 +1741,7 @@
 "EFFECTDESC.flying": "The creature is flying.",
 "EFFECTDESC.grabbed": "<ul><li>The creature is immobilised.</li><li>The creature can attempt to escape as a move action.</li><li>The grab ends immediately if the grabber is subjected to an effect that prevents it from taking actions, or if the creature ends up outside the range of the grabbing power or effect.</li></ul>",
 "EFFECTDESC.grantingCA": "The creature is granting combat advantage to attackers.",
+"EFFECTDESC.helpless": "The creature is helpless. It grants combat advantage and can be the target of a coup de grace.",
 "EFFECTDESC.hidden": "The creature is hidden or disguised.",
 "EFFECTDESC.huntermark": "The creature is subject to a Hunter's Mark.",
 "EFFECTDESC.immobilized": "The creature cannot move except by teleportation. It can still be pushed, pulled, or slid.",
