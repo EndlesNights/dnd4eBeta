@@ -21,6 +21,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	/* -------------------------------------------- */
 
 	/**
+	 * Getter for the degree of environmental light the token is subject to.
      * @type {Number}
      */
 	get lightLevel() {
@@ -38,6 +39,43 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		});
 		if (inBright) return CONFIG.DND4E.LIGHT_LEVEL.BRIGHT;
 		return CONFIG.DND4E.LIGHT_LEVEL.DIM;
+	}
+		
+	/* -------------------------------------------- */
+	/*  Detection                                   */
+	/* -------------------------------------------- */
+	/**
+	 * Test whether this Token can detect another Token via any of its enabled detection modes.
+	 * If this Token has no active vision source, an ephemeral one is constructed using the token's standard vision data
+	 * and blinded states, then disposed of after the test.
+	 * @param {Token4e} targetToken               The token whose visibility is being tested
+	 * @param {object} [options]
+	 * @param {Iterable<string>} [options.modes]              Restrict the test to this subset of detection mode ids
+	 * @returns {boolean}                                     Did any of this token's detection modes detect the target?
+	 */
+	canDetect(targetToken, { modes } = {}) {
+		if (this === targetToken) return true;
+		let visionSource = this.vision;
+		let ephemeral = false;
+		if (!visionSource) {
+			visionSource = new CONFIG.Canvas.visionSourceClass({
+				sourceId: `${this.sourceId}.detectionTest`,
+				object: this,
+			});
+			const blindedStates = this._getVisionBlindedStates();
+			for (const state in blindedStates) visionSource.blinded[state] = blindedStates[state];
+			visionSource.initialize(this._getVisionSourceData());
+			ephemeral = true;
+		}
+		const testPoints = targetToken.document.getVisibilityTestPoints();
+		const config = canvas.visibility._createVisibilityTestConfig(testPoints, { object: targetToken, tolerance: 0 });
+		const allowed = modes ? new Set(modes) : null;
+		const detected = Object.entries(this.detectionModes).some(([id, mode]) => {
+			if (allowed && !allowed.has(id)) return false;
+			return CONFIG.Canvas.detectionModes[id]?.testVisibility(visionSource, mode, config) === true;
+		});
+		if (ephemeral) visionSource.destroy();
+		return detected;
 	}
 
 	/* -------------------------------------------- */
