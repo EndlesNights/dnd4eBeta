@@ -1,7 +1,7 @@
 import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
 import { FormulaField } from "../../fields/_module.mjs";
 
-const { SetField, NumberField, SchemaField, StringField } = foundry.data.fields;
+const { BooleanField, SetField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 class MovementField extends SchemaField {
 	constructor(_, { formulaString = "@base + @armour", ...options }) {
@@ -46,8 +46,8 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
 			custom: new StringField({ initial: "" }),
 			ignoredDifficultTerrain: new SetField(new StringField(), { label: "DND4E.IgnoredDifficultTerrain" }),
 			notes: new StringField({ initial: "" }),
-			squeeze: new FormulaField({ initial: "", deterministic: true }),
-			crawl: new FormulaField({ initial: "", deterministic: true }),
+			fullSqueeze: new BooleanField({ initial: false }),
+			fullCrawl: new BooleanField({ initial: false }),
 		};
 	}
 
