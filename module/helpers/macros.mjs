@@ -1,5 +1,8 @@
-import Item4e from "../documents/item.mjs";
 import * as utils from "../utils/utils.mjs";
+
+/**
+ * @import Item4e from "../documents/item.mjs";
+ */
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -25,7 +28,7 @@ export async function create4eMacro(dropData, slot) {
 		foundry.utils.mergeObject(macroData, {
 			name: itemData.name,
 			img: itemData.img,
-			command: `DND4E.macros.rollItemMacro("${itemData.name}")`,
+			command: `dnd4e.helpers.macros.rollItemMacro("${itemData.name}")`,
 			flags: { "dnd4e.itemMacro": true },
 		});
 	}
@@ -38,7 +41,7 @@ export async function create4eMacro(dropData, slot) {
 		foundry.utils.mergeObject(macroData, {
 			name: effectData.name,
 			img: effectData.icon,
-			command: `DND4E.macros.toggleEffect("${effectData.name}")`,
+			command: `dnd4e.helpers.macros.toggleEffect("${effectData.name}")`,
 			flags: { "dnd4e.effectMacro": true },
 		});
 	}
