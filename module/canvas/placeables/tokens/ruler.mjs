@@ -109,23 +109,11 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		
 		if ((waypoint.action === "walk") && this.token?.actor?.statuses.has("prone")) {
       // Probably you can only crawl while walking? The other modes all use three-dimensional movement so can get up for free. - Fox
-      if(movement?.crawl) {
-        const crawlSpeed = utils.evaluateFormula(movement.crawl.replace(/@base/g, movement.base.value).replace(/@armour/g, movement.base.armour).replace(/@mode/g, movement[waypoint.action]?.value ?? 0), this.token.actor.system);
-        currActionSpeed = crawlSpeed;
-      }
-      else {
-        currActionSpeed = movement?.crawl ?? movement.walk.value / 2;
-      }
+      currActionSpeed = movement?.fullCrawl ? movement.walk.value : movement.walk.value / 2;
 		}
     else if(!["shift", "teleport"].includes(waypoint.action) && this.token?.actor?.statuses.has("squeezing")){
       // I THINK squeeze is justified for everything but shift/teleport; swimming or climbing through a small passage is easy to imagine. - Fox
-      if(movement?.squeeze) {
-        const squeezeSpeed = utils.evaluateFormula(movement.crawl.replace(/@base/g, movement.base.value).replace(/@armour/g, movement.base.armour).replace(/@mode/g, movement[waypoint.action]?.value ?? 0), this.token.actor.system);
-        currActionSpeed = squeezeSpeed;
-      }
-      else {
-        currActionSpeed = movement[waypoint.action]?.value / 2;
-      }
+      currActionSpeed = movement?.fullSqueeze ?  movement[waypoint.action]?.value : movement[waypoint.action]?.value / 2;
     }
 		else {
 			currActionSpeed = movement[waypoint.action]?.value ?? 0;
