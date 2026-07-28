@@ -287,7 +287,26 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	fieldset{
 		padding:0.5em 1em 1em;
 		gap:2px;
-	}
+    &.collapsible{
+      flex:fit-content 0 100;      
+      & .fieldset-expand-toggle::after{
+        padding:0.5em;
+        font-family:var(--fa-family-classic);
+        content:"\f107";
+      }
+      &:first-child{
+        flex-basis:calc(100% - 2em);
+      }
+      &:not(.collapsed){
+        flex:100% 100 0;
+        flex-shrink:0;
+        max-height:100%;        
+        & .fieldset-expand-toggle::after{
+          content:"\f106";
+        }
+      }
+    }
+  }
 	.inline-list{
 		margin:0;
 		> li{
@@ -2923,27 +2942,6 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		line-height:22px;
 	}
   .tab.macros{
-    .macro{
-      flex:fit-content 0 100;
-      
-      & .macro-expand-toggle::after{
-        padding:0.5em;
-        font-family:var(--fa-family-classic);
-        content:"\f107";
-      }
-      &:first-child{
-        flex-basis:calc(100% - 2em);
-      }
-      &:not(.collapsed){
-        flex:100% 100 0;
-        flex-shrink:0;
-        max-height:100%;
-        
-        & .macro-expand-toggle::after{
-          content:"\f106";
-        }
-      }
-    }
     .macro-type{
       min-width:6em;
     }
@@ -2953,6 +2951,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
       code-mirror{
         min-height:100%;
       }
+    }
+    fieldset.collapsible:first-child{
+      flex-basis:calc(100% - 2em);
     }
   }
 }

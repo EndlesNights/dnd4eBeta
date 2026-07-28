@@ -1,6 +1,7 @@
 import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
+import { FormulaField } from "../../fields/_module.mjs";
 
-const { SetField, NumberField, SchemaField, StringField } = foundry.data.fields;
+const { BooleanField, SetField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 class MovementField extends SchemaField {
 	constructor(_, { formulaString = "@base + @armour", ...options }) {
@@ -35,7 +36,7 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
 			}, { label: "DND4E.MovementSpeedBase" }),
 			walk: new MovementField({}, { label: "DND4E.MovementSpeedWalking" }),
 			run: new MovementField({}, { formulaString: "2", label: "DND4E.MovementSpeedRunning" }),
-			charge: new MovementField({}, { label: "DND4E.MovementSpeedCharging" }),
+			charge: new MovementField({}, { formulaString: "0", label: "DND4E.MovementSpeedCharging" }),
 			shift: new MovementField({}, { formulaString: "1", label: "DND4E.MovementSpeedShifting" }),
 			burrow: new MovementField({}, { formulaString: "", label: "DND4E.MovementSpeedBurrowing" }),
 			climb: new MovementField({}, { formulaString: "", label: "DND4E.MovementSpeedClimbing" }),
@@ -45,6 +46,8 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
 			custom: new StringField({ initial: "" }),
 			ignoredDifficultTerrain: new SetField(new StringField(), { label: "DND4E.IgnoredDifficultTerrain" }),
 			notes: new StringField({ initial: "" }),
+			fullSqueeze: new BooleanField({ initial: false }),
+			fullCrawl: new BooleanField({ initial: false }),
 		};
 	}
 

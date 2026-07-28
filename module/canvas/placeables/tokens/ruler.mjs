@@ -1,5 +1,7 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
+import * as utils from "../../../utils/utils.mjs";
+
 export default class TokenRuler4e extends foundry.canvas.placeables.tokens.TokenRuler {
 	static WAYPOINT_LABEL_TEMPLATE = "systems/dnd4e/templates/hud/waypoint-label.hbs";
 	
@@ -99,13 +101,20 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 
 		// Get actor's movement speed for currently selected token movement action
 		const movement = this.token.actor?.system.movement;
+    //console.debug(movement);
 		if (!movement) return style;
-		let currActionSpeed, runBonus;
+		let currActionSpeed;
+		const runBonus = ["shift", "teleport"].includes(waypoint.action) ? 0 : movement.run.value;
+    const chargeBonus = ["shift"].includes(waypoint.action) ? 0 : movement.charge.value;
 		
 		if ((waypoint.action === "walk") && this.token?.actor?.statuses.has("prone")) {
-			runBonus = 0;
-			currActionSpeed = (movement.walk.value + runBonus) / 2;
+      // Probably you can only crawl while walking? The other modes all use three-dimensional movement so can get up for free. - Fox
+      currActionSpeed = movement?.fullCrawl ? movement.walk.value : movement.walk.value / 2;
 		}
+    else if(!["shift", "teleport"].includes(waypoint.action) && this.token?.actor?.statuses.has("squeezing")){
+      // I THINK squeeze is justified for everything but shift/teleport; swimming or climbing through a small passage is easy to imagine. - Fox
+      currActionSpeed = movement?.fullSqueeze ?  movement[waypoint.action]?.value : movement[waypoint.action]?.value / 2;
+    }
 		else {
 			currActionSpeed = movement[waypoint.action]?.value ?? 0;
 
@@ -113,17 +122,17 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 			if (CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
 				|| !CONFIG.DND4E.movementTypes[waypoint.action]) {
 				currActionSpeed = Math.max(currActionSpeed, movement.walk.value);
-			}
-
-			runBonus = ["shift", "teleport"].includes(waypoint.action) || this.token?.actor?.statuses.has("prone") ? 0 : movement.run.value;
+			}      
 		}
 
 		let runSpeed = currActionSpeed + runBonus;
+    let chargeSpeed = currActionSpeed + chargeBonus;
 
 		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else if <= 2 * run speed `doubleRun`, else `cannotReach`
-		const { walk, run, doubleWalk, doubleRun, cannotReach } = CONFIG.DND4E.tokenRulerColors;
+		const { walk, run, charge, doubleWalk, doubleRun, cannotReach } = CONFIG.DND4E.tokenRulerColors;
 		const increment = (waypoint.measurement.cost - .1);
 		if (increment <= currActionSpeed) style.color = walk;
+		else if (chargeBonus && (increment <= chargeSpeed)) style.color = charge;
 		else if (runBonus && (increment <= runSpeed)) style.color = run;
 		else if (increment <= 2 * currActionSpeed) style.color = doubleWalk;
 		else if (runBonus && (increment <= 2 * runSpeed)) style.color = doubleRun;

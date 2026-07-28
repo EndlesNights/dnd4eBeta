@@ -729,222 +729,233 @@ export default class Actor4e extends Actor {
 			}
 		}
 			
+    console.debug(actorData);    
+    if(['immobilized','grabbed','petrified','restrained'].some(i => actorData.statuses.has(i))) { 
+    
+      //Everything but teleport is absolute 0 when subject to an immobilising condition
+      system.movement.base.absolute = 0;
+      system.movement.burrow.absolute = 0;
+      system.movement.charge.absolute = 0;
+      system.movement.climb.absolute = 0;
+      system.movement.fly.absolute = 0;
+      system.movement.run.absolute = 0;
+      system.movement.shift.absolute = 0;
+      system.movement.swim.absolute = 0;
+      system.movement.walk.absolute = 0;
+      
+    } else if (actorData.statuses.has('slowed')) {
+      
+      //Non-teleport modes are capped at 2 when slowed
+      system.movement.base.ceil = 2;
+      system.movement.burrow.ceil = 2;
+      system.movement.climb.ceil = 2;
+      system.movement.fly.ceil = 2;
+      system.movement.shift.ceil = 2;
+      system.movement.swim.ceil = 2;
+      system.movement.walk.ceil = 2;
+      //Except "bonus" type which are absolute 0
+      system.movement.charge.absolute = 0;
+      system.movement.run.absolute = 0;
+      
+    }
+      
 		//Base Speed
-		if (isNaN(parseInt(system.movement.base?.absolute))) { //All logic only required if there is no usable absolute value
-		
-			for (let i of this.items) {
-				if ((i.type != "equipment") || !i.system.equipped || !i.system.armour.movePen) { continue; }
-				const absMovePen = Math.abs(i.system.armour.movePenValue);
-				system.movement.base.armour -= absMovePen;
-			}
-			system.movement.base.bonusValue = baseMoveBonusValue;
+    if (isNaN(parseInt(system.movement.base?.absolute))) { //All logic only required if there is no usable absolute value
+    
+      for (let i of this.items) {
+        if ((i.type != "equipment") || !i.system.equipped || !i.system.armour.movePen) { continue; }
+        const absMovePen = Math.abs(i.system.armour.movePenValue);
+        system.movement.base.armour -= absMovePen;
+      }
+      system.movement.base.bonusValue = baseMoveBonusValue;
 
-			system.movement.base.value = system.movement.base.base + baseMoveBonusValue + system.movement.base?.temp || 0;
-			system.movement.base.value += system.movement.base.feat || 0;
-			system.movement.base.value += system.movement.base.item || 0;
-			system.movement.base.value += system.movement.base.power || 0;
-			system.movement.base.value += system.movement.base.race || 0;
-			system.movement.base.value += system.movement.base.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.base.value = Math.max(system.movement.base.value, system.movement.base?.floor || system.movement.base.value - 1);
-			system.movement.base.value = Math.min(system.movement.base.value, system.movement.base?.ceil || system.movement.base.value + 1);
-			system.movement.base.value = Math.max(system.movement.base.value, 0);
-		} else {
-			system.movement.base.value = Math.max(system.movement.base.absolute, 0);
-		}
-		
-		//Speed (Walk)
-		if (isNaN(parseInt(system.movement.walk?.absolute))) { //All logic only required if there is no usable absolute value
-		
-			system.movement.walk.bonusValue = walkBonusValue;
-			
-			let walkForm = utils.evaluateFormula(system.movement.walk.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.walk.value += walkForm + walkBonusValue + system.movement.base?.temp || 0;
-			system.movement.walk.value += system.movement.walk.feat || 0;
-			system.movement.walk.value += system.movement.walk.item || 0;
-			system.movement.walk.value += system.movement.walk.power || 0;
-			system.movement.walk.value += system.movement.walk.race || 0;
-			system.movement.walk.value += system.movement.walk.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.walk.value = Math.max(system.movement.walk.value, system.movement.walk?.floor || system.movement.walk.value - 1);
-			system.movement.walk.value = Math.min(system.movement.walk.value, system.movement.walk?.ceil || system.movement.walk.value + 1);
-			system.movement.walk.value = Math.max(system.movement.walk.value, 0);
-		} else {
-			system.movement.walk.value = Math.max(system.movement.walk.absolute, 0);
-		}
+      system.movement.base.value = system.movement.base.base + baseMoveBonusValue + system.movement.base?.temp || 0;
+      system.movement.base.value += system.movement.base.feat || 0;
+      system.movement.base.value += system.movement.base.item || 0;
+      system.movement.base.value += system.movement.base.power || 0;
+      system.movement.base.value += system.movement.base.race || 0;
+      system.movement.base.value += system.movement.base.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.base.value = Math.max(system.movement.base.value, system.movement.base?.floor || system.movement.base.value - 1);
+      system.movement.base.value = Math.min(system.movement.base.value, system.movement.base?.ceil || system.movement.base.value + 1);
+      system.movement.base.value = Math.max(system.movement.base.value, 0);
+    } else {
+      system.movement.base.value = Math.max(system.movement.base.absolute, 0);
+    }
+    
+    //Speed (Walk)
+    if (isNaN(parseInt(system.movement.walk?.absolute))) { //All logic only required if there is no usable absolute value
+    
+      system.movement.walk.bonusValue = walkBonusValue;
+      
+      let walkForm = utils.evaluateFormula(system.movement.walk.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.walk.value += walkForm + walkBonusValue + system.movement.base?.temp || 0;
+      system.movement.walk.value += system.movement.walk.feat || 0;
+      system.movement.walk.value += system.movement.walk.item || 0;
+      system.movement.walk.value += system.movement.walk.power || 0;
+      system.movement.walk.value += system.movement.walk.race || 0;
+      system.movement.walk.value += system.movement.walk.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.walk.value = Math.max(system.movement.walk.value, system.movement.walk?.floor || system.movement.walk.value - 1);
+      system.movement.walk.value = Math.min(system.movement.walk.value, system.movement.walk?.ceil || system.movement.walk.value + 1);
+      system.movement.walk.value = Math.max(system.movement.walk.value, 0);
+    } else {
+      system.movement.walk.value = Math.max(system.movement.walk.absolute, 0);
+    }
 
-		//Run Speed
-		if (isNaN(parseInt(system.movement.run?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.run.bonusValue = runBonusValue;
-			let runForm = utils.evaluateFormula(system.movement.run.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.run.value = runForm + runBonusValue + system.movement.run?.temp || 0;
-			system.movement.run.value += system.movement.run.feat || 0;
-			system.movement.run.value += system.movement.run.item || 0;
-			system.movement.run.value += system.movement.run.power || 0;
-			system.movement.run.value += system.movement.run.race || 0;
-			system.movement.run.value += system.movement.run.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.run.value = Math.max(system.movement.run.value, system.movement.run?.floor || system.movement.run.value - 1);
-			system.movement.run.value = Math.min(system.movement.run.value, system.movement.run?.ceil || system.movement.run.value + 1);
-			system.movement.run.value = Math.max(system.movement.run.value, 0);
-		} else {
-			system.movement.run.value = Math.max(system.movement.run.absolute, 0);
-		}
-		
-		//Charge Speed
-		if (isNaN(parseInt(system.movement.charge?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.charge.bonusValue = chargeBonusValue;
-			let chargeForm = utils.evaluateFormula(system.movement.charge.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
-			system.movement.charge.value += system.movement.charge.feat || 0;
-			system.movement.charge.value += system.movement.charge.item || 0;
-			system.movement.charge.value += system.movement.charge.power || 0;
-			system.movement.charge.value += system.movement.charge.race || 0;
-			system.movement.charge.value += system.movement.charge.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.charge.value = Math.max(system.movement.charge.value, system.movement.charge?.floor || system.movement.charge.value - 1);
-			system.movement.charge.value = Math.min(system.movement.charge.value, system.movement.charge?.ceil || system.movement.charge.value + 1);
-			system.movement.charge.value = Math.max(system.movement.charge.value, 0);
-		} else {
-			system.movement.charge.value = Math.max(system.movement.charge.absolute, 0);
-		}
+    //Run Speed
+    if (isNaN(parseInt(system.movement.run?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.run.bonusValue = runBonusValue;
+      let runForm = utils.evaluateFormula(system.movement.run.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.run.value = runForm + runBonusValue + system.movement.run?.temp || 0;
+      system.movement.run.value += system.movement.run.feat || 0;
+      system.movement.run.value += system.movement.run.item || 0;
+      system.movement.run.value += system.movement.run.power || 0;
+      system.movement.run.value += system.movement.run.race || 0;
+      system.movement.run.value += system.movement.run.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.run.value = Math.max(system.movement.run.value, system.movement.run?.floor || system.movement.run.value - 1);
+      system.movement.run.value = Math.min(system.movement.run.value, system.movement.run?.ceil || system.movement.run.value + 1);
+      system.movement.run.value = Math.max(system.movement.run.value, 0);
+    } else {
+      system.movement.run.value = Math.max(system.movement.run.absolute, 0);
+    }
+    
+    //Charge Speed
+    if (isNaN(parseInt(system.movement.charge?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.charge.bonusValue = chargeBonusValue;
+      let chargeForm = utils.evaluateFormula(system.movement.charge.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
+      system.movement.charge.value += system.movement.charge.feat || 0;
+      system.movement.charge.value += system.movement.charge.item || 0;
+      system.movement.charge.value += system.movement.charge.power || 0;
+      system.movement.charge.value += system.movement.charge.race || 0;
+      system.movement.charge.value += system.movement.charge.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.charge.value = Math.max(system.movement.charge.value, system.movement.charge?.floor || system.movement.charge.value - 1);
+      system.movement.charge.value = Math.min(system.movement.charge.value, system.movement.charge?.ceil || system.movement.charge.value + 1);
+      system.movement.charge.value = Math.max(system.movement.charge.value, 0);
+    } else {
+      system.movement.charge.value = Math.max(system.movement.charge.absolute, 0);
+    }
 
-		//Shift Speed
-		if (isNaN(parseInt(system.movement.shift?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.shift.bonusValue = shiftBonusValue;		
-			let shiftForm = utils.evaluateFormula(system.movement.shift.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
-			system.movement.shift.value += system.movement.shift.feat || 0;
-			system.movement.shift.value += system.movement.shift.item || 0;
-			system.movement.shift.value += system.movement.shift.power || 0;
-			system.movement.shift.value += system.movement.shift.race || 0;
-			system.movement.shift.value += system.movement.shift.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.shift.value = Math.max(system.movement.shift.value, system.movement.shift?.floor || system.movement.shift.value - 1);
-			system.movement.shift.value = Math.min(system.movement.shift.value, system.movement.shift?.ceil || system.movement.shift.value + 1);
-			system.movement.shift.value = Math.max(system.movement.shift.value, 0);
-		} else {
-			system.movement.shift.value = Math.max(system.movement.shift.absolute, 0);
-		}
+    //Shift Speed
+    if (isNaN(parseInt(system.movement.shift?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.shift.bonusValue = shiftBonusValue;		
+      let shiftForm = utils.evaluateFormula(system.movement.shift.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
+      system.movement.shift.value += system.movement.shift.feat || 0;
+      system.movement.shift.value += system.movement.shift.item || 0;
+      system.movement.shift.value += system.movement.shift.power || 0;
+      system.movement.shift.value += system.movement.shift.race || 0;
+      system.movement.shift.value += system.movement.shift.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.shift.value = Math.max(system.movement.shift.value, system.movement.shift?.floor || system.movement.shift.value - 1);
+      system.movement.shift.value = Math.min(system.movement.shift.value, system.movement.shift?.ceil || system.movement.shift.value + 1);
+      system.movement.shift.value = Math.max(system.movement.shift.value, 0);
+    } else {
+      system.movement.shift.value = Math.max(system.movement.shift.absolute, 0);
+    }
 
-		//Burrow Speed
-		if (isNaN(parseInt(system.movement.burrow?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.burrow.bonusValue = burrowBonusValue;
-			let burrowForm = utils.evaluateFormula(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
-			system.movement.burrow.value += system.movement.burrow.feat || 0;
-			system.movement.burrow.value += system.movement.burrow.item || 0;
-			system.movement.burrow.value += system.movement.burrow.power || 0;
-			system.movement.burrow.value += system.movement.burrow.race || 0;
-			system.movement.burrow.value += system.movement.burrow.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.burrow.value = Math.max(system.movement.burrow.value, system.movement.burrow?.floor || system.movement.burrow.value - 1);
-			system.movement.burrow.value = Math.min(system.movement.burrow.value, system.movement.burrow?.ceil || system.movement.burrow.value + 1);
-			system.movement.burrow.value = Math.max(system.movement.burrow.value, 0);
-		} else {
-			system.movement.burrow.value = Math.max(system.movement.burrow.absolute, 0);
-		}
+    //Burrow Speed
+    if (isNaN(parseInt(system.movement.burrow?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.burrow.bonusValue = burrowBonusValue;
+      let burrowForm = utils.evaluateFormula(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
+      system.movement.burrow.value += system.movement.burrow.feat || 0;
+      system.movement.burrow.value += system.movement.burrow.item || 0;
+      system.movement.burrow.value += system.movement.burrow.power || 0;
+      system.movement.burrow.value += system.movement.burrow.race || 0;
+      system.movement.burrow.value += system.movement.burrow.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.burrow.value = Math.max(system.movement.burrow.value, system.movement.burrow?.floor || system.movement.burrow.value - 1);
+      system.movement.burrow.value = Math.min(system.movement.burrow.value, system.movement.burrow?.ceil || system.movement.burrow.value + 1);
+      system.movement.burrow.value = Math.max(system.movement.burrow.value, 0);
+    } else {
+      system.movement.burrow.value = Math.max(system.movement.burrow.absolute, 0);
+    }
 
-		//Climb Speed
-		if (isNaN(parseInt(system.movement.climb?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.climb.bonusValue = climbBonusValue;
-			let climbForm = utils.evaluateFormula(system.movement.climb.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb?.temp || 0;
-			system.movement.climb.value += system.movement.climb.feat || 0;
-			system.movement.climb.value += system.movement.climb.item || 0;
-			system.movement.climb.value += system.movement.climb.power || 0;
-			system.movement.climb.value += system.movement.climb.race || 0;
-			system.movement.climb.value += system.movement.climb.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.climb.value = Math.max(system.movement.climb.value, system.movement.climb?.floor || system.movement.climb.value - 1);
-			system.movement.climb.value = Math.min(system.movement.climb.value, system.movement.climb?.ceil || system.movement.climb.value + 1);
-			system.movement.climb.value = Math.max(system.movement.climb.value, 0);
-		} else {
-			system.movement.climb.value = Math.max(system.movement.climb.absolute, 0);
-		}
+    //Climb Speed
+    if (isNaN(parseInt(system.movement.climb?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.climb.bonusValue = climbBonusValue;
+      let climbForm = utils.evaluateFormula(system.movement.climb.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb?.temp || 0;
+      system.movement.climb.value += system.movement.climb.feat || 0;
+      system.movement.climb.value += system.movement.climb.item || 0;
+      system.movement.climb.value += system.movement.climb.power || 0;
+      system.movement.climb.value += system.movement.climb.race || 0;
+      system.movement.climb.value += system.movement.climb.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.climb.value = Math.max(system.movement.climb.value, system.movement.climb?.floor || system.movement.climb.value - 1);
+      system.movement.climb.value = Math.min(system.movement.climb.value, system.movement.climb?.ceil || system.movement.climb.value + 1);
+      system.movement.climb.value = Math.max(system.movement.climb.value, 0);
+    } else {
+      system.movement.climb.value = Math.max(system.movement.climb.absolute, 0);
+    }
 
-		//Burrow Speed
-		if (isNaN(parseInt(system.movement.burrow?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.burrow.bonusValue = burrowBonusValue;
-			let burrowForm = utils.evaluateFormula(system.movement.burrow.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
-			system.movement.burrow.value += system.movement.burrow.feat || 0;
-			system.movement.burrow.value += system.movement.burrow.item || 0;
-			system.movement.burrow.value += system.movement.burrow.power || 0;
-			system.movement.burrow.value += system.movement.burrow.race || 0;
-			system.movement.burrow.value += system.movement.burrow.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.burrow.value = Math.max(system.movement.burrow.value, system.movement.burrow?.floor || system.movement.burrow.value - 1);
-			system.movement.burrow.value = Math.min(system.movement.burrow.value, system.movement.burrow?.ceil || system.movement.burrow.value + 1);
-			system.movement.burrow.value = Math.max(system.movement.burrow.value, 0);
-		} else {
-			system.movement.burrow.value = Math.max(system.movement.burrow.absolute, 0);
-		}
+    //Fly Speed
+    if (isNaN(parseInt(system.movement.fly?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.fly.bonusValue = flyBonusValue;
+      let flyForm = utils.evaluateFormula(system.movement.fly.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.fly.value = flyForm + flyBonusValue + system.movement.fly?.temp || 0;
+      system.movement.fly.value += system.movement.fly.feat || 0;
+      system.movement.fly.value += system.movement.fly.item || 0;
+      system.movement.fly.value += system.movement.fly.power || 0;
+      system.movement.fly.value += system.movement.fly.race || 0;
+      system.movement.fly.value += system.movement.fly.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.fly.value = Math.max(system.movement.fly.value, system.movement.fly?.floor || system.movement.fly.value - 1);
+      system.movement.fly.value = Math.min(system.movement.fly.value, system.movement.fly?.ceil || system.movement.fly.value + 1);
+      system.movement.fly.value = Math.max(system.movement.fly.value, 0);
+    } else {
+      system.movement.fly.value = Math.max(system.movement.fly.absolute, 0);
+    }
+    
+    //Swim Speed
+    if (isNaN(parseInt(system.movement.swim?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.swim.bonusValue = swimBonusValue;		
+      let swimForm = utils.evaluateFormula(system.movement.swim.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim?.temp || 0;
+      system.movement.swim.value += system.movement.swim.feat || 0;
+      system.movement.swim.value += system.movement.swim.item || 0;
+      system.movement.swim.value += system.movement.swim.power || 0;
+      system.movement.swim.value += system.movement.swim.race || 0;
+      system.movement.swim.value += system.movement.swim.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.swim.value = Math.max(system.movement.swim.value, system.movement.swim?.floor || system.movement.swim.value - 1);
+      system.movement.swim.value = Math.min(system.movement.swim.value, system.movement.swim?.ceil || system.movement.swim.value + 1);
+      system.movement.swim.value = Math.max(system.movement.swim.value, 0);
+    } else {
+      system.movement.swim.value = Math.max(system.movement.swim.absolute, 0);
+    }
 
-		//Fly Speed
-		if (isNaN(parseInt(system.movement.fly?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.fly.bonusValue = flyBonusValue;
-			let flyForm = utils.evaluateFormula(system.movement.fly.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.fly.value = flyForm + flyBonusValue + system.movement.fly?.temp || 0;
-			system.movement.fly.value += system.movement.fly.feat || 0;
-			system.movement.fly.value += system.movement.fly.item || 0;
-			system.movement.fly.value += system.movement.fly.power || 0;
-			system.movement.fly.value += system.movement.fly.race || 0;
-			system.movement.fly.value += system.movement.fly.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.fly.value = Math.max(system.movement.fly.value, system.movement.fly?.floor || system.movement.fly.value - 1);
-			system.movement.fly.value = Math.min(system.movement.fly.value, system.movement.fly?.ceil || system.movement.fly.value + 1);
-			system.movement.fly.value = Math.max(system.movement.fly.value, 0);
-		} else {
-			system.movement.fly.value = Math.max(system.movement.fly.absolute, 0);
-		}
-		
-		//Swim Speed
-		if (isNaN(parseInt(system.movement.swim?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.swim.bonusValue = swimBonusValue;		
-			let swimForm = utils.evaluateFormula(system.movement.swim.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim?.temp || 0;
-			system.movement.swim.value += system.movement.swim.feat || 0;
-			system.movement.swim.value += system.movement.swim.item || 0;
-			system.movement.swim.value += system.movement.swim.power || 0;
-			system.movement.swim.value += system.movement.swim.race || 0;
-			system.movement.swim.value += system.movement.swim.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.swim.value = Math.max(system.movement.swim.value, system.movement.swim?.floor || system.movement.swim.value - 1);
-			system.movement.swim.value = Math.min(system.movement.swim.value, system.movement.swim?.ceil || system.movement.swim.value + 1);
-			system.movement.swim.value = Math.max(system.movement.swim.value, 0);
-		} else {
-			system.movement.swim.value = Math.max(system.movement.swim.absolute, 0);
-		}
-
-		//Teleport Speed
-		if (isNaN(parseInt(system.movement.teleport?.absolute))) { //All logic only required if there is no usable absolute value
-			system.movement.teleport.bonusValue = teleportBonusValue;		
-			let teleportForm = utils.evaluateFormula(system.movement.teleport.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
-			system.movement.teleport.value = teleportForm + teleportBonusValue + system.movement.teleport?.temp || 0;
-			system.movement.teleport.value += system.movement.teleport.feat || 0;
-			system.movement.teleport.value += system.movement.teleport.item || 0;
-			system.movement.teleport.value += system.movement.teleport.power || 0;
-			system.movement.teleport.value += system.movement.teleport.race || 0;
-			system.movement.teleport.value += system.movement.teleport.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.teleport.value = Math.max(system.movement.teleport.value, system.movement.teleport?.floor || system.movement.teleport.value - 1);
-			system.movement.teleport.value = Math.min(system.movement.teleport.value, system.movement.teleport?.ceil || system.movement.teleport.value + 1);
-			system.movement.teleport.value = Math.max(system.movement.teleport.value, 0);
-		} else {
-			system.movement.teleport.value = Math.max(system.movement.teleport.absolute, 0);
-		}
+    //Teleport Speed
+    if (isNaN(parseInt(system.movement.teleport?.absolute))) { //All logic only required if there is no usable absolute value
+      system.movement.teleport.bonusValue = teleportBonusValue;		
+      let teleportForm = utils.evaluateFormula(system.movement.teleport.formula.replace(/@base/g, system.movement.base.value).replace(/@armour/g, system.movement.base.armour), system);
+      system.movement.teleport.value = teleportForm + teleportBonusValue + system.movement.teleport?.temp || 0;
+      system.movement.teleport.value += system.movement.teleport.feat || 0;
+      system.movement.teleport.value += system.movement.teleport.item || 0;
+      system.movement.teleport.value += system.movement.teleport.power || 0;
+      system.movement.teleport.value += system.movement.teleport.race || 0;
+      system.movement.teleport.value += system.movement.teleport.untyped || 0;
+      
+      //trim value according to floor and ceil
+      system.movement.teleport.value = Math.max(system.movement.teleport.value, system.movement.teleport?.floor || system.movement.teleport.value - 1);
+      system.movement.teleport.value = Math.min(system.movement.teleport.value, system.movement.teleport?.ceil || system.movement.teleport.value + 1);
+      system.movement.teleport.value = Math.max(system.movement.teleport.value, 0);
+    } else {
+      system.movement.teleport.value = Math.max(system.movement.teleport.absolute, 0);
+    }
 	}
 	_prepareDerivedDataAbilities(actorData, system) {
 		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */

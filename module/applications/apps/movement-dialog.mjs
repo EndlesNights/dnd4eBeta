@@ -14,7 +14,7 @@ export default class MovementDialog extends DocumentSheet4e {
 			movementBonusClicked: MovementDialog._onMovementBonus,
 		},
 		position: {
-			width: 500,
+			width: 512,
 			height: "auto",
 		},
 		window: {
@@ -65,10 +65,10 @@ export default class MovementDialog extends DocumentSheet4e {
 		event.preventDefault();
 		const moveName = target.parentElement.dataset.movement;
 		const targetString = `system.movement.${moveName}`;
-		console.debug(moveName);
-		console.debug(target.parentElement.dataset);
-		console.debug(target.parentElement);
-		console.debug(this.document.system.movement[moveName]);
+		//console.debug(moveName);
+		//console.debug(target.parentElement.dataset);
+		//console.debug(target.parentElement);
+		//console.debug(this.document.system.movement[moveName]);
 		const options = { document: this.document, target: targetString, label: `${_loc("DND4E.MovementBonus", { mode: moveName })}` };
 		new AttributeBonusDialog(options).render(true);
 	}

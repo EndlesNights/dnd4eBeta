@@ -1,8 +1,8 @@
 <section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
   {{#each system.macros as |macro i|}}
-  <fieldset class="macro form-group vertical collapsed" data-macro-number="{{@index}}">
-    <legend class="macro-expand-toggle" data-action="expandMacro">{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
+  <fieldset class="collapsible form-group vertical collapsed" data-macro-number="{{@index}}">
+    <legend class="fieldset-expand-toggle" data-action="expandMacro">{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
     <div class="form-group loose">
       
       <div class="form-group loose">

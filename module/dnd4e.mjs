@@ -70,21 +70,10 @@ Hooks.once("init", async function() {
 	CONFIG.Token.movement.TerrainData = data.TerrainData4e;
 	CONFIG.Token.rulerClass = canvas.placeables.tokens.TokenRuler4e;
 
-	CONFIG.Token.movement.actions.charge = {
-		label: "DND4E.TOKEN.MOVEMENT.ACTIONS.charge.label",
-		icon: "fa-solid fa-person-walking",
-		img: "systems/dnd4e/icons/ui/charging-bull.svg",
-		order: 1,
-		teleport: false,
-		measure: true,
-		walls: "move",
-		visualize: true,
-		deriveTerrainDifficulty: null,
-	},
 	CONFIG.Token.movement.actions.shift = {
 		label: "DND4E.TOKEN.MOVEMENT.ACTIONS.shift.label",
 		icon: "fa-solid fa-person-walking",
-		img: "systems/dnd4e/icons/ui/suspicious.svg",
+		img: "systems/dnd4e/icons/ui/shift.svg",
 		order: 2,
 		teleport: false,
 		measure: true,
