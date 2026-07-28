@@ -95,15 +95,19 @@
     
     <hr />
     
-    <div class="speed-body form-group crawl" data-movement="crawl">
-      <span class="move-name label">{{localize 'DND4E.Movement.Crawl'}} <i class="fa-solid fa-circle-question" data-tooltip="{{localize 'DND4EUI.SpeedFormulaTip'}}"></i></span>
-      <input class="move-formula" type="text" name="system.movement.crawl" value="{{system.movement.crawl}}" placeholder="@mode / 2">
+    <div class="form-group">    
+    <label>{{ localize "DND4E.Movement.IgnorePenalties" }}</label>
+      <label class="checkbox long">
+        <input type="checkbox" name="system.movement.fullCrawl" {{checked system.movement.fullCrawl}}>
+        {{ localize "DND4E.Movement.Crawl" }}
+      </label>
+        
+      <label class="checkbox long">
+        <input type="checkbox" name="system.movement.fullSqueeze" {{checked system.movement.fullSqueeze}}>
+        {{ localize "DND4E.Movement.Squeeze" }}
+      </label>
     </div>
-    <div class="speed-body form-group squeeze" data-movement="squeeze">
-      <span class="move-name label">{{localize 'DND4E.Movement.Squeeze'}} <i class="fa-solid fa-circle-question" data-tooltip="{{localize 'DND4EUI.SpeedFormulaTip'}}"></i></span>
-      <input class="move-formula" type="text" name="system.movement.squeeze" value="{{system.movement.squeeze}}" placeholder="@mode / 2">
-    </div>
-    
+  
   </fieldset>
 
   <fieldset class="movement-special move-table">
