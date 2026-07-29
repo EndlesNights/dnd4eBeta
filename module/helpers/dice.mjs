@@ -86,7 +86,6 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			//Target conditions
 			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
 			const targetDist = targetArr[targ] ? utils.computeDistance(actor, targetArr[targ]) : 0;
-			//console.debug(data);
 			if (targetArr[targ]?.actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 				let meleeVsProne = true;
 				if (item?.system.rangeType === "weapon") {
@@ -249,7 +248,6 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 	let allRollsParts = [];
 	const numberOfTargets = Math.max(1, game.user.targets.size);
-	//console.debug(data);
 	let targetDefArray = [], targetAtkModArray = [], targetBonusArray = [];
 	
 	if (isAttackRoll && (form !== null)) {
@@ -259,8 +257,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			for (let [k, v] of Object.entries(form)) {
 				if (v.checked !== undefined) {
 					let tabIndex = v.name.split(".")[0];
-					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) // check if Individual Attack Bonuses
-					|| !individualAttack) { //otherwise just use Unified Attack Bonuses
+          // check if Individual Attack Bonuses otherwise just use Unified Attack Bonuses
+					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) || !individualAttack) {
 						let bonusName = v.name.split(".")[1];
 						if (v.checked) {
 							targetBonuses.push(`@${bonusName}`);
@@ -297,8 +295,6 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				targetAtkModArray.push(attackMod);
 			}
 		}
-		//console.debug(targetDefArray);
-		//console.debug(targetAtkModArray);
 	}
 	else if (isAttackRoll && fastForward) {
 		// Logic to infer common bonuses based on user and target status under fast-forward conditions
@@ -324,12 +320,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		if (game.settings.get("dnd4e", "markAutomation") && data?.marker) {
 			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.marked.shouldApply = true;
 		}
-				
+		
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 
 			targetDefArray.push(data.item.attack.def); targetAtkModArray.push(data.item.attack.ability);
-			
-			const targetBonuses = foundry.utils.deepClone(userStatBonuses);
+			const targetBonuses = foundry.utils.deepClone(userStatBonuses);      
+      
 			if (theTargets.length > 0) {
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
@@ -440,16 +436,31 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	const itemData = item?.getRollData({ variance: options.variance }).item;
 	const weaponData = weaponUse?.getRollData().item;
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
+    const attacker = utils.tokenForActor(actor);
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
-		const attacker = utils.tokenForActor(actor);
 		try {
-			let targetOptions = foundry.utils.deepClone(options);
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
-			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
-			// populate the common attack bonuses into data
-			const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
+      //const targetOptions = foundry.utils.deepClone(options);
+      // Deep clone fails on the options object because it contains more complex structures, and silently returns the original object instead. Fixing this by replacing with a manually constructed targetOptions object that only contains the stuff we need. It's also super important to reset the bonuses property in order to recalc bonuses between rolls - Fox
+      const targetOptions = {
+        "attackedDef": options.attackedDef,
+        
+        "bonuses": foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses),
+        "formulaInnerData": options.formulaInnerData,
+        "parent": options.parent,
+        "variance": options.variance,
+        "weaponUuid": options.weaponUuid
+      };
+      
+      // Get actor bonuses here, in case they change between rolls
+      await utils.applyEffects({ ...data, ...targetOptions.variance }, actor, itemData, weaponData, "attack", null, false, targetOptions);
+      // ...Then add target bonuses
+			if (targetActor) await utils.applyEffects({ ...data, ...targetOptions.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
+			
+      // populate the common attack bonuses into data
+      const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
 			if (commonAttackBonuses) {
 				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
 					data[key] = commonAttackBonuses[key].value;
@@ -474,6 +485,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			}
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
+      if (isAttackRoll) await utils.endEffects(actor, ["attack"]);
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -585,6 +597,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		flavor: flavor,
 		flags: options?.flags,
 	}, { messageMode });
+  
 	return roll;
 }
 
@@ -733,7 +746,6 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	} else {
 		if (!fastForward) parts.pop();
 	}
-	//console.debug(parts);
 
 	let roll;
 	if (hitType === "immune") {
