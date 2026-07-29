@@ -130,7 +130,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		const charName = this.document.name;
 		const healType = healData["heal-type"];
 
-		console.debug(JSON.stringify(healData));
+		//console.debug(JSON.stringify(healData));
 
 		let roll = await utils.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
 		
