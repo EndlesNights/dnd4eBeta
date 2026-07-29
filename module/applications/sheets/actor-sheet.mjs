@@ -1593,8 +1593,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @private
 	 */
 	_onItemRoll(item, variance = {}) {
-		console.debug(variance);
-
 		if (item.type === "power") {
 			const fastForward = utils.isRollFastForwarded(event);
 			return this.actor.usePower(item, {
@@ -1635,7 +1633,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onRollEffectSave(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		console.debug("roll Save Throw v Effect!");
+		//console.debug("roll Save Throw v Effect!");
 		const effectId = target.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);	
 		const saveDC = effect.system.saveDC || 10;
