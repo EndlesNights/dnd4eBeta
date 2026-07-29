@@ -738,6 +738,7 @@
 "DND4E.NotTrained": "Not Trained",
 "DND4E.NPCAutoMath": "Advanced Math Options",
 "DND4E.NPCAutoMathTip": "Automatically Calculate Defenses & Skills instead of using flat numbers",
+"DND4E.obscuredTerrain.Label": "Obscured Terrain",
 "DND4E.of": "of",
 "DND4E.Ongoing": "Ongoing",
 "DND4E.OngoingDamage": "Ongoing Damage",
@@ -1521,6 +1522,26 @@
 			"Forest": "Forest Walk",
 			"Ice": "Ice Walk",
 			"Swamp": "Swamp Walk"
+		}
+	},
+	"ObscuredTerrain": {
+		"FIELDS": {
+			"level": {
+				"hint": "The level of obscurement this region creates.",
+				"label": "Level"
+			},
+			"dispositions": {
+				"hint": "If set, only Tokens with these dispositions are affected by this terrain.",
+				"label": "Dispositions"
+			},
+			"origins": {
+				"hint": "If set, only Tokens with these creature origins are affected by this terrain.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only Tokens with these creature types are affected by this terrain.",
+				"label": "Types"
+			}
 		}
 	}
 },
