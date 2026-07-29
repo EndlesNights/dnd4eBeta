@@ -1953,6 +1953,8 @@
 "SETTINGS.4ePowerAutoGenerateLabelOptionL": "When creating a new power, determine if the option to \"Auto Generate Power Card Details\" is set.",
 "SETTINGS.4eSaveRemindersN": "Trigger End-of-Turn Saves Automatically",
 "SETTINGS.4eSaveRemindersL": "Each \"save ends\" effect on a creature prompts for a saving throw at the end of their turn, or rolls a save automatically if Fast-Forward is enabled.",
+"SETTINGS.4eSenseVisionN": "Sync Senses to Token Vision",
+"SETTINGS.4eSenseVisionL": "Automatically configure token vision range, vision mode, and detection modes based on the actor's senses.",
 "SETTINGS.4eShowRollExpressionN": "Show Roll Formula",
 "SETTINGS.4eShowRollExpressionL": "Display the formula used to create a given d20 or damage roll. Useful to find out how a roll was calculate but may be confusing for novice users",
 "SETTINGS.4eShowDefencesN": "Show Defence Values",

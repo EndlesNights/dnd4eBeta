@@ -1364,17 +1364,49 @@ preLocalize("autoTargetModes");
  * Character senses options
  * @type {Object}
  */
-DND4E.special = {
-	nv: "DND4E.VisionNormal",
-	lv: "DND4E.VisionLowLight",
-	bv: "DND4E.VisionBlind",
-	aa: "DND4E.SpecialSensesAA",
-	bs: "DND4E.SpecialSensesBS",
-	dv: "DND4E.SpecialSensesDV",
-	ts: "DND4E.SpecialSensesTS",
-	tr: "DND4E.SpecialSensesTR",
+DND4E.senses = {
+	nv: {
+		label: "DND4E.VisionNormal",
+	},
+	lv: {
+		label: "DND4E.VisionLowLight",
+		detectionMode: "basicSight",
+		grantsSight: true,
+		range: 0,
+		visionMode: "darkvision",
+	},
+	bv: {
+		label: "DND4E.VisionBlind",
+	},
+	aa: {
+		label: "DND4E.SpecialSensesAA",
+	},
+	bs: {
+		label: "DND4E.SpecialSensesBS",
+		detectionMode: "seeAll",
+		grantsSight: true,
+		visionMode: "basicSight",
+	},
+	dv: {
+		label: "DND4E.SpecialSensesDV",
+		detectionMode: "basicSight",
+		grantsSight: true,
+		range: Infinity,
+		visionMode: "darkvision",
+	},
+	ts: {
+		label: "DND4E.SpecialSensesTS",
+		detectionMode: "feelTremor",
+		grantsSight: true,
+	},
+	tr: {
+		label: "DND4E.SpecialSensesTR",
+		detectionMode: "seeAll",
+		grantsSight: true,
+		visionMode: "basicSight",
+	},
 };
-preLocalize("special", { sort: true });
+preLocalize("senses", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 /*  Movement                                    */
