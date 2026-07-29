@@ -1804,20 +1804,23 @@ export function computeFlankedStatus(token) {
  * Computes the concealment status of a target relative to its attacker
  * @param {Token4e} token                   Attacking token
  * @param {Token4e} target                  Target token
- * @returns {string}                        Calculated concealment level of the target relative to the attacking token
+ * @returns {Number}                        Calculated concealment level of the target relative to the attacking token
  */
 export function computeConcealment(token, target) {
+	const CONCEALMENT = CONFIG.DND4E.CONCEALMENT;
+	const LIGHT_LEVEL = CONFIG.DND4E.LIGHT_LEVEL;
+	if (token.canDetect(target, { modes: ["seeAll", "feelTremor"] })) return CONCEALMENT.NONE;
 	const targetLight = target.lightLevel;
 	switch (targetLight) {
-		case 0:
-			if (token.actor.system.senses.special.dv.value) return "concealed";
-			else return "concealedTotal";
-		case 1:
-			if (token.actor.system.senses.special.dv.value) return "none";
-			if (token.actor.system.senses.special.lv.value) return "none";
-			else return "concealed";
-		case 2:
-			return "none";
+		case LIGHT_LEVEL.DARK:
+			if (token.actor.system.senses.special.dv.value) return CONCEALMENT.PARTIAL;
+			else return CONCEALMENT.TOTAL;
+		case LIGHT_LEVEL.DIM:
+			if (token.actor.system.senses.special.dv.value) return CONCEALMENT.NONE;
+			if (token.actor.system.senses.special.lv.value) return CONCEALMENT.NONE;
+			else return CONCEALMENT.PARTIAL;
+		case LIGHT_LEVEL.BRIGHT:
+			return CONCEALMENT.NONE;
 	}
 }
 

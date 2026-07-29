@@ -111,8 +111,8 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 			const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-			if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-			if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+			if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+			if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
@@ -365,8 +365,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-				if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === "concealed")) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
-				if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === "concealedTotal")) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
+				if ((targetStatus.includes("concealed") || (utils.computeConcealment(attacker, target) === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
+				if ((targetStatus.includes("concealedTotal") || (utils.computeConcealment(attacker, target) === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 
 				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
 				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;

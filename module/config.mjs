@@ -2252,6 +2252,12 @@ DND4E.LIGHT_LEVEL = {
 	BRIGHT: 2,
 };
 
+DND4E.CONCEALMENT = {
+	NONE: 0,
+	PARTIAL: 1,
+	TOTAL: 2,
+};
+
 // Configure allowed status flags
 DND4E.allowedActorFlags = [
 	"isPolymorphed", "originalActor",
