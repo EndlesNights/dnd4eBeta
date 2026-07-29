@@ -815,6 +815,45 @@ preLocalize("durationType", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
+DND4E.durationAction = {
+	attack: {
+		label: "DND4E.DurationActionAttack",
+	},
+	damage: {
+		label: "DND4E.DurationActionDamage",
+	},
+	check: {
+		label: "DND4E.DurationActionCheck",
+	},
+	save: {
+		label: "DND4E.DurationActionSave",
+	},
+	deathsave: {
+		label: "DND4E.DurationActionDeathSave",
+	},
+  heal: {
+		label: "DND4E.DurationActionHeal", 
+  },
+	attacked: {
+		label: "DND4E.DurationActionAttacked",
+	},
+  attackedhit: {
+		label: "DND4E.DurationActionAttackedHit", 
+  },
+  attackedmiss: {
+		label: "DND4E.DurationActionAttackedMiss", 
+  },
+  damaged: {
+		label: "DND4E.DurationActionDamaged", 
+  },
+  healed: {
+		label: "DND4E.DurationActionHealed", 
+  }
+};
+preLocalize("durationAction", { keys: ["label"] });
+
+/* -------------------------------------------- */
+
 DND4E.PhysicalItemTemplate = {
 	MAX_DEPTH: 5,
 };
