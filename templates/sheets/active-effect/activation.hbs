@@ -1,83 +1,103 @@
 <section class="tab scrollable{{#if tab.active}} active{{/if}} activation" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
-  {{#if powerParent}}
-  <div class="form-group">
-    <label>{{localize 'DND4E.EffectApply'}}</label>
-    <div class="form-fields">
-      <select name="system.powerEffectType">
-        {{selectOptions config.powerEffectTypes selected=document.system.powerEffectType blank=""}}
-      </select>
-    </div>
-  </div>
-  {{/if}}
   
-  <div class="form-group">
-    <label>{{localize 'DND4E.DurationType'}}</label>
-    <div class="form-fields">
-      <select class="durationType refreshes" name="system.durationType">
-        {{selectOptions config.durationType selected=document.system.durationType blank=""}}
-      </select>
-      {{#if (eq document.system.durationType "saveEnd")}}
-      <label>{{localize 'DND4E.AbbreviationDC'}}</label>
-      <input type="text" class="number saveDC" name="system.saveDC" value="{{ifThen document.system.saveDC document.system.saveDC '10'}}" placeholder="10" data-dtype="number">
-      {{/if}}
+  <fieldset>
+    <legend>{{localize 'DND4E.Duration'}}</legend>
+    {{#if powerParent}}
+    <div class="form-group">
+      <label>{{localize 'DND4E.EffectApply'}}</label>
+      <div class="form-fields">
+        <select class="effectTargets refreshes" name="system.powerEffectType">
+          {{selectOptions config.powerEffectTypes selected=document.system.powerEffectType blank=""}}
+        </select>
+      </div>
     </div>
-  </div>
-  
-  {{#if (eq document.system.durationType "custom")}}
-  <div class="form-group effect-duration">
-    <label class="flexrow" for="{{rootId}}-duration.value">
-      <span>{{localize "EFFECT.DURATION.Label"}}</span>
-      <span class="warning" hidden><i class="fa-duotone fa-triangle-exclamation"></i></span>
-    </label>
-    <div class="form-fields">
-      {{formInput fields.duration.fields.value value=source.duration.value id=(concat rootId "-duration.value")
-      aria=(object label=(localize "EFFECT.FIELDS.duration.value.label"))}}
-      {{formInput fields.duration.fields.units value=source.duration.units id=(concat rootId "-duration.units")
-      options=durationUnits aria=(object label=(localize "EFFECT.FIELDS.duration.units.label"))}}
+    {{/if}}
+    
+    {{#unless (eq document.system.durationType "saveEnd")}}
+    <div class="form-group">
+      <label>{{localize 'DND4E.DurationAction'}}</label>
+      <div class="form-fields">
+        <select class="durationAction refreshes" name="system.durationAction">
+          {{selectOptions config.durationAction selected=document.system.durationAction blank=""}}
+        </select>
+        {{#if document.system.durationAction}}
+        {{#unless (eq document.system.durationType "saveEnd")}}
+        <label>{{localize 'DND4E.DurationBefore'}}</label>
+        {{/unless}}
+        {{/if}}
+      </div>
     </div>
-  </div>
-  {{/if}}
-
-  {{!-- Prevent duration display for passive effects --}}
-  {{#if effect.system.durationType}}
-  {{!-- Prevent duration display for power effects which aren't yet applied --}}
-  {{#if source.duration.startRound}}
-  <div class="form-group effect-start">
-    <label>{{localize 'EFFECT.FIELDS.duration.startTime.label'}}</label>
-    <div class="form-fields">
-      <label>{{localize 'EFFECT.FIELDS.duration.startRound.label'}}</label>
-      <label>{{source.duration.startRound}}</label>
-      <label>{{localize 'DND4E.Initiative'}}</label>
-      <label data-tooltip="{{localize 'DND4EUI.Tiebreaker'}}: {{document.flags.dnd4e.effectData.startTurnInit}}">
-        {{numberFormat document.flags.dnd4e.effectData.startTurnInit decimals=0}}
+    {{/unless}}
+    
+    <div class="form-group">
+      <label>{{localize 'DND4E.DurationType'}}</label>
+      <div class="form-fields">
+        <select class="durationType refreshes" name="system.durationType">
+          {{selectOptions config.durationType selected=document.system.durationType blank=""}}
+        </select>
+        {{#if (eq document.system.durationType "saveEnd")}}
+        <label>{{localize 'DND4E.AbbreviationDC'}}</label>
+        <input type="text" class="number saveDC" name="system.saveDC" value="{{ifThen document.system.saveDC document.system.saveDC '10'}}" placeholder="10" data-dtype="number">
+        {{/if}}
+      </div>
+    </div>
+    
+    {{#if (eq document.system.durationType "custom")}}
+    <div class="form-group effect-duration">
+      <label class="flexrow" for="{{rootId}}-duration.value">
+        <span>{{localize "EFFECT.DURATION.Label"}}</span>
+        <span class="warning" hidden><i class="fa-duotone fa-triangle-exclamation"></i></span>
       </label>
+      <div class="form-fields">
+        {{formInput fields.duration.fields.value value=source.duration.value id=(concat rootId "-duration.value")
+        aria=(object label=(localize "EFFECT.FIELDS.duration.value.label"))}}
+        {{formInput fields.duration.fields.units value=source.duration.units id=(concat rootId "-duration.units")
+        options=durationUnits aria=(object label=(localize "EFFECT.FIELDS.duration.units.label"))}}
+      </div>
     </div>
-  </div>
+    {{/if}}
 
-  {{#unless (eq document.system.durationType 'saveEnd')}}
-  {{#unless (eq document.system.durationType 'endOfEncounter')}}
-  {{#unless (eq document.system.durationType 'endOfDay')}}
-  <div class="form-group effect-end">
-    <label>{{localize 'EFFECT.DurationEndInit'}}</label>
-    <div class="form-fields">
-      {{#if document.flags.dnd4e.effectData.durationRound}}
-      <label>{{localize 'EFFECT.FIELDS.duration.startRound.label'}}</label>
-      <label>{{document.flags.dnd4e.effectData.durationRound}}</label>
-      {{/if}}
-      {{#if document.flags.dnd4e.effectData.durationTurnInit}}
-      <label>{{localize 'DND4E.Initiative'}}</label>
-      <label data-tooltip="{{localize 'DND4EUI.Tiebreaker'}}: {{document.flags.dnd4e.effectData.durationTurnInit}}">
-        {{numberFormat document.flags.dnd4e.effectData.durationTurnInit decimals=0}}
-      </label>
-      {{/if}}
+    {{!-- Prevent duration display for passive effects --}}
+    {{#if effect.system.durationType}}
+    {{!-- Prevent duration display for power effects which aren't yet applied --}}
+    {{#if source.duration.startRound}}
+    <div class="form-group effect-start">
+      <label>{{localize 'EFFECT.FIELDS.duration.startTime.label'}}</label>
+      <div class="form-fields">
+        <label>{{localize 'EFFECT.FIELDS.duration.startRound.label'}}</label>
+        <label>{{source.duration.startRound}}</label>
+        <label>{{localize 'DND4E.Initiative'}}</label>
+        <label data-tooltip="{{localize 'DND4EUI.Tiebreaker'}}: {{document.flags.dnd4e.effectData.startTurnInit}}">
+          {{numberFormat document.flags.dnd4e.effectData.startTurnInit decimals=0}}
+        </label>
+      </div>
     </div>
-  </div>
-  {{/unless}}
-  {{/unless}}
-  {{/unless}}
-  {{/if}}
-  {{/if}}
+
+    {{#unless (eq document.system.durationType 'saveEnd')}}
+    {{#unless (eq document.system.durationType 'endOfEncounter')}}
+    {{#unless (eq document.system.durationType 'endOfDay')}}
+    <div class="form-group effect-end">
+      <label>{{localize 'EFFECT.DurationEndInit'}}</label>
+      <div class="form-fields">
+        {{#if document.flags.dnd4e.effectData.durationRound}}
+        <label>{{localize 'EFFECT.FIELDS.duration.startRound.label'}}</label>
+        <label>{{document.flags.dnd4e.effectData.durationRound}}</label>
+        {{/if}}
+        {{#if document.flags.dnd4e.effectData.durationTurnInit}}
+        <label>{{localize 'DND4E.Initiative'}}</label>
+        <label data-tooltip="{{localize 'DND4EUI.Tiebreaker'}}: {{document.flags.dnd4e.effectData.durationTurnInit}}">
+          {{numberFormat document.flags.dnd4e.effectData.durationTurnInit decimals=0}}
+        </label>
+        {{/if}}
+      </div>
+    </div>
+    {{/unless}}
+    {{/unless}}
+    {{/unless}}
+    {{/if}}
+    {{/if}}
+  </fieldset>
   
   {{formGroup fields.disabled value=source.disabled rootId=rootId}}
 
