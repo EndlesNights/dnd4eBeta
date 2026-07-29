@@ -1766,10 +1766,10 @@ export default class Item4e extends Item {
 			this._handleResourceConsumption({ isCard: false, isAttack: true }, this.system),
 			weaponUse ? this._handleResourceConsumption({ isCard: false, isAttack: true }, this.actor?.items.get(weaponUse.id).system) : true
 		// itemData.weaponUse? this.actor?.items.get(itemData.weaponUse)
-		);
-	
+		);	
 		if (allowed === false) return null;
-	
+    
+    await utils.endEffects(this.actor, ["attack"]);
 		return roll;
 	}
 
@@ -2374,7 +2374,7 @@ export default class Item4e extends Item {
 
 		Hooks.callAll("dnd4e.rollDamage", this, speaker);		
 
-		return damageRoll({
+		const check = await damageRoll({
 			event,
 			parts,
 			partsCrit,
@@ -2399,6 +2399,8 @@ export default class Item4e extends Item {
 			isOpp: variance?.isOpp || false,
 			allowCritical: !!partsCrit?.length,
 		});
+    utils.endEffects(this.actor, ["damage"]);
+    return check;
 	}
 
 	/* -------------------------------------------- */
@@ -2503,6 +2505,8 @@ export default class Item4e extends Item {
 		const speaker = ChatMessage.getSpeaker({ actor: this.actor });
 
 		Hooks.callAll("dnd4e.rollHealing", this, speaker);
+    
+    utils.endEffects(this.actor, ["heal"]);
 
 		// Call the roll helper utility
 		return damageRoll({
