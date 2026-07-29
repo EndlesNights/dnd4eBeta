@@ -387,12 +387,10 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				suitableKeywords.push("bloodied");
 			}
 
-			if (debug) {
-				console.debug(rollData);
-				console.debug(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
-				console.debug(suitableKeywords.sort());
-				console.debug(`${debug} ${suitableKeywords.join(", ")}`);
-			}
+			debugLog(rollData);
+			debugLog(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
+			debugLog(suitableKeywords.sort());
+			debugLog(`${debug} ${suitableKeywords.join(", ")}`);
 		}
 	}
 	//Dummy up some extra effects to represent global atk/damage bonuses
@@ -464,8 +462,8 @@ export async function applySaveEffects(rollData, actor, effectData, effectType, 
 			
 		if (effectsToProcess.length > 0) {
 			if (debug) {
-				console.log(`${debug} Found the following possible active effects`);
-				effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`));
+				debugLog(`${debug} Found the following possible active effects`);
+				effectsToProcess.forEach((effect) => console.debug(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`));
 			}
 
 			const suitableKeywords = ["global"];
@@ -495,13 +493,11 @@ export async function applySaveEffects(rollData, actor, effectData, effectType, 
 					});
 				});
 			}
-
-			if (debug) {
-				console.debug(rollData);
-				console.debug(`${debug} based on effect keywords the following effect keys are suitable`);
-				console.debug(suitableKeywords.sort());
-				console.debug(`${debug} ${suitableKeywords.join(", ")}`);
-			}
+			
+      debugLog(rollData);
+      debugLog(`${debug} based on effect keywords the following effect keys are suitable`);
+      debugLog(suitableKeywords.sort());
+      debugLog(`${debug} ${suitableKeywords.join(", ")}`);
 
 			await _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, null, options);
 		}
@@ -1000,13 +996,6 @@ export async function solidifyEffectActorData(effect, parentActor) {
 
 }
 
-// export async function parseSolidify(inputString, parentActor){
-// 	const newVal =  inputString.replace(/\$solidify\((.*?)\)/g, (match, value) => {
-// 		return commonReplace(value, parentActor);
-// 	});
-// 	return newVal;
-// }
-
 /**
  * 
  * @param {EmbeddedCollection<ActiveEffect4e>} effectMap    Collection of effects to apply
@@ -1134,6 +1123,31 @@ export async function applyAllXEffectsToTokens(effects, actor, selection) {
 		await applyEffectsToTokens(effects, filterTokenSetByDisposition(selection, parentDisposition), "allies", actor);
 		await applyEffectsToTokens(effects, filterTokenSetByDisposition(selection, parentDisposition, false), "enemies", actor);
 	}
+}
+
+/**
+ * End effects on an array of tokens at once
+ * @param {Token4e[]} targets        Array of tokens to apply effects to  
+ * @param {string} condition         Effect expiry condition ("attacked", etc.)
+ */
+export async function endEffectsOnTokens(targets, condition) {
+  for (let t of targets) {
+    const actor = t?.actor ? t.actor : parent;
+    debugLog(actor);
+    if (actor.isOwner || game.user.isGM) {
+      await endEffects(actor, [condition]);
+    } else {
+      game.socket.emit("system.dnd4e", {
+        actorID: actor.id,
+        tokenID: t?.id || null,
+        operation: "endTokenEffects",
+        condition: condition,
+        user: game.user.id,
+        scene: canvas.scene.id,
+      });
+    }    
+    debugLog(`Processing expired effects for ${actor.name}.`);
+  }
 }
 
 /**
@@ -1847,21 +1861,18 @@ export async function handleApplyEffectToToken(data) {
 }
 
 /**
- * Socket handler to delete effects on a token
+ * Socket handler to end effects on a token - bridge to utils.endEffects for non-owners
  * @param {Object} data
  * @param {Scene} data.scene
  * @param {string} data.tokenId
  * @param {string} data.actorId
- * @param {string[]} data.toDelete          Array of effect ids to delete
  * @returns {Promise}
  */
-export async function handleDeleteEffectToToken(data) {
-	if (!game.user.isGM) {
-		return;
-	}
+export async function handleEndTokenEffects(data) {
+	if (!game.user.isGM) return;
 
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
-	await actor.deleteActiveEffectSocket(data.toDelete);
+	await actor.endActiveEffectsSocket(data.condition);
 }
 
 /**
