@@ -64,7 +64,7 @@ export default class TokenDocument4e extends TokenDocument {
 
 		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
 			if (!senses[key]?.value) continue;
-			const range = config.range ?? senses[key]?.range;
+			const range = config.range ?? senses[key]?.range ?? Infinity;
 
 			if (config.detectionMode) detectionModes[config.detectionMode] = range;
 
@@ -75,9 +75,10 @@ export default class TokenDocument4e extends TokenDocument {
 		}
 
 		const sight = maxSightRange > 0
-			? { enabled: true, range: maxSightRange, visionMode: sightVisionMode ?? "basic" }
+			? { enabled: true, range: maxSightRange }
 			: {};
 
+		if (sightVisionMode) sight.visionMode = sightVisionMode;
 		return { sight, detectionModes };
 	}
 
@@ -97,8 +98,8 @@ export default class TokenDocument4e extends TokenDocument {
 			else target.detectionModes[id] = { enabled: true, range };
 		}
 
-		if (sight.enabled) {
-			Object.assign(target.sight, { enabled: true, range: sight.range, visionMode: sight.visionMode });
+		if (Object.keys(sight).length) {
+			Object.assign(target.sight, sight);
 		}
 	}
 
