@@ -17,7 +17,14 @@
 
 /**
  * @typedef DifficultTerrainRegionBehaviorSystemData
- * @property {boolean} magical                  This difficult terrain is caused by magic.
  * @property {Set<string>} types                Types of difficult terrain represented.
  * @property {Set<number>} ignoredDispositions  Token dispositions that won't be affected by this difficult terrain.
+ */
+
+/**
+ * @typedef ObscuredTerrainRegionBehaviorSystemData
+ * @property {Number} level              Level of obscurement this region creates.
+ * @property {Set<number>} dispositions  If not empty, only tokens with these dispositions are affected.
+ * @property {Set<string>} origins       If not empty, only tokens with these creature origins are affected.
+ * @property {Set<string>} types         If not empty, only tokens with these creature types are affected.
  */

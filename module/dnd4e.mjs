@@ -123,6 +123,7 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = data.regionBehavior.ApplyActiveEffect4eRegionBehaviorType;
 	CONFIG.RegionBehavior.dataModels.damagingRegion = data.regionBehavior.DamagingRegionRegionBehaviorType;
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = data.regionBehavior.DifficultTerrainRegionBehaviorType;
+	CONFIG.RegionBehavior.dataModels.obscuredTerrain = data.regionBehavior.ObscuredTerrainRegionBehaviorType;
 
 	CONFIG.RegionBehavior.typeLabels.applyActiveEffect4e = "DND4E.applyActiveEffect4e.Label";
 	CONFIG.RegionBehavior.typeIcons.applyActiveEffect4e = "fa-solid fa-person-rays";
@@ -130,6 +131,8 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeIcons.damagingRegion = "fas fa-burst";
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "difficult-terrain-icon";
+	CONFIG.RegionBehavior.typeLabels.obscuredTerrain = "DND4E.obscuredTerrain.Label";
+	CONFIG.RegionBehavior.typeIcons.obscuredTerrain = "fa-solid fa-smog";
 
 	helpers.settings.registerSystemSettings();
 

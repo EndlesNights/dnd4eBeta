@@ -1827,19 +1827,64 @@ export function computeFlankedStatus(token) {
 export function computeConcealment(token, target) {
 	const CONCEALMENT = CONFIG.DND4E.CONCEALMENT;
 	const LIGHT_LEVEL = CONFIG.DND4E.LIGHT_LEVEL;
+	const OBSCUREMENT = CONFIG.DND4E.OBSCUREMENT;
+
 	if (token.canDetect(target, { modes: ["seeAll", "feelTremor"] })) return CONCEALMENT.NONE;
+	if (!token.canDetect(target)) return CONCEALMENT.TOTAL;
+
+	let concealmentLevel = CONCEALMENT.NONE;
+
+	let obscurementLevel = OBSCUREMENT.NONE;
+	for (const region of [...target.document.regions].filter((r) => r.behaviors.some((b) => b.type === "obscuredTerrain"))) {
+		for (const behavior of [...region.behaviors].filter((b) => b.type === "obscuredTerrain")) {
+			if (!behavior.system.evaluateConditions(target)) continue;
+			if (behavior.system.level > obscurementLevel) obscurementLevel = behavior.system.level;
+		}
+	}
+	switch (obscurementLevel) {
+		case OBSCUREMENT.NONE:
+			break;
+		case OBSCUREMENT.LIGHT:
+			concealmentLevel = CONCEALMENT.PARTIAL;
+			break;
+		case OBSCUREMENT.HEAVY:
+			const distance = computeDistance(token, target);
+			if ((distance >= 0) && (distance <= 1)) {
+				concealmentLevel = CONCEALMENT.PARTIAL;
+			} else {
+				concealmentLevel = CONCEALMENT.TOTAL;
+			}
+			break;
+		case OBSCUREMENT.TOTAL:
+			concealmentLevel = CONCEALMENT.TOTAL;
+			break;
+	}
+
 	const targetLight = target.lightLevel;
 	switch (targetLight) {
 		case LIGHT_LEVEL.DARK:
-			if (token.actor.system.senses.special.dv.value) return CONCEALMENT.PARTIAL;
-			else return CONCEALMENT.TOTAL;
+			if (token.actor.system.senses.special.dv.value && CONCEALMENT.PARTIAL > concealmentLevel) {
+				concealmentLevel = CONCEALMENT.PARTIAL;
+			}
+			else if (CONCEALMENT.TOTAL > concealmentLevel) {
+				concealmentLevel = CONCEALMENT.TOTAL;
+			}
+			break;
 		case LIGHT_LEVEL.DIM:
-			if (token.actor.system.senses.special.dv.value) return CONCEALMENT.NONE;
-			if (token.actor.system.senses.special.lv.value) return CONCEALMENT.NONE;
-			else return CONCEALMENT.PARTIAL;
+			if (token.actor.system.senses.special.dv.value && CONCEALMENT.NONE > concealmentLevel) {
+				concealmentLevel = CONCEALMENT.NONE;
+			} else if (token.actor.system.senses.special.lv.value && CONCEALMENT.NONE > concealmentLevel) {
+				concealmentLevel = CONCEALMENT.NONE;
+			} else if (CONCEALMENT.PARTIAL > concealmentLevel) {
+				concealmentLevel = CONCEALMENT.PARTIAL;
+			}
+			break;
 		case LIGHT_LEVEL.BRIGHT:
-			return CONCEALMENT.NONE;
+			if (CONCEALMENT.NONE > concealmentLevel) concealmentLevel = CONCEALMENT.NONE;
+			break;
 	}
+
+	return concealmentLevel;
 }
 
 /**

@@ -172,7 +172,8 @@
 		"RegionBehavior" : {
 			"applyActiveEffect4e": {},
 			"damagingRegion": {},
-			"difficultTerrain" :{}
+			"difficultTerrain" :{},
+			"obscuredTerrain" :{}
 		}
 	},
 	"primaryTokenAttribute": "attributes.hp",
