@@ -815,6 +815,27 @@ preLocalize("durationType", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
+DND4E.durationAction = {
+	attack: {
+		label: "DND4E.DurationActionAttack",
+	},
+	check: {
+		label: "DND4E.DurationActionCheck",
+	},
+	defence: {
+		label: "DND4E.DurationActionDefence",
+	},
+	save: {
+		label: "DND4E.DurationActionSave",
+	},
+	damage: {
+		label: "DND4E.DurationActionDamage",
+	},
+};
+preLocalize("durationAction", { keys: ["label"] });
+
+/* -------------------------------------------- */
+
 DND4E.PhysicalItemTemplate = {
 	MAX_DEPTH: 5,
 };
