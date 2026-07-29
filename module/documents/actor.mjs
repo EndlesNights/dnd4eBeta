@@ -728,8 +728,7 @@ export default class Actor4e extends Actor {
 				}
 			}
 		}
-			
-    console.debug(actorData);    
+			   
     if(['immobilized','grabbed','petrified','restrained'].some(i => actorData.statuses.has(i))) { 
     
       //Everything but teleport is absolute 0 when subject to an immobilising condition
@@ -1704,7 +1703,9 @@ export default class Actor4e extends Actor {
 		}, { overwrite: false });
 
 		// Roll and return
-		return d20Roll(null, rollConfig);
+		const skillRoll = d20Roll(null, rollConfig);
+		utils.endEffects(this, ["check"]);
+		return skillRoll;
 	}	
   
 	/**
@@ -1740,7 +1741,9 @@ export default class Actor4e extends Actor {
 		}, { overwrite: false });
 		
 		// Roll and return
-		return d20Roll(null, rollConfig);
+		const check = d20Roll(null, rollConfig);
+		utils.endEffects(this, ["check"]);
+		return check;
 	}
 	
 	rollDef(defId, options = {}) {
@@ -1762,14 +1765,16 @@ export default class Actor4e extends Actor {
 		flavText = flavText.replace("@label", this.system.defences[defId].label);
 		flavText = flavText.replace("@title", this.system.defences[defId].title);
 		
-		// Roll and return
-		return d20Roll(null, foundry.utils.mergeObject(options, {
+		// Roll
+		const check = d20Roll(null, foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: _loc("DND4E.DefencePromptTitle", { defences: CONFIG.DND4E.defensives[label].label }),
 			speaker: ChatMessage.getSpeaker({ actor: this }),
 			flavor: flavText,
-		}));		
+		}));    
+		utils.endEffects(this, ["defence"]);
+    return check;
 	}
 
 	async rollInitiative({ createCombatants = false, rerollInitiative = false, initiativeOptions = {}, event = {} } = {}, options = {}) {
@@ -1897,6 +1902,8 @@ export default class Actor4e extends Actor {
 				});
 			}
 		}
+    
+		utils.endEffects(this, ["save"]);
 	}
 
 	async rollDeathSave(event, form, options) {
@@ -1994,7 +2001,7 @@ export default class Actor4e extends Actor {
 		updateData["system.actionpoints.encounteruse"] = false;
 		
 		utils.rechargeItems(this, ["enc", "round", "turn"]);
-		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfUserCurrent"]);
+		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfUserCurrent", "attack", "check", "defence", "save", "damage"]);
 		
 		if (this.type === "Player Character") {
 			updateData["system.details.secondwind"] = false;
@@ -2063,7 +2070,7 @@ export default class Actor4e extends Actor {
 		updateData["system.actionpoints.encounteruse"] = false;
 		
 		utils.rechargeItems(this, ["enc", "day", "round", "turn"]);
-		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfDay", "endOfUserCurrent"]);
+		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfDay", "endOfUserCurrent", "attack", "check", "defence", "save", "damage"]);
 
 		if (this.type === "Player Character") {
 			updateData["system.magicItemUse.milestone"] = 0;
