@@ -11,7 +11,7 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		},
 		actions: {
 			configureSource: ActorSheet4eHazard.#onConfigureSource,
-    }
+		},
 	};
 
 	static PARTS = {

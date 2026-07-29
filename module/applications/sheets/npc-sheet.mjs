@@ -11,7 +11,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		},
 		actions: {
 			configureSource: ActorSheet4eNPC.#onConfigureSource,
-    }
+		},
 	};
 
 	static PARTS = {
@@ -77,7 +77,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		context.sourceLabel = this.document.system.source.label;
     
 		return context;
-  }
+	}
 	/* -------------------------------------------- */
 
 	/**

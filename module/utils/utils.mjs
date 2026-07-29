@@ -1841,6 +1841,7 @@ export function computeConcealment(token, target) {
 			if (behavior.system.level > obscurementLevel) obscurementLevel = behavior.system.level;
 		}
 	}
+	const distance = computeDistance(token, target);
 	switch (obscurementLevel) {
 		case OBSCUREMENT.NONE:
 			break;
@@ -1848,7 +1849,6 @@ export function computeConcealment(token, target) {
 			concealmentLevel = CONCEALMENT.PARTIAL;
 			break;
 		case OBSCUREMENT.HEAVY:
-			const distance = computeDistance(token, target);
 			if ((distance >= 0) && (distance <= 1)) {
 				concealmentLevel = CONCEALMENT.PARTIAL;
 			} else {
@@ -1863,7 +1863,7 @@ export function computeConcealment(token, target) {
 	const targetLight = target.lightLevel;
 	switch (targetLight) {
 		case LIGHT_LEVEL.DARK:
-			if (token.actor.system.senses.special.dv.value && CONCEALMENT.PARTIAL > concealmentLevel) {
+			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.PARTIAL > concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.PARTIAL;
 			}
 			else if (CONCEALMENT.TOTAL > concealmentLevel) {
@@ -1871,9 +1871,9 @@ export function computeConcealment(token, target) {
 			}
 			break;
 		case LIGHT_LEVEL.DIM:
-			if (token.actor.system.senses.special.dv.value && CONCEALMENT.NONE > concealmentLevel) {
+			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE > concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.NONE;
-			} else if (token.actor.system.senses.special.lv.value && CONCEALMENT.NONE > concealmentLevel) {
+			} else if (token.actor.system.senses.special.lv.value && (CONCEALMENT.NONE > concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.NONE;
 			} else if (CONCEALMENT.PARTIAL > concealmentLevel) {
 				concealmentLevel = CONCEALMENT.PARTIAL;
