@@ -468,7 +468,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	_prepareDataSenses() {
-		const map = { special: CONFIG.DND4E.special };
+		const map = { special: CONFIG.DND4E.senses };
 		const senses = foundry.utils.deepClone(this.actor.system.senses);
 		for (let [l, choices] of Object.entries(map)) {
 			const trait = senses[l];
@@ -476,7 +476,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			let values = Object.keys(trait).map((key) => [key, trait[key]]);
 			trait.selected = values.reduce((obj, l) => {
 				if (!l[1].value) return obj;
-				obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
+				obj[l[0]] = l[1].range != "" ? `${choices[l[0]].label} ${l[1].range} sq` : choices[l[0]].label;
 				return obj;
 			}, {});
 			// Add custom entry

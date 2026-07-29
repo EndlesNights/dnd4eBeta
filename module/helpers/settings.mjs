@@ -63,6 +63,19 @@ export const registerSystemSettings = function() {
 		},
 	});
 
+	// Sense-to-token vision sync
+	game.settings.register("dnd4e", "senseVisionSync", {
+		name: "SETTINGS.4eSenseVisionN",
+		hint: "SETTINGS.4eSenseVisionL",
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean,
+		onChange: () => {
+			if (canvas?.ready) canvas.draw();
+		},
+	});
+
 	// Currency Carrying Weight
 	game.settings.register("dnd4e", "currencyWeight", {
 		name: "SETTINGS.4eCurWtN",

@@ -9,6 +9,12 @@
  */
 export default class TokenDocument4e extends TokenDocument {
 
+	/**
+	 * Cached sense-derived overrides, used to skip vision re-derivation when senses are unchanged.
+	 * @type {{ sight: object, detectionModes: Record<string, number> }}
+	 */
+	#senseOverrides;
+
 	/* -------------------------------------------- */
 	/*  Properties                                  */
 	/* -------------------------------------------- */
@@ -20,6 +26,83 @@ export default class TokenDocument4e extends TokenDocument {
 	get hasDynamicRing() {
 		return this.ring.enabled;
 	}
+
+	/* -------------------------------------------- */
+	/*  Data Preparation                            */
+	/* -------------------------------------------- */
+
+	/** @inheritDoc */
+	_prepareDetectionModes() {
+		// Set sight & sense detection modes before calling super so basicSight is seeded from the derived sight range.
+		this._applySenseVision();
+		super._prepareDetectionModes();
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Derive token sight range and detection modes from the actor's senses.
+	 * @protected
+	 */
+	_applySenseVision() {
+		if (!game.settings.get("dnd4e", "senseVisionSync")) return;
+		const senses = this.actor?.system?.senses?.special;
+		if (senses) TokenDocument4e.applySenseOverrides(senses, this);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Compute sense-derived sight and detection mode data from actor senses.
+	 * @param {object} senses                          Object containing sense ranges.
+	 * @returns {{ sight: object, detectionModes: Record<string, number> }}
+	 */
+	static computeSenseOverrides(senses) {
+		const detectionModes = {};
+		let maxSightRange = -1;
+		let sightVisionMode = null;
+
+		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
+			if (!senses[key]?.value) continue;
+			const range = config.range ?? senses[key]?.range;
+
+			if (config.detectionMode) detectionModes[config.detectionMode] = range;
+
+			if (config.grantsSight && (range > maxSightRange)) {
+				maxSightRange = range;
+				sightVisionMode = config.visionMode ?? null;
+			}
+		}
+
+		const sight = maxSightRange > 0
+			? { enabled: true, range: maxSightRange, visionMode: sightVisionMode ?? "basic" }
+			: {};
+
+		return { sight, detectionModes };
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Apply sense-derived overrides to a token-like target's prepared data.
+	 * @param {object} senses                         Object containing sense ranges.
+	 * @param {object} target                         Target with `sight` and `detectionModes` properties.
+	 */
+	static applySenseOverrides(senses, target) {
+		const { sight, detectionModes } = TokenDocument4e.computeSenseOverrides(senses);
+
+		for (const [id, range] of Object.entries(detectionModes)) {
+			const existing = target.detectionModes[id];
+			if (existing) Object.assign(existing, { enabled: true, range });
+			else target.detectionModes[id] = { enabled: true, range };
+		}
+
+		if (sight.enabled) {
+			Object.assign(target.sight, { enabled: true, range: sight.range, visionMode: sight.visionMode });
+		}
+	}
+
+	/* -------------------------------------------- */
 
 	/* -------------------------------------------- */
 	/*  Movement                                    */
@@ -112,5 +195,27 @@ export default class TokenDocument4e extends TokenDocument {
 			options.easing = foundry.canvas.placeables.tokens.TokenRing.easePingPong;
 		}
 		return this.object.ring?.flashColor(Color.from(color), options);
+	}
+
+	/* -------------------------------------------- */
+	/*  Event Handlers                              */
+	/* -------------------------------------------- */
+
+	/* -------------------------------------------- */
+
+	/** @inheritDoc */
+	_onRelatedUpdate(update = {}, operation = {}) {
+		super._onRelatedUpdate(update, operation);
+		if (!game.settings.get("dnd4e", "senseVisionSync")) return;
+		const senses = this.actor?.system?.senses?.special;
+		if (!senses) return;
+
+		// Re-derive vision whenever sense-granting data changes, covering direct edits and item/effect-granted senses.
+		const overrides = TokenDocument4e.computeSenseOverrides(senses);
+		if (foundry.utils.equals(overrides, this.#senseOverrides)) return;
+		this.#senseOverrides = overrides;
+		if (!this.parent?.isView) return;
+		this.reset();
+		this.object?.initializeVisionSource();
 	}
 }
