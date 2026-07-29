@@ -56,6 +56,7 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 			keywordsCustom: new StringField({ initial: "" }),
 			useSourceActorData: new BooleanField({ initial: true }),
 			saveDC: new NumberField(),
+			durationAction: new StringField({ initial: "" }),
 		};
 	}
 
