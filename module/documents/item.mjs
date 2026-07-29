@@ -2505,6 +2505,8 @@ export default class Item4e extends Item {
 		const speaker = ChatMessage.getSpeaker({ actor: this.actor });
 
 		Hooks.callAll("dnd4e.rollHealing", this, speaker);
+    
+    utils.endEffects(this.actor, ["heal"]);
 
 		// Call the roll helper utility
 		return damageRoll({

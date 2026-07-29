@@ -1736,8 +1736,6 @@ export default class Actor4e extends Actor {
 			fumble: 0,
 			targetValue: Number(options.dc),
 			messageData: { "options.flags.dnd4e.roll": { type: "ability", actorId: this.id } },
-			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + _loc("DND4E.AbilityPromptTitle", {ability: CONFIG.DND4E.abilities[label]}),
-			// halflingLucky: feats.halflingLucky
 		}, { overwrite: false });
 		
 		// Roll and return
@@ -1949,6 +1947,7 @@ export default class Actor4e extends Actor {
 		}
 		utils.debugLog(roll.total);
 		utils.debugLog(rollConfig.critical);
+    await utils.endEffects(this, ["deathsave"]);
 		await this.update(updateData);
 	}
 
@@ -2560,7 +2559,7 @@ export default class Actor4e extends Actor {
 			"system.attributes.hp.value": newHp,
 		};
 	
-		//spend healing surges
+		// spend healing surges
 		if ((multiplier < 0) && surges.surgeAmount) {
 			updates["system.details.surges.value"] = this.system.details.surges.value - surges.surgeAmount;
 		}
@@ -2573,7 +2572,16 @@ export default class Actor4e extends Actor {
 			isDelta: false,
 			isBar: true,
 		}, updates);
-		return allowed !== false ? this.update(updates) : this;
+    
+    if(allowed !== false){
+      // If we lost HP or temp HP, trigger "next damage" effect expiry
+      if (amount > 0 || dt > 0) await utils.endEffects(this, ["damaged"]);
+      // If we gained HP, trigger "next heal" effect expiry
+      if (amount < 0) await utils.endEffects(this, ["healed"]);
+      return this.update(updates);
+    }
+    return this;
+    
 	}
 
 	async applyTempHpChange(amount = 0) {
@@ -2625,12 +2633,12 @@ export default class Actor4e extends Actor {
 		return this.createEmbeddedDocuments("ActiveEffect", [effectData]);
 	}
 
-	async deleteActiveEffectSocket(toDelete) {
-		return this.deleteEmbeddedDocuments("ActiveEffect", toDelete);
+	async endActiveEffectsSocket(condition) {
+    await utils.endEffects(this, [condition]);
 	}
 
 	async promptEoTSavesSocket() {
-		utils.debugLog("EoT saves socket reached");
+		//utils.debugLog("EoT saves socket reached");
 		const saveReminders = game.settings.get("dnd4e", "saveReminders");
 		if (!saveReminders) return;
 		
@@ -2655,7 +2663,7 @@ export default class Actor4e extends Actor {
 	}
 
 	async autoDoTsSocket(tokenId) {
-		utils.debugLog(tokenId);
+		//utils.debugLog(tokenId);
 		const autoDoTs = game.settings.get("dnd4e", "autoDoTs");
 		if (autoDoTs != "none") {
 			let applicableDoTs = {};
