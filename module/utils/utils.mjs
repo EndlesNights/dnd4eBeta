@@ -188,7 +188,6 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 	const suitableKeywords = ["global"];
 	const effectsToProcess = [];
 	const actorEffects = actor.appliedEffects;
-	//console.debug(powerData);
 	const ammo = weaponData ? getAmmoUse(weaponData, actor) : getAmmoUse(powerData, actor);
   
 	if (actorEffects.length) {
@@ -893,11 +892,16 @@ export async function rechargeItems(actor, targetArray) {
 export async function endEffects(actor, targetArray) {
 	const effects = [];
 	for (let e of actor.effects) {
-		if (targetArray.includes(e.system.durationType)) {
-			effects.push(e.id);
+		if (targetArray.includes(e.system.durationType) || targetArray.includes(e.system.durationAction)) {
+      if (CONFIG.ActiveEffect.expiryAction === "update") {
+        e.update({'disabled': true});
+      }
+      else {
+        effects.push(e.id);
+      }
 		}
 	}
-	if (effects) await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
+	if (effects && CONFIG.ActiveEffect.expiryAction === "delete") await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
 }
 
 /**
