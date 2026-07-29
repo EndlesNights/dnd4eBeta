@@ -105,7 +105,7 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
 				targetBonuses.longRange.shouldApply = true;
 			}
-			if (target && utils.computeFlankingStatus(attacker, target)) {
+			if (target && !target.actor.system.senses.special.aa.value && utils.computeFlankingStatus(attacker, target)) {
 				targetBonuses.comAdv.shouldApply = true;
 			}
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
@@ -350,7 +350,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					}
 				}
 
-				if (utils.computeFlankingStatus(utils.tokenForActor(actor), theTargets[targetIndex])) {
+				const target = theTargets[targetIndex];
+				if (!target.actor.system.senses.special.aa.value && utils.computeFlankingStatus(utils.tokenForActor(actor), target)) {
 					hasComAdv = true;
 				}
 
