@@ -313,8 +313,8 @@ export default class Actor4e extends Actor {
 			this._prepareDerivedDataDeathThrow(actorData, system);
 			this._prepareDerivedDataMagicItemUse(actorData, system);
 		} else {
-      SourceField.prepareData.call(this.system.source);
-    }
+			SourceField.prepareData.call(this.system.source);
+		}
 		
 		if (isCombatant) {
 			//console.debug('Combatant');
