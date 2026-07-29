@@ -819,18 +819,36 @@ DND4E.durationAction = {
 	attack: {
 		label: "DND4E.DurationActionAttack",
 	},
+	damage: {
+		label: "DND4E.DurationActionDamage",
+	},
 	check: {
 		label: "DND4E.DurationActionCheck",
-	},
-	defence: {
-		label: "DND4E.DurationActionDefence",
 	},
 	save: {
 		label: "DND4E.DurationActionSave",
 	},
-	damage: {
-		label: "DND4E.DurationActionDamage",
+	deathsave: {
+		label: "DND4E.DurationActionDeathSave",
 	},
+  heal: {
+		label: "DND4E.DurationActionHeal", 
+  },
+	attacked: {
+		label: "DND4E.DurationActionAttacked",
+	},
+  attackedhit: {
+		label: "DND4E.DurationActionAttackedHit", 
+  },
+  attackedmiss: {
+		label: "DND4E.DurationActionAttackedMiss", 
+  },
+  damaged: {
+		label: "DND4E.DurationActionDamaged", 
+  },
+  healed: {
+		label: "DND4E.DurationActionHealed", 
+  }
 };
 preLocalize("durationAction", { keys: ["label"] });
 

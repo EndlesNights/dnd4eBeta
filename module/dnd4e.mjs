@@ -232,7 +232,7 @@ Hooks.once("ready", function() {
 	// Add socket listener for applying activeEffects on targets that users do not own
 	game.socket.on("system.dnd4e", (data) => {
 		if (data.operation === "applyTokenEffect") utils.handleApplyEffectToToken(data);
-		else if (data.operation === "deleteTokenEffect") utils.handleDeleteEffectToToken(data);
+		else if (data.operation === "endTokenEffects") utils.handleEndTokenEffects(data);
 		else if (data.operation === "promptEoTSaves") utils.handlePromptEoTSaves(data);
 		else if (data.operation === "autoDoTs") utils.handleAutoDoTs(data);
 		else if (data.operation === "refreshSaveEffects") utils.handleRefreshSaveEffects(data);
