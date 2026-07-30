@@ -1,5 +1,3 @@
-// Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
-
 const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
