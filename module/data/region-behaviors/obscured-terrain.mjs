@@ -18,10 +18,16 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 
 	/** @inheritDoc */
 	static defineSchema() {
+		const OBSCUREMENT_LABELS = {
+			[CONFIG.DND4E.OBSCUREMENT.NONE]: "DND4E.None",
+			[CONFIG.DND4E.OBSCUREMENT.LIGHT]: "EFFECT.statusObscuredLight",
+			[CONFIG.DND4E.OBSCUREMENT.HEAVY]: "EFFECT.statusObscuredHeavy",
+			[CONFIG.DND4E.OBSCUREMENT.TOTAL]: "EFFECT.statusObscuredTotal",
+		};
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
 		return {
-			level: new NumberField({ choices: CONFIG.DND4E.OBSCUREMENT_LABELS }),
+			level: new NumberField({ choices: OBSCUREMENT_LABELS }),
 			dispositions: new SetField(new NumberField({ choices: dispositions })),
 			origins: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureOrigin })),
 			types: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureType })),
