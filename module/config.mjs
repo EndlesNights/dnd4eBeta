@@ -2265,14 +2265,6 @@ DND4E.OBSCUREMENT = {
 	TOTAL: 3,
 };
 
-DND4E.OBSCUREMENT_LABELS = {
-	[DND4E.OBSCUREMENT.NONE]: "DND4E.None",
-	[DND4E.OBSCUREMENT.LIGHT]: "EFFECT.statusObscuredLight",
-	[DND4E.OBSCUREMENT.HEAVY]: "EFFECT.statusObscuredHeavy",
-	[DND4E.OBSCUREMENT.TOTAL]: "EFFECT.statusObscuredTotal",
-};
-preLocalize("OBSCUREMENT_LABELS");
-
 // Configure allowed status flags
 DND4E.allowedActorFlags = [
 	"isPolymorphed", "originalActor",
