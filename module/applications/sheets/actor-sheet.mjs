@@ -1782,7 +1782,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const label = target.getAttribute("data-app-title") || "Label error";
-		const choices = CONFIG.DND4E[target.dataset.options];
+		const choices = CONFIG.DND4E["senses"];
 		const options = { name: target.dataset.target, window: { title: label }, choices };
 		new apps.TraitSelectorValues({ document: this.actor, ...options }).render(true);
 	}

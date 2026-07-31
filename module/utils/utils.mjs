@@ -494,10 +494,10 @@ export async function applySaveEffects(rollData, actor, effectData, effectType, 
 				});
 			}
 			
-      debugLog(rollData);
-      debugLog(`${debug} based on effect keywords the following effect keys are suitable`);
-      debugLog(suitableKeywords.sort());
-      debugLog(`${debug} ${suitableKeywords.join(", ")}`);
+			debugLog(rollData);
+			debugLog(`${debug} based on effect keywords the following effect keys are suitable`);
+			debugLog(suitableKeywords.sort());
+			debugLog(`${debug} ${suitableKeywords.join(", ")}`);
 
 			await _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, null, options);
 		}
@@ -889,15 +889,15 @@ export async function endEffects(actor, targetArray) {
 	const effects = [];
 	for (let e of actor.effects) {
 		if (targetArray.includes(e.system.durationType) || targetArray.includes(e.system.durationAction)) {
-      if (CONFIG.ActiveEffect.expiryAction === "update") {
-        e.update({'disabled': true});
-      }
-      else {
-        effects.push(e.id);
-      }
+			if (CONFIG.ActiveEffect.expiryAction === "update") {
+				e.update({ disabled: true });
+			}
+			else {
+				effects.push(e.id);
+			}
 		}
 	}
-	if (effects && CONFIG.ActiveEffect.expiryAction === "delete") await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
+	if (effects && (CONFIG.ActiveEffect.expiryAction === "delete")) await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
 }
 
 /**
@@ -1131,23 +1131,23 @@ export async function applyAllXEffectsToTokens(effects, actor, selection) {
  * @param {string} condition         Effect expiry condition ("attacked", etc.)
  */
 export async function endEffectsOnTokens(targets, condition) {
-  for (let t of targets) {
-    const actor = t?.actor ? t.actor : parent;
-    debugLog(actor);
-    if (actor.isOwner || game.user.isGM) {
-      await endEffects(actor, [condition]);
-    } else {
-      game.socket.emit("system.dnd4e", {
-        actorID: actor.id,
-        tokenID: t?.id || null,
-        operation: "endTokenEffects",
-        condition: condition,
-        user: game.user.id,
-        scene: canvas.scene.id,
-      });
-    }    
-    debugLog(`Processing expired effects for ${actor.name}.`);
-  }
+	for (let t of targets) {
+		const actor = t?.actor ? t.actor : parent;
+		debugLog(actor);
+		if (actor.isOwner || game.user.isGM) {
+			await endEffects(actor, [condition]);
+		} else {
+			game.socket.emit("system.dnd4e", {
+				actorID: actor.id,
+				tokenID: t?.id || null,
+				operation: "endTokenEffects",
+				condition: condition,
+				user: game.user.id,
+				scene: canvas.scene.id,
+			});
+		}    
+		debugLog(`Processing expired effects for ${actor.name}.`);
+	}
 }
 
 /**
@@ -1841,20 +1841,21 @@ export function computeConcealment(token, target) {
 			if (behavior.system.level > obscurementLevel) obscurementLevel = behavior.system.level;
 		}
 	}
-	const distance = computeDistance(token, target);
 	switch (obscurementLevel) {
 		case OBSCUREMENT.NONE:
 			break;
 		case OBSCUREMENT.LIGHT:
 			concealmentLevel = CONCEALMENT.PARTIAL;
 			break;
-		case OBSCUREMENT.HEAVY:
+		case OBSCUREMENT.HEAVY: {
+			const distance = computeDistance(token, target);
 			if ((distance >= 0) && (distance <= 1)) {
 				concealmentLevel = CONCEALMENT.PARTIAL;
 			} else {
 				concealmentLevel = CONCEALMENT.TOTAL;
 			}
 			break;
+		}        
 		case OBSCUREMENT.TOTAL:
 			concealmentLevel = CONCEALMENT.TOTAL;
 			break;

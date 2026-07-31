@@ -831,24 +831,24 @@ DND4E.durationAction = {
 	deathsave: {
 		label: "DND4E.DurationActionDeathSave",
 	},
-  heal: {
+	heal: {
 		label: "DND4E.DurationActionHeal", 
-  },
+	},
 	attacked: {
 		label: "DND4E.DurationActionAttacked",
 	},
-  attackedhit: {
+	attackedhit: {
 		label: "DND4E.DurationActionAttackedHit", 
-  },
-  attackedmiss: {
+	},
+	attackedmiss: {
 		label: "DND4E.DurationActionAttackedMiss", 
-  },
-  damaged: {
+	},
+	damaged: {
 		label: "DND4E.DurationActionDamaged", 
-  },
-  healed: {
+	},
+	healed: {
 		label: "DND4E.DurationActionHealed", 
-  }
+	},
 };
 preLocalize("durationAction", { keys: ["label"] });
 
@@ -2003,12 +2003,12 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/mark_1.svg",
 		description: "EFFECTDESC.mark",
 	},
-  grantingCA: {
+	grantingCA: {
 		name: "EFFECT.statusGrantingCA",
 		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
 		description: "EFFECTDESC.grantingCA",
 	},
-  helpless: {
+	helpless: {
 		name: "EFFECT.statusHelpless",
 		img: "systems/dnd4e/icons/statusEffects/helpless.svg",
 		description: "EFFECTDESC.helpless",
@@ -2082,7 +2082,7 @@ DND4E.statusEffect = {
 		description: "EFFECTDESC.petrified",
 	},
 	// Penalties
-  weakened: {
+	weakened: {
 		name: "EFFECT.statusWeakened",
 		img: "systems/dnd4e/icons/statusEffects/weakend.svg",
 		description: "EFFECTDESC.weakened",
@@ -2098,7 +2098,7 @@ DND4E.statusEffect = {
 		description: "EFFECTDESC.deafened",
 	},
 	// Visibility & Corporeality
- 	invisible: {
+	invisible: {
 		name: "EFFECT.statusInvisible",
 		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
 		description: "EFFECTDESC.invisible",
@@ -2149,7 +2149,7 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
 		description: "EFFECTDESC.running",
 	},
-  charging: {
+	charging: {
 		name: "EFFECT.statusCharging",
 		img: "systems/dnd4e/icons/statusEffects/charging.svg",
 		description: "EFFECTDESC.charging",
@@ -2159,11 +2159,11 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing",
 	},
-  mounted: {
-    name: "EFFECT.statusMounted",
-    img: "systems/dnd4e/icons/statusEffects/mounted.svg",
-    description: "EFFECTDESC.mounted",
-  },
+	mounted: {
+		name: "EFFECT.statusMounted",
+		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
+		description: "EFFECTDESC.mounted",
+	},
 };
 
 // Languages
