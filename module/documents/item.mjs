@@ -1769,7 +1769,7 @@ export default class Item4e extends Item {
 		);	
 		if (allowed === false) return null;
     
-    await utils.endEffects(this.actor, ["attack"]);
+		await utils.endEffects(this.actor, ["attack"]);
 		return roll;
 	}
 
@@ -2399,8 +2399,8 @@ export default class Item4e extends Item {
 			isOpp: variance?.isOpp || false,
 			allowCritical: !!partsCrit?.length,
 		});
-    utils.endEffects(this.actor, ["damage"]);
-    return check;
+		utils.endEffects(this.actor, ["damage"]);
+		return check;
 	}
 
 	/* -------------------------------------------- */
@@ -2506,7 +2506,7 @@ export default class Item4e extends Item {
 
 		Hooks.callAll("dnd4e.rollHealing", this, speaker);
     
-    utils.endEffects(this.actor, ["heal"]);
+		utils.endEffects(this.actor, ["heal"]);
 
 		// Call the roll helper utility
 		return damageRoll({
@@ -3092,6 +3092,7 @@ export default class Item4e extends Item {
 
 		// Get the Item
 		const storedData = message.getFlag("dnd4e", "itemData");
+		/** @type {Item4e} */
 		const item = storedData ? new this(storedData, { parent: actor }) : actor.items.get(card.dataset.itemId) || storedData;
 
 		if (!item) {

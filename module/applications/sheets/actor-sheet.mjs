@@ -468,7 +468,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	_prepareDataSenses() {
-		const map = { special: CONFIG.DND4E.special };
+		const map = { special: CONFIG.DND4E.senses };
 		const senses = foundry.utils.deepClone(this.actor.system.senses);
 		for (let [l, choices] of Object.entries(map)) {
 			const trait = senses[l];
@@ -476,7 +476,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			let values = Object.keys(trait).map((key) => [key, trait[key]]);
 			trait.selected = values.reduce((obj, l) => {
 				if (!l[1].value) return obj;
-				obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
+				obj[l[0]] = (l[1].range && (l[1].range > 0)) ? `${choices[l[0]].label} ${l[1].range} sq` : choices[l[0]].label;
 				return obj;
 			}, {});
 			// Add custom entry
@@ -1654,13 +1654,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static async #onItemRecharge(event, target) {
 		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		return this._onItemRecharge(event, item)
+		return this._onItemRecharge(event, item);
 	}
 
 	// this method is called by Token Action Hud, if changing please update module/compatibility/tokenActionHud.mjs
 	async _onItemRecharge(event, item) {
 		event.preventDefault();
-		const itemId = item.id
+		const itemId = item.id;
 		if (item.type === "power") {
 
 			if (item.system.rechargeRoll || (!item.system.rechargeRoll && !item.system.rechargeCondition)) {
@@ -1782,7 +1782,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const label = target.getAttribute("data-app-title") || "Label error";
-		const choices = CONFIG.DND4E[target.dataset.options];
+		const choices = CONFIG.DND4E["senses"];
 		const options = { name: target.dataset.target, window: { title: label }, choices };
 		new apps.TraitSelectorValues({ document: this.actor, ...options }).render(true);
 	}

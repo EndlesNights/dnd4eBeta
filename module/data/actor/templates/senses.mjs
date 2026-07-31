@@ -1,4 +1,4 @@
-const { BooleanField, SchemaField, StringField } = foundry.data.fields;
+const { BooleanField, SchemaField, NumberField, StringField } = foundry.data.fields;
 
 export default class SensesTemplate extends foundry.abstract.DataModel {
 	/** Getter for sense data. */
@@ -7,35 +7,35 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 			special: new SchemaField({
 				aa: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.SpecialSensesAA" }),
 				bs: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.SpecialSensesBS" }),
 				bv: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.VisionBlind" }),
 				dv: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.SpecialSensesDV" }),
 				lv: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.VisionLowLight" }),
 				nv: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.VisionNormal" }),
 				tr: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.SpecialSensesTR" }),
 				ts: new SchemaField({
 					value: new BooleanField({ initial: false }),
-					range: new StringField({ initial: "" }),
+					range: new NumberField({ required: true, nullable: true, initial: null }),
 				}, { label: "DND4E.SpecialSensesTS" }),
 				custom: new StringField({ initial: "" }),
 			}),

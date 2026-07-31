@@ -61,7 +61,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		
 		for (let [k, v] of Object.entries(choices)) {
 			choices[k] = {
-				label: v,
+				label: v.label,
 				chosen: attr[k].value,
 				value: attr[k].value ? attr[k].range : null, 
 			};

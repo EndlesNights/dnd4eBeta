@@ -831,24 +831,24 @@ DND4E.durationAction = {
 	deathsave: {
 		label: "DND4E.DurationActionDeathSave",
 	},
-  heal: {
+	heal: {
 		label: "DND4E.DurationActionHeal", 
-  },
+	},
 	attacked: {
 		label: "DND4E.DurationActionAttacked",
 	},
-  attackedhit: {
+	attackedhit: {
 		label: "DND4E.DurationActionAttackedHit", 
-  },
-  attackedmiss: {
+	},
+	attackedmiss: {
 		label: "DND4E.DurationActionAttackedMiss", 
-  },
-  damaged: {
+	},
+	damaged: {
 		label: "DND4E.DurationActionDamaged", 
-  },
-  healed: {
+	},
+	healed: {
 		label: "DND4E.DurationActionHealed", 
-  }
+	},
 };
 preLocalize("durationAction", { keys: ["label"] });
 
@@ -1364,17 +1364,49 @@ preLocalize("autoTargetModes");
  * Character senses options
  * @type {Object}
  */
-DND4E.special = {
-	nv: "DND4E.VisionNormal",
-	lv: "DND4E.VisionLowLight",
-	bv: "DND4E.VisionBlind",
-	aa: "DND4E.SpecialSensesAA",
-	bs: "DND4E.SpecialSensesBS",
-	dv: "DND4E.SpecialSensesDV",
-	ts: "DND4E.SpecialSensesTS",
-	tr: "DND4E.SpecialSensesTR",
+DND4E.senses = {
+	nv: {
+		label: "DND4E.VisionNormal",
+	},
+	lv: {
+		label: "DND4E.VisionLowLight",
+		detectionMode: "basicSight",
+		grantsSight: true,
+		range: 0,
+		visionMode: "darkvision",
+	},
+	bv: {
+		label: "DND4E.VisionBlind",
+	},
+	aa: {
+		label: "DND4E.SpecialSensesAA",
+	},
+	bs: {
+		label: "DND4E.SpecialSensesBS",
+		detectionMode: "seeAll",
+		grantsSight: true,
+		visionMode: "basicSight",
+	},
+	dv: {
+		label: "DND4E.SpecialSensesDV",
+		detectionMode: "basicSight",
+		grantsSight: true,
+		range: Infinity,
+		visionMode: "darkvision",
+	},
+	ts: {
+		label: "DND4E.SpecialSensesTS",
+		detectionMode: "feelTremor",
+		grantsSight: true,
+	},
+	tr: {
+		label: "DND4E.SpecialSensesTR",
+		detectionMode: "seeAll",
+		grantsSight: true,
+		visionMode: "basicSight",
+	},
 };
-preLocalize("special", { sort: true });
+preLocalize("senses", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 /*  Movement                                    */
@@ -1971,12 +2003,12 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/mark_1.svg",
 		description: "EFFECTDESC.mark",
 	},
-  grantingCA: {
+	grantingCA: {
 		name: "EFFECT.statusGrantingCA",
 		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
 		description: "EFFECTDESC.grantingCA",
 	},
-  helpless: {
+	helpless: {
 		name: "EFFECT.statusHelpless",
 		img: "systems/dnd4e/icons/statusEffects/helpless.svg",
 		description: "EFFECTDESC.helpless",
@@ -2050,7 +2082,7 @@ DND4E.statusEffect = {
 		description: "EFFECTDESC.petrified",
 	},
 	// Penalties
-  weakened: {
+	weakened: {
 		name: "EFFECT.statusWeakened",
 		img: "systems/dnd4e/icons/statusEffects/weakend.svg",
 		description: "EFFECTDESC.weakened",
@@ -2066,7 +2098,7 @@ DND4E.statusEffect = {
 		description: "EFFECTDESC.deafened",
 	},
 	// Visibility & Corporeality
- 	invisible: {
+	invisible: {
 		name: "EFFECT.statusInvisible",
 		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
 		description: "EFFECTDESC.invisible",
@@ -2117,7 +2149,7 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
 		description: "EFFECTDESC.running",
 	},
-  charging: {
+	charging: {
 		name: "EFFECT.statusCharging",
 		img: "systems/dnd4e/icons/statusEffects/charging.svg",
 		description: "EFFECTDESC.charging",
@@ -2127,11 +2159,11 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing",
 	},
-  mounted: {
-    name: "EFFECT.statusMounted",
-    img: "systems/dnd4e/icons/statusEffects/mounted.svg",
-    description: "EFFECTDESC.mounted",
-  },
+	mounted: {
+		name: "EFFECT.statusMounted",
+		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
+		description: "EFFECTDESC.mounted",
+	},
 };
 
 // Languages
@@ -2256,6 +2288,25 @@ DND4E.characterFlags = {
 	},
 };
 preLocalize("characterFlags", { keys: ["name", "hint"], sort: true });
+
+DND4E.LIGHT_LEVEL = {
+	DARK: 0,
+	DIM: 1,
+	BRIGHT: 2,
+};
+
+DND4E.CONCEALMENT = {
+	NONE: 0,
+	PARTIAL: 1,
+	TOTAL: 2,
+};
+
+DND4E.OBSCUREMENT = {
+	NONE: 0,
+	LIGHT: 1,
+	HEAVY: 2,
+	TOTAL: 3,
+};
 
 // Configure allowed status flags
 DND4E.allowedActorFlags = [

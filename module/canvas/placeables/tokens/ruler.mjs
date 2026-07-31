@@ -101,20 +101,20 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 
 		// Get actor's movement speed for currently selected token movement action
 		const movement = this.token.actor?.system.movement;
-    //console.debug(movement);
+		//console.debug(movement);
 		if (!movement) return style;
 		let currActionSpeed;
 		const runBonus = ["shift", "teleport"].includes(waypoint.action) ? 0 : movement.run.value;
-    const chargeBonus = ["shift"].includes(waypoint.action) ? 0 : movement.charge.value;
+		const chargeBonus = ["shift"].includes(waypoint.action) ? 0 : movement.charge.value;
 		
 		if ((waypoint.action === "walk") && this.token?.actor?.statuses.has("prone")) {
-      // Probably you can only crawl while walking? The other modes all use three-dimensional movement so can get up for free. - Fox
-      currActionSpeed = movement?.fullCrawl ? movement.walk.value : movement.walk.value / 2;
+			// Probably you can only crawl while walking? The other modes all use three-dimensional movement so can get up for free. - Fox
+			currActionSpeed = movement?.fullCrawl ? movement.walk.value : movement.walk.value / 2;
 		}
-    else if(!["shift", "teleport"].includes(waypoint.action) && this.token?.actor?.statuses.has("squeezing")){
-      // I THINK squeeze is justified for everything but shift/teleport; swimming or climbing through a small passage is easy to imagine. - Fox
-      currActionSpeed = movement?.fullSqueeze ?  movement[waypoint.action]?.value : movement[waypoint.action]?.value / 2;
-    }
+		else if (!["shift", "teleport"].includes(waypoint.action) && this.token?.actor?.statuses.has("squeezing")) {
+			// I THINK squeeze is justified for everything but shift/teleport; swimming or climbing through a small passage is easy to imagine. - Fox
+			currActionSpeed = movement?.fullSqueeze ? movement[waypoint.action]?.value : movement[waypoint.action]?.value / 2;
+		}
 		else {
 			currActionSpeed = movement[waypoint.action]?.value ?? 0;
 
@@ -126,7 +126,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		}
 
 		let runSpeed = currActionSpeed + runBonus;
-    let chargeSpeed = currActionSpeed + chargeBonus;
+		let chargeSpeed = currActionSpeed + chargeBonus;
 
 		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else if <= 2 * run speed `doubleRun`, else `cannotReach`
 		const { walk, run, charge, doubleWalk, doubleRun, cannotReach } = CONFIG.DND4E.tokenRulerColors;
