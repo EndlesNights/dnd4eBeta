@@ -3092,7 +3092,7 @@ export default class Item4e extends Item {
 
 		// Get the Item
 		const storedData = message.getFlag("dnd4e", "itemData");
-		/** @type Item4e */
+		/** @type {Item4e} */
 		const item = storedData ? new this(storedData, { parent: actor }) : actor.items.get(card.dataset.itemId) || storedData;
 
 		if (!item) {
