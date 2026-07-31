@@ -1860,12 +1860,13 @@ export function computeConcealment(token, target) {
 			concealmentLevel = CONCEALMENT.TOTAL;
 			break;
 	}
+	if (concealmentLevel === CONCEALMENT.TOTAL) return concealmentLevel;
 
 	const targetLight = target.lightLevel;
 	switch (targetLight) {
 		case LIGHT_LEVEL.DARK:
-			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.PARTIAL > concealmentLevel)) {
-				concealmentLevel = CONCEALMENT.PARTIAL;
+			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE > concealmentLevel)) {
+				concealmentLevel = CONCEALMENT.NONE;
 			}
 			else if (CONCEALMENT.TOTAL > concealmentLevel) {
 				concealmentLevel = CONCEALMENT.TOTAL;
