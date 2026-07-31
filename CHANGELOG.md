@@ -3,7 +3,7 @@
 ## Version 0.8.12
 ### 🎉New Features/Upgrades
 * __Action-Based Effect Expiration:__ Active Effects can now set a specific game action which to expire. This is a separate setting from the existing timing-based expiry, so you can combine the two to create common expiry conditions like "your next attack before the end of your next turn". Please see the system docs/wiki for the full list of available actions. (Fox)
-* __Enhanced condition automation:__ Universal penalties to skills and movement are now applied automatically by conditions like slowed, immobilised, and blinded. You no longer need to use an Active Effect with separate modifiers; just apply the status condition, either in an AE or from the token UD, and the penalties will be handled by the system. (Fox)
+* __Enhanced condition automation:__ Universal penalties to skills and movement are now applied automatically by conditions like slowed, immobilised, and blinded. You no longer need to use an Active Effect with separate modifiers; just apply the status condition, either in an AE or from the token HUD, and the penalties will be handled by the system. (Fox)
 * __Improved Movement Handling__ (Fox)
   * Charge is no longer its own movement mode, but a bonus (like Run).
   * Token ruler has been updated to show charge and squeeze where appropriate. Its colours have also been adjusted slightly: Walk action stays green, double walk is mint / charge is purple / run is warm yellow, double run is orange.
