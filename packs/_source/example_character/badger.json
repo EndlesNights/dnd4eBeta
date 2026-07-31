@@ -1862,7 +1862,7 @@
       },
       "charge": {
         "value": 0,
-        "formula": "@base + @armour",
+        "formula": "0",
         "bonus": [
           {
             "active": false
@@ -2084,11 +2084,11 @@
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.9",
+    "systemVersion": "0.8.12",
     "createdTime": 1783763223431,
-    "modifiedTime": 1783763223431,
+    "modifiedTime": 1785477441124,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null
   },

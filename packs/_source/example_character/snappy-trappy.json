@@ -1116,7 +1116,7 @@
       },
       "charge": {
         "value": 0,
-        "formula": "@base",
+        "formula": "",
         "bonus": [
           {
             "active": false
@@ -1622,11 +1622,11 @@
     }
   },
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.9",
+    "systemVersion": "0.8.12",
     "createdTime": 1783763223429,
-    "modifiedTime": 1783763223429,
+    "modifiedTime": 1785477425079,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null,
     "duplicateSource": null
