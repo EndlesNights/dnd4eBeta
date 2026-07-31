@@ -5,7 +5,7 @@
 * __Action-Based Effect Expiration:__ Active Effects can now set a specific game action which to expire. This is a separate setting from the existing timing-based expiry, so you can combine the two to create common expiry conditions like "your next attack before the end of your next turn". Please see the system docs/wiki for the full list of available actions. (Fox)
 * __Enhanced condition automation:__ Universal penalties to skills and movement are now applied automatically by conditions like slowed, immobilised, and blinded. You no longer need to use an Active Effect with separate modifiers; just apply the status condition, either in an AE or from the token HUD, and the penalties will be handled by the system. (Fox)
 * __Improved Movement Handling__ (Fox)
-  * Charge is no longer its own movement mode, but a bonus (like Run).
+  * Charge is no longer its own movement mode, but a bonus (like Run). Due to the frustration users experienced with run, actors currently using the default formula (either `@base + @armour` or just `@base`) will be migrated to use the new default of `0`.
   * Token ruler has been updated to show charge and squeeze where appropriate. Its colours have also been adjusted slightly: Walk action stays green, double walk is mint / charge is purple / run is warm yellow, double run is orange.
   * Speed calcs now factor in movement-limiting conditions. The actor's sheet will display their current speed correctly, rather than only the ruler reflecting these changes.
   * Checkboxes have been added for actors who Squeeze and/or Crawl at full speed
