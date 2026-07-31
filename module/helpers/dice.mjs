@@ -86,7 +86,6 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			//Target conditions
 			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
 			const targetDist = targetArr[targ] ? utils.computeDistance(actor, targetArr[targ]) : 0;
-			//console.debug(data);
 			if (targetArr[targ]?.actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 				let meleeVsProne = true;
 				if (item?.system.rangeType === "weapon") {
@@ -249,7 +248,6 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 	let allRollsParts = [];
 	const numberOfTargets = Math.max(1, game.user.targets.size);
-	//console.debug(data);
 	let targetDefArray = [], targetAtkModArray = [], targetBonusArray = [];
 	
 	if (isAttackRoll && (form !== null)) {
@@ -259,8 +257,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			for (let [k, v] of Object.entries(form)) {
 				if (v.checked !== undefined) {
 					let tabIndex = v.name.split(".")[0];
-					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) // check if Individual Attack Bonuses
-					|| !individualAttack) { //otherwise just use Unified Attack Bonuses
+          // check if Individual Attack Bonuses otherwise just use Unified Attack Bonuses
+					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) || !individualAttack) {
 						let bonusName = v.name.split(".")[1];
 						if (v.checked) {
 							targetBonuses.push(`@${bonusName}`);
@@ -297,8 +295,6 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				targetAtkModArray.push(attackMod);
 			}
 		}
-		//console.debug(targetDefArray);
-		//console.debug(targetAtkModArray);
 	}
 	else if (isAttackRoll && fastForward) {
 		// Logic to infer common bonuses based on user and target status under fast-forward conditions
@@ -324,12 +320,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		if (game.settings.get("dnd4e", "markAutomation") && data?.marker) {
 			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.marked.shouldApply = true;
 		}
-				
+		
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 
 			targetDefArray.push(data.item.attack.def); targetAtkModArray.push(data.item.attack.ability);
-			
-			const targetBonuses = foundry.utils.deepClone(userStatBonuses);
+			const targetBonuses = foundry.utils.deepClone(userStatBonuses);      
+      
 			if (theTargets.length > 0) {
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
@@ -439,23 +435,41 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 	const itemData = item?.getRollData({ variance: options.variance }).item;
 	const weaponData = weaponUse?.getRollData().item;
+  const attacker = await fromUuid(options.parent);
+  
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
+    const attacker = utils.tokenForActor(actor);
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
-		const attacker = utils.tokenForActor(actor);
 		try {
-			let targetOptions = foundry.utils.deepClone(options);
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
-			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
-			// populate the common attack bonuses into data
-			const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
-			if (commonAttackBonuses) {
-				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-					data[key] = commonAttackBonuses[key].value;
-				});
-			}
+      // const targetOptions = foundry.utils.deepClone(options);
+      // Deep clone fails on the options object because it contains more complex structures, and silently returns the original object instead. It seems that some rolls are dependent on this fallback behaviour, but attack rolls need a unique object to calc bonuses between rolls. Fixing this by creating an empty variable that can be filled as necessary with only the stuff we need. - Fox
+      let targetOptions;
+      
 			if (isAttackRoll) {
+        targetOptions = {
+          "attackedDef": options?.attackedDef,
+          "bonuses": options?.bonuses,
+          "formulaInnerData": options?.formulaInnerData,
+          "variance": options?.variance,
+          "weaponUuid": options?.weaponUuid,
+          "powerEffects": options?.powerEffects
+        };
+        // Get actor bonuses here, in case they change between rolls
+        targetOptions.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
+        await utils.applyEffects({ ...data, ...targetOptions.variance }, actor, itemData, weaponData, "attack", null, false, targetOptions);
+        // ...Then add target bonuses
+        if (targetActor) await utils.applyEffects({ ...data, ...targetOptions.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
+        
+        // populate the common attack bonuses into data
+        const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
+        if (commonAttackBonuses) {
+          Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+            data[key] = commonAttackBonuses[key].value;
+          });
+        }
 				const target = targets[rollExpressionIdx];
 				for (const actorItem of [...actor.items]) {
 					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
@@ -473,7 +487,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				}
 				Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			}
-			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
+			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions || options);
+      if (isAttackRoll) await utils.endEffects(actor, ["attack"]);
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -525,7 +540,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
 			targetData.targImmArray.push(targImmune);
-			targetData.targets.push(targets[rollExpressionIdx]);
+			targetData.targets.push(targets[rollExpressionIdx]);	
 		}
 		for (let dice of subroll.dice) {
 			if (dice.faces === 20) {
@@ -547,8 +562,6 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		}
 	}
 	
-	const attacker = await fromUuid(options.parent);
-	
 	// if there is only 1 roll, it's not a multi roll
 	if (!isAttackRoll || (game.user.targets.size < 1)) {
 		roll = roll.rollArray[0];
@@ -562,17 +575,20 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfHit", attacker);
+				utils.endEffectsOnTokens(targetData.targetHit,"attackedhit");
+				utils.endEffectsOnTokens(targetData.targetHit,"attacked");
 			}
 			if (targetData.targetMissed.length) {
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", attacker);
 				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfMiss", attacker);
+				utils.endEffectsOnTokens(targetData.targetMissed,"attackedmiss");
+				utils.endEffectsOnTokens(targetData.targetMissed,"attacked");
 			}
 		}
 	}
 
-	// Move this so that it only gets called when attacks are made, not all d20 rolls?
-	if (options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
+	if (isAttackRoll && options?.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 		// Always apply these effects after the attack, even if the player forgot to select targets
 		utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfAfterAttack", attacker);
 	}
@@ -585,6 +601,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		flavor: flavor,
 		flags: options?.flags,
 	}, { messageMode });
+  
 	return roll;
 }
 
@@ -733,7 +750,6 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	} else {
 		if (!fastForward) parts.pop();
 	}
-	//console.debug(parts);
 
 	let roll;
 	if (hitType === "immune") {
