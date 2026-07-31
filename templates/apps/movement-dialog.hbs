@@ -87,7 +87,7 @@
       <span class="move-name label">{{localize 'DND4E.Movement.Charge'}}</span>
       <span class="move-value">{{numberFormat system.movement.charge.value
         sign=true}}</span>
-      <input class="move-base" type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" onClick="this.select();" placeholder="@base + @armour">
+      <input class="move-base" type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" onClick="this.select();" placeholder="0">
       <input class="move-traits" type="text" name="system.movement.charge.traits" value="{{system.movement.charge.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
       <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Charge')}}">{{system.movement.charge.bonusValue}}</a>
       <input class="move-temp" type="text" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
