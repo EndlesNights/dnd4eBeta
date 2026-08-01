@@ -1,7 +1,7 @@
 import MappingField from "../fields/mapping-field.mjs";
 import { ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
-const { BooleanField, StringField } = foundry.data.fields;
+const { BooleanField, NumberField, StringField } = foundry.data.fields;
 
 export default class FeatureData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
@@ -14,7 +14,7 @@ export default class FeatureData extends foundry.abstract.TypeDataModel {
 			...ItemDescriptionTemplate.defineSchema(),
 			...ItemMacroTemplate.defineSchema(),
 			featureType: new StringField({ initial: "other" }),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			requirements: new StringField({ initial: "" }),
 			featureSource: new StringField({ initial: "" }),
 			featureGroup: new StringField({ initial: "" }),

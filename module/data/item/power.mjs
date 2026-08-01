@@ -3,7 +3,7 @@ import SourceField from "../fields/source-field.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
-const { ArrayField, BooleanField, SchemaField, SetField, StringField } = foundry.data.fields;
+const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 export default class PowerData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
@@ -18,7 +18,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
 			...ItemMacroTemplate.defineSchema(),
 			...AttackAndDamageTemplate.defineSchema(),
 			keyWords: new SetField(new StringField(), { initial: [] }),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			powersource: new StringField({ initial: "martial" }),
 			secondPowersource: new StringField({ initial: "" }),
 			powersourceName: new StringField({ initial: "" }),

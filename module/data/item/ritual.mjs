@@ -1,6 +1,6 @@
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
-const { SchemaField, StringField, BooleanField } = foundry.data.fields;
+const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class RitualData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
@@ -19,7 +19,7 @@ export default class RitualData extends foundry.abstract.TypeDataModel {
 			}),
 			autoCard: new BooleanField({ initial: true }),
 			requirements: new StringField({ initial: "" }),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			market: new StringField({ initial: "" }),
 			attribute: new StringField({ initial: "skills.arc.total" }),
 			formula: new StringField({ initial: "" }),

@@ -16,7 +16,7 @@ export default class BackpackData extends foundry.abstract.TypeDataModel {
 			...ActivatedEffectTemplate.defineSchema(),
 			...ItemMacroTemplate.defineSchema(),
 			...WealthTemplate.defineSchema(),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			capacity: new SchemaField({
 				type: new StringField({ initial: "weight" }),
 				value: new NumberField({ min: 0, initial: 0 }),
