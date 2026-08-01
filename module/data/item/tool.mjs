@@ -1,6 +1,6 @@
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 
-const { StringField } = foundry.data.fields;
+const { NumberField, StringField } = foundry.data.fields;
 
 export default class ToolData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
@@ -14,7 +14,7 @@ export default class ToolData extends foundry.abstract.TypeDataModel {
 			...PhysicalItemTemplate.defineSchema(),
 			...ActivatedEffectTemplate.defineSchema(),
 			...ItemMacroTemplate.defineSchema(),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			attribute: new StringField({ initial: "abilities.int.mod" }),
 			chatFlavor: new StringField({ initial: "" }),
 			formula: new StringField({ initial: "" }),

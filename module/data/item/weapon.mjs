@@ -28,7 +28,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
 				dt: new StringField({ nullable: true, initial: null }),
 				conditions: new StringField({ initial: "" }),
 			}),
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			weaponType: new StringField({ initial: "simpleM" }),
 			weaponHand: new StringField({ initial: "HMain" }),
 			weaponBaseType: new StringField({ initial: "" }),

@@ -18,7 +18,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 			...ActivatedEffectTemplate.defineSchema(),
 			...ItemMacroTemplate.defineSchema(),
 			...attackAndDamageSchema,
-			level: new StringField({ initial: "" }),
+			level: new NumberField({ required: true, nullable: true, initial: null }),
 			consumableType: new StringField({ initial: "potion" }),
 			autoGenChatPowerCard: new BooleanField({ initial: false }),
 			useType: new StringField({ initial: "item" }),
