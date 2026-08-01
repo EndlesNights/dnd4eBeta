@@ -1993,7 +1993,36 @@
   "prototypeToken": {
     "actorLink": false,
     "displayBars": 30,
-    "flags": {},
+    "flags": {
+      "Rideable": {
+        "issetRideableFlag": true,
+        "MaxRiderFlag": null,
+        "CustomRidingheightFlag": null,
+        "UseRidingHeightFlag": true,
+        "RidersScaleFlag": 1,
+        "RiderPositioningFlag": "RowPlacement",
+        "RiderOffsetFlag": [
+          0,
+          0
+        ],
+        "RiderRotOffsetFlag": 0,
+        "GrapplePlacementFlag": "Following",
+        "TokenFormFlag": "TokenFormCircle",
+        "InsideMovementFlag": false,
+        "SpawnRidersFlag": "",
+        "CanbePilotedFlag": false,
+        "CheckPilotedCollisionFlag": false,
+        "PilotedbyDefaultFlag": false
+      },
+      "lightmask": {
+        "shape": "circle",
+        "sides": null,
+        "points": null,
+        "ellipseMinor": null,
+        "customWallIDs": "",
+        "relative": false
+      }
+    },
     "name": "Badger",
     "displayName": 30,
     "width": 1,
@@ -2031,7 +2060,7 @@
       "attribute": "attributes.hp"
     },
     "bar2": {
-      "attribute": "attributes.temphp"
+      "attribute": null
     },
     "randomImg": false,
     "texture": {
@@ -2067,7 +2096,7 @@
         "ring": null,
         "background": null
       },
-      "effects": 1,
+      "effects": 0,
       "subject": {
         "scale": 1,
         "texture": null
@@ -2088,7 +2117,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.12",
     "createdTime": 1783763223431,
-    "modifiedTime": 1785477441124,
+    "modifiedTime": 1785553107585,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null
   },

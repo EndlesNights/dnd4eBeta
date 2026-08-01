@@ -1339,7 +1339,9 @@
         "shape": "circle",
         "sides": 3,
         "points": 5,
-        "ellipseMinor": 1
+        "ellipseMinor": 1,
+        "customWallIDs": "",
+        "relative": false
       },
       "Rideable": {
         "issetRideableFlag": true,
@@ -1626,7 +1628,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.12",
     "createdTime": 1783763223429,
-    "modifiedTime": 1785477425079,
+    "modifiedTime": 1785553125202,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null,
     "duplicateSource": null
