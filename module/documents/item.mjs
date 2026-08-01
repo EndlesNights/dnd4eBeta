@@ -1648,7 +1648,6 @@ export default class Item4e extends Item {
 
 		rollData.isAttackRoll = true;
 		rollData.commonAttackBonuses = actorData.system.commonAttackBonuses;
-		//console.debug(rollData.commonAttackBonuses);
 		rollData["ammo"] = 0; // because ammo is added to by weapon use multiple clicks of the button will add it higher
 
 		// Define Roll bonuses
@@ -2123,7 +2122,7 @@ export default class Item4e extends Item {
 		let title = `${this.name} - ${_loc("DND4E.DamageRoll")}`;
 		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
-		// Define Roll  and add seconadry parts
+		// Define Roll and add seconadry parts
 		const returnDamageRollAndOptionalType = (damageRoll, damageType) => {
 			if (damageType && (damageType !== _loc(CONFIG.DND4E.damageTypes.damage)) && (damageType !== _loc("DND4E.None"))) {
 				return `(${damageRoll})[${damageType}]`;
@@ -2344,7 +2343,7 @@ export default class Item4e extends Item {
 			missDamageFormula = damageFormula;
 		}
 
-		if (itemData.attack.isAttack && actorData.statuses.has("weakened")) {
+		if (game.settings.get("dnd4e", "dynamicAutomation") && itemData.attack.isAttack && actorData.statuses.has("weakened")) {
 			options.divisors.normal.value *= 2;
 			options.divisors.normal.reason.push(_loc("EFFECT.statusWeakened"));
 			options.divisors.crit.value *= 2;

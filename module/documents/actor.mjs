@@ -636,7 +636,6 @@ export default class Actor4e extends Actor {
 			system.attributes.init.value = system.attributes.init.absolute;
 		}
 	}
-	
 	_prepareDerivedDataMovement(actorData, system) {	//calc movespeed	
 		//bonus arrays first, since they want to appear on the sheet
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
@@ -728,35 +727,33 @@ export default class Actor4e extends Actor {
 				}
 			}
 		}
-			   
-		if (["immobilized", "grabbed", "petrified", "restrained"].some(i => actorData.statuses.has(i))) { 
-    
-			//Everything but teleport is absolute 0 when subject to an immobilising condition
-			system.movement.base.absolute = 0;
-			system.movement.burrow.absolute = 0;
-			system.movement.charge.absolute = 0;
-			system.movement.climb.absolute = 0;
-			system.movement.fly.absolute = 0;
-			system.movement.run.absolute = 0;
-			system.movement.shift.absolute = 0;
-			system.movement.swim.absolute = 0;
-			system.movement.walk.absolute = 0;
-      
-		} else if (actorData.statuses.has("slowed")) {
-      
-			//Non-teleport modes are capped at 2 when slowed
-			system.movement.base.ceil = 2;
-			system.movement.burrow.ceil = 2;
-			system.movement.climb.ceil = 2;
-			system.movement.fly.ceil = 2;
-			system.movement.shift.ceil = 2;
-			system.movement.swim.ceil = 2;
-			system.movement.walk.ceil = 2;
-			//Except "bonus" type which are absolute 0
-			system.movement.charge.absolute = 0;
-			system.movement.run.absolute = 0;
-      
-		}
+		
+    if(game.settings.get("dnd4e", "dynamicAutomation")) {
+      if (["immobilized", "grabbed", "petrified", "restrained"].some(i => actorData.statuses.has(i))) {      
+        //Everything but teleport is absolute 0 when subject to an immobilising condition
+        system.movement.base.absolute = 0;
+        system.movement.burrow.absolute = 0;
+        system.movement.charge.absolute = 0;
+        system.movement.climb.absolute = 0;
+        system.movement.fly.absolute = 0;
+        system.movement.run.absolute = 0;
+        system.movement.shift.absolute = 0;
+        system.movement.swim.absolute = 0;
+        system.movement.walk.absolute = 0;        
+      } else if (actorData.statuses.has("slowed")) {        
+        //Non-teleport modes are capped at 2 when slowed
+        system.movement.base.ceil = 2;
+        system.movement.burrow.ceil = 2;
+        system.movement.climb.ceil = 2;
+        system.movement.fly.ceil = 2;
+        system.movement.shift.ceil = 2;
+        system.movement.swim.ceil = 2;
+        system.movement.walk.ceil = 2;
+        //Except "bonus" type which are absolute 0
+        system.movement.charge.absolute = 0;
+        system.movement.run.absolute = 0;        
+      }
+    }
       
 		//Base Speed
 		if (isNaN(parseInt(system.movement.base?.absolute))) { //All logic only required if there is no usable absolute value
@@ -1041,14 +1038,17 @@ export default class Actor4e extends Actor {
 		   Apr 2024 update - [type].value should be now read as the incoming damage adjustment, 
 		   with the resistance totalled under [type].res and the vulnerabilty under [type].vuln.
 		   This should allow for automation of "reduce resistance by X" type effects without
-		   applying unwanted vulnerabilities.
+		   applying unwanted vulnerabilities. - Fox
 		*/
 		try {
 			for (let [id, res] of Object.entries(system.resistances)) {
 				res.vuln = res?.vuln || 0;
 				res.res = res?.res || 0;
 				res.label = _loc(DND4E.damageTypes[id]);
-
+        
+        // Petrification grants resist all 20
+        if (id === "damage" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("petrified")) res.res = Math.max(res.res,20);
+        
 				if (isNaN(parseInt(res?.absolute))) { //All logic only required if there is no usable absolute value
 				
 					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.
@@ -1083,17 +1083,17 @@ export default class Actor4e extends Actor {
 					
 					for (let val of damageMods) {
 						if (val < 0) {
-							//console.debug(`${_loc(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
+							utils.debugLog(`Vulnerable ${_loc(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
 							res.vuln = Math.min(res.vuln, val);
 						} else if (val > 0) {
-							//console.debug(`${_loc(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
+							utils.debugLog(`Resist ${_loc(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
 							res.res = Math.max(res.res, val);
 						}
 					}
 					
 					//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
 					res.value = Math.max(res.res, 0) + Math.min(res.vuln, 0);
-					//console.debug(`${_loc(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
+					utils.debugLog(`Resist/Vulnerable ${_loc(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 				
 				} else {
 					res.value = res.absolute;
@@ -1425,6 +1425,9 @@ export default class Actor4e extends Actor {
 				//No way to sort manual bonuses, so they just get added regardless.
 				skl.total += globalBonus.bonusValue;
 				skl.total += trainingBonus;
+        
+        //Blinded causes -10 perception
+        if (id === "prc" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
 
 				if (!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
@@ -1541,6 +1544,9 @@ export default class Actor4e extends Actor {
 				skl.total += globalBonus.untyped;
 				//No way to sort manual bonuses, so they just get added regardless.
 				skl.total += globalBonus.bonusValue;
+        
+        //Blinded causes -10 perception
+        if (id === "prc" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
 			
 				//trim value according to floor and ceil
 				skl.total = Math.max(skl.total, skl?.floor || skl.total - 1);
