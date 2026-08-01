@@ -1837,7 +1837,7 @@ export function computeConcealment(token, target) {
 	let obscurementLevel = OBSCUREMENT.NONE;
 	for (const region of [...target.document.regions].filter((r) => r.behaviors.some((b) => b.type === "obscuredTerrain"))) {
 		for (const behavior of [...region.behaviors].filter((b) => b.type === "obscuredTerrain")) {
-			if (!behavior.system.evaluateConditions(target)) continue;
+			if (!behavior.system.evaluateConditions(token)) continue;
 			if (behavior.system.level > obscurementLevel) obscurementLevel = behavior.system.level;
 		}
 	}
