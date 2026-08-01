@@ -63,19 +63,6 @@ export const registerSystemSettings = function() {
 		},
 	});
 
-	// Sense-to-token vision sync
-	game.settings.register("dnd4e", "senseVisionSync", {
-		name: "SETTINGS.4eSenseVisionN",
-		hint: "SETTINGS.4eSenseVisionL",
-		scope: "world",
-		config: true,
-		default: true,
-		type: Boolean,
-		onChange: () => {
-			if (canvas?.ready) canvas.draw();
-		},
-	});
-
 	// Currency Carrying Weight
 	game.settings.register("dnd4e", "currencyWeight", {
 		name: "SETTINGS.4eCurWtN",
@@ -345,6 +332,16 @@ export const registerSystemSettings = function() {
 		},
 	});
 
+	// Automate status conditions
+	game.settings.register("dnd4e", "dynamicAutomation", {
+		name: "SETTINGS.4eAutomationStatusN",
+		hint: "SETTINGS.4eAutomationStatusL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean,
+	});
+  
 	// Automatically apply effects to targets upen using powers or attacking
 	game.settings.register("dnd4e", "autoApplyEffects", {
 		name: "SETTINGS.4eAutoApplyEffectsN",
@@ -355,14 +352,17 @@ export const registerSystemSettings = function() {
 		type: Boolean,
 	});
 
-	// Automate universal marking effects
-	game.settings.register("dnd4e", "markAutomation", {
-		name: "SETTINGS.4eMarkAutomationN",
-		hint: "SETTINGS.4eMarkAutomationL",
-		scope: "client",
+	// Sense-to-token vision sync
+	game.settings.register("dnd4e", "senseVisionSync", {
+		name: "SETTINGS.4eSenseVisionN",
+		hint: "SETTINGS.4eSenseVisionL",
+		scope: "world",
 		config: true,
 		default: true,
 		type: Boolean,
+		onChange: () => {
+			if (canvas?.ready) canvas.draw();
+		},
 	});
 	
 	// Prompt end-of-turn saves for applied effects

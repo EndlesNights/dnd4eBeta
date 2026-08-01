@@ -26,18 +26,20 @@
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
-    "dying"
+    "dying",
+    "unconscious",
+    "prone"
   ],
   "showIcon": 1,
   "folder": "taBy8HUxznsopE42",
   "sort": 1300000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053587558,
-    "modifiedTime": 1784053923518,
+    "modifiedTime": 1785478750462,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

@@ -4,64 +4,7 @@
   "img": "systems/dnd4e/icons/statusEffects/prone.svg",
   "type": "base",
   "system": {
-    "changes": [
-      {
-        "key": "system.movement.walk.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.run.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.swim.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.shift.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.fly.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.climb.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.charge.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.burrow.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      }
-    ],
+    "changes": [],
     "durationType": "",
     "powerEffectType": "misc",
     "dots": [],
@@ -92,9 +35,9 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.10",
+    "systemVersion": "0.8.12",
     "createdTime": 1784053743442,
-    "modifiedTime": 1784447904172,
+    "modifiedTime": 1785478909593,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

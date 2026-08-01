@@ -34,7 +34,9 @@
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
-    "unconscious"
+    "unconscious",
+    "helpless",
+    "prone"
   ],
   "showIcon": 1,
   "folder": "taBy8HUxznsopE42",
@@ -45,7 +47,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053878668,
-    "modifiedTime": 1784448301598,
+    "modifiedTime": 1785564783911,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

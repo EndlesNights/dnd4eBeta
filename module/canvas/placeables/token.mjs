@@ -54,7 +54,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	 * @returns {boolean}                                     Did any of this token's detection modes detect the target?
 	 */
 	canDetect(targetToken, { modes } = {}) {
-		if (this === targetToken) return true;
+		if (!targetToken || this === targetToken) return true;
 		let visionSource = this.vision;
 		let ephemeral = false;
 		if (!visionSource) {
@@ -145,7 +145,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 		// Temporary hit points
 		if (temp > 0) {
-			bar.beginFill(c.temp, 1.0).lineStyle(0).drawRoundedRect(bs1, bs1, (tempPct * bw) - (2 * bs1), bh - (2 * bs1), s);
+			bar.beginFill(c.temp, 1.0).lineStyle(bs, c.tempStroke, 1.0).drawRoundedRect(bs1, bs1, (tempPct * bw) - (2 * bs1), bh - (2 * bs1), s);
 		}
 
 		// Set position
