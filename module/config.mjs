@@ -1927,6 +1927,7 @@ DND4E.tokenHPColors = {
 	damage: 0xFF0000,
 	healing: 0x00FF00,
 	temp: 0x66CCFF,
+	tempStroke: 0x2288CC,
 };
 
 /* -------------------------------------------- */
