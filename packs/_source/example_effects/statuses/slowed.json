@@ -4,64 +4,7 @@
   "img": "systems/dnd4e/icons/statusEffects/slowed.svg",
   "type": "base",
   "system": {
-    "changes": [
-      {
-        "key": "system.movement.walk.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.run.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.swim.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.shift.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.fly.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.climb.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.charge.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.burrow.ceil",
-        "type": "override",
-        "value": 2,
-        "phase": "initial",
-        "priority": null
-      }
-    ],
+    "changes": [],
     "durationType": "",
     "powerEffectType": "misc",
     "dots": [],
@@ -92,9 +35,9 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.10",
+    "systemVersion": "0.8.12",
     "createdTime": 1784053801545,
-    "modifiedTime": 1784448119495,
+    "modifiedTime": 1785478949879,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

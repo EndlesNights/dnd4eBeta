@@ -4,15 +4,7 @@
   "img": "systems/dnd4e/icons/statusEffects/blinded.svg",
   "type": "base",
   "system": {
-    "changes": [
-      {
-        "key": "system.skills.prc.untyped",
-        "type": "add",
-        "value": -10,
-        "phase": "initial",
-        "priority": null
-      }
-    ],
+    "changes": [],
     "durationType": "",
     "powerEffectType": "misc",
     "dots": [],
@@ -43,9 +35,9 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.10",
+    "systemVersion": "0.8.12",
     "createdTime": 1784053428717,
-    "modifiedTime": 1784448181919,
+    "modifiedTime": 1785478693073,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

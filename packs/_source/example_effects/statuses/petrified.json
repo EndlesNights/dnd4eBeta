@@ -18,62 +18,6 @@
         "value": -5,
         "phase": "initial",
         "priority": null
-      },
-      {
-        "key": "system.movement.walk.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.run.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.swim.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.shift.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.fly.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.climb.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.charge.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.movement.burrow.absolute",
-        "type": "override",
-        "value": 0,
-        "phase": "initial",
-        "priority": null
       }
     ],
     "durationType": "",
@@ -107,9 +51,9 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.10",
+    "systemVersion": "0.8.12",
     "createdTime": 1784053718245,
-    "modifiedTime": 1784447377095,
+    "modifiedTime": 1785478896010,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
