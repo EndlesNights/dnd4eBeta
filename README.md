@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Foundry-v14-informational)
 
-# DnD 4th Edition - v0.8
+# DnD 4th Edition - v0.9
 * **Foundry VTT Compatibility**: v14
 * **Author**: EndlesNights#9000
 * **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [SagaTympana](https://github.com/SagaTympana), [roth-michael](https://github.com/roth-michael), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342), [wigmeister2000](https://github.com/wigmeister2000)
