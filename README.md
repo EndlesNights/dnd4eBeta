@@ -29,5 +29,13 @@ The contents of this project is under a number of licenses
 
 ![image](https://user-images.githubusercontent.com/58280840/122214010-991a4d80-ce77-11eb-8b55-98f537e93ebf.png)
 
+## Community Contribution
+
+If you wish to contribute to development, please review [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## AI Policy
+
+The Dungeons & Dragons 4th Edition system does not make use of AI (generative or otherwise) for any area of its implementation, be that art, code, or other. We expect all contributors to follow this same policy when contributing with a pull request; contributions made using AI will be rejected outright.
+
 
 A special thanks to [Asacolips](https://gitlab.com/Asacolips) for all your cheerleading along the way!
