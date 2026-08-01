@@ -728,32 +728,32 @@ export default class Actor4e extends Actor {
 			}
 		}
 		
-    if(game.settings.get("dnd4e", "dynamicAutomation")) {
-      if (["immobilized", "grabbed", "petrified", "restrained"].some(i => actorData.statuses.has(i))) {      
-        //Everything but teleport is absolute 0 when subject to an immobilising condition
-        system.movement.base.absolute = 0;
-        system.movement.burrow.absolute = 0;
-        system.movement.charge.absolute = 0;
-        system.movement.climb.absolute = 0;
-        system.movement.fly.absolute = 0;
-        system.movement.run.absolute = 0;
-        system.movement.shift.absolute = 0;
-        system.movement.swim.absolute = 0;
-        system.movement.walk.absolute = 0;        
-      } else if (actorData.statuses.has("slowed")) {        
-        //Non-teleport modes are capped at 2 when slowed
-        system.movement.base.ceil = 2;
-        system.movement.burrow.ceil = 2;
-        system.movement.climb.ceil = 2;
-        system.movement.fly.ceil = 2;
-        system.movement.shift.ceil = 2;
-        system.movement.swim.ceil = 2;
-        system.movement.walk.ceil = 2;
-        //Except "bonus" type which are absolute 0
-        system.movement.charge.absolute = 0;
-        system.movement.run.absolute = 0;        
-      }
-    }
+		if (game.settings.get("dnd4e", "dynamicAutomation")) {
+			if (["immobilized", "grabbed", "petrified", "restrained"].some(i => actorData.statuses.has(i))) {      
+				//Everything but teleport is absolute 0 when subject to an immobilising condition
+				system.movement.base.absolute = 0;
+				system.movement.burrow.absolute = 0;
+				system.movement.charge.absolute = 0;
+				system.movement.climb.absolute = 0;
+				system.movement.fly.absolute = 0;
+				system.movement.run.absolute = 0;
+				system.movement.shift.absolute = 0;
+				system.movement.swim.absolute = 0;
+				system.movement.walk.absolute = 0;        
+			} else if (actorData.statuses.has("slowed")) {        
+				//Non-teleport modes are capped at 2 when slowed
+				system.movement.base.ceil = 2;
+				system.movement.burrow.ceil = 2;
+				system.movement.climb.ceil = 2;
+				system.movement.fly.ceil = 2;
+				system.movement.shift.ceil = 2;
+				system.movement.swim.ceil = 2;
+				system.movement.walk.ceil = 2;
+				//Except "bonus" type which are absolute 0
+				system.movement.charge.absolute = 0;
+				system.movement.run.absolute = 0;        
+			}
+		}
       
 		//Base Speed
 		if (isNaN(parseInt(system.movement.base?.absolute))) { //All logic only required if there is no usable absolute value
@@ -1046,8 +1046,8 @@ export default class Actor4e extends Actor {
 				res.res = res?.res || 0;
 				res.label = _loc(DND4E.damageTypes[id]);
         
-        // Petrification grants resist all 20
-        if (id === "damage" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("petrified")) res.res = Math.max(res.res,20);
+				// Petrification grants resist all 20
+				if ((id === "damage") && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("petrified")) res.res = Math.max(res.res, 20);
         
 				if (isNaN(parseInt(res?.absolute))) { //All logic only required if there is no usable absolute value
 				
@@ -1426,8 +1426,8 @@ export default class Actor4e extends Actor {
 				skl.total += globalBonus.bonusValue;
 				skl.total += trainingBonus;
         
-        //Blinded causes -10 perception
-        if (id === "prc" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
+				//Blinded causes -10 perception
+				if ((id === "prc") && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
 
 				if (!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
@@ -1545,8 +1545,8 @@ export default class Actor4e extends Actor {
 				//No way to sort manual bonuses, so they just get added regardless.
 				skl.total += globalBonus.bonusValue;
         
-        //Blinded causes -10 perception
-        if (id === "prc" && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
+				//Blinded causes -10 perception
+				if ((id === "prc") && game.settings.get("dnd4e", "dynamicAutomation") && this.statuses.has("blinded")) skl.total += -10;
 			
 				//trim value according to floor and ceil
 				skl.total = Math.max(skl.total, skl?.floor || skl.total - 1);

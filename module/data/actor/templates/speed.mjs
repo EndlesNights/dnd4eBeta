@@ -57,4 +57,20 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
 			movement: new SchemaField(this.common, { label: "DND4E.Movement" }),
 		};
 	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/**
+     * Convert single macro into macro array.
+     * @param {Object} source  The candidate source data from which the model will be constructed.
+     */
+	static migrateSpeed(source) {
+		if ("charge" in source.movement) {
+			if (["@base", "@base + @armour"].includes(source.charge?.formula)) {
+				source.movement.charge.formula = 0;
+			}
+		}
+	}
 }

@@ -54,7 +54,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	 * @returns {boolean}                                     Did any of this token's detection modes detect the target?
 	 */
 	canDetect(targetToken, { modes } = {}) {
-		if (!targetToken || this === targetToken) return true;
+		if (!targetToken || (this === targetToken)) return true;
 		let visionSource = this.vision;
 		let ephemeral = false;
 		if (!visionSource) {
