@@ -49,4 +49,24 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 			senses: new SchemaField(this.common, { label: "DND4E.Senses" }),
 		};
 	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/**
+     * Convert single macro into macro array.
+     * @param {Object} source  The candidate source data from which the model will be constructed.
+     */
+	static migrateSenses(source) {
+		if (source.senses?.special?.value) {
+			const oldSenses = Array.from(source.senses?.special?.value);
+			delete source.senses?.special?.value;
+			if (oldSenses.length) {
+				for (const sense of oldSenses) {
+					source.senses.special[`${sense[0]}`] = { value: true, range: sense[1] };
+				}
+			}
+		}
+	}
 }

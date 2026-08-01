@@ -65,27 +65,18 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 
 	/** @inheritdoc */
 	static migrateData(source) {    
-		const needsACMigration = typeof source.defences?.ac?.light === "boolean";
-    
-		if (!source.senses?.special?.value && !needsACMigration) return super.migrateData(source);
-
-		const oldSenses = Array.from(source.senses?.special?.value);
-		delete source.senses?.special?.value;
-		if (!oldSenses.length && !needsACMigration) return super.migrateData(source);
-
-		const flattenedSource = foundry.utils.flattenObject(source);    
-
-		delete flattenedSource["senses.special.value"];    
-		for (const sense of oldSenses) {
-			flattenedSource[`senses.special.${sense[0]}`] = { value: true, range: sense[1] };
+		if ("movement" in source) {
+			SpeedTemplate.migrateSpeed(source);
 		}
 
-		if (needsACMigration) flattenedSource["defences.ac.light"] = "auto";
-    
-		if (("source" in source) && (foundry.utils.getType(source.source) !== "Object")) {
-			flattenedSource.source = { custom: source.source };
+		if ("senses" in source) {
+			CreatureTemplate.migrateSenses(source);
 		}
 
-		return super.migrateData(foundry.utils.expandObject(flattenedSource));
+		if ("defences" in source) {
+			CombatantTemplate.migrateDefences(source);
+		}
+
+		return super.migrateData(source);
 	}
 }

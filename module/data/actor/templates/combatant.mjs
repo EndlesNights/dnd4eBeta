@@ -172,4 +172,18 @@ export default class CombatantTemplate extends SpeedTemplate {
 		}
 		return initial;
 	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/**
+     * Convert single macro into macro array.
+     * @param {Object} source  The candidate source data from which the model will be constructed.
+     */
+	static migrateDefences(source) {
+		if (typeof source.defences?.ac?.light === "boolean") {
+			source.defences.ac.light = "auto";
+		}
+	}
 }

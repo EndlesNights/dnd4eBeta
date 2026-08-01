@@ -18,4 +18,16 @@ export default class CreatureTemplate extends foundry.abstract.DataModel {
 			...sensesSchema,
 		};
 	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/**
+     * Convert single macro into macro array.
+     * @param {Object} source  The candidate source data from which the model will be constructed.
+     */
+	static migrateSenses(source) {
+		SensesTemplate.migrateSenses(source);
+	}
 }

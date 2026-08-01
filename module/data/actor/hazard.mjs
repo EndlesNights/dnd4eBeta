@@ -82,11 +82,14 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
 
 	/** @inheritdoc */
 	static migrateData(source) {
-		if (("source" in source) && (foundry.utils.getType(source.source) !== "Object")) {
-			source.source = { custom: source.source };
+		if ("movement" in source) {
+			SpeedTemplate.migrateSpeed(source);
 		}
-    
-		if (typeof source.defences?.ac?.light === "boolean") source.defences.ac.light = "auto";
+
+		if ("defences" in source) {
+			CombatantTemplate.migrateDefences(source);
+		}
+
 		return super.migrateData(source);
 	}
 }
