@@ -1367,6 +1367,9 @@ preLocalize("autoTargetModes");
 DND4E.senses = {
 	nv: {
 		label: "DND4E.VisionNormal",
+		detectionMode: "lightPerception",
+		grantsSight: true,
+		range: Infinity,
 	},
 	lv: {
 		label: "DND4E.VisionLowLight",
@@ -1385,7 +1388,7 @@ DND4E.senses = {
 		label: "DND4E.SpecialSensesBS",
 		detectionMode: "seeAll",
 		grantsSight: true,
-		visionMode: "basicSight",
+		visionMode: "darkvision",
 	},
 	dv: {
 		label: "DND4E.SpecialSensesDV",
@@ -1403,7 +1406,7 @@ DND4E.senses = {
 		label: "DND4E.SpecialSensesTR",
 		detectionMode: "seeAll",
 		grantsSight: true,
-		visionMode: "basicSight",
+		visionMode: "darkvision",
 	},
 };
 preLocalize("senses", { keys: ["label"], sort: true });
