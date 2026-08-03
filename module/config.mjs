@@ -1398,6 +1398,7 @@ DND4E.senses = {
 		label: "DND4E.SpecialSensesTS",
 		detectionMode: "feelTremor",
 		grantsSight: true,
+		visionMode: "tremorsense",
 	},
 	tr: {
 		label: "DND4E.SpecialSensesTR",
