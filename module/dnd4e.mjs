@@ -196,6 +196,9 @@ Hooks.once("init", async function() {
 		arr.push(newEffect);
 		return arr;
 	}, []);
+	CONFIG.specialStatusEffects.BLIND = "blinded";
+	CONFIG.specialStatusEffects.BURROW = "burrowing";
+	CONFIG.specialStatusEffects.FLY = "flying";
 
 	// Set up token movement actions
 	documents.TokenDocument4e.registerMovementActions();

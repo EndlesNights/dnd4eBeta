@@ -24,6 +24,7 @@ Most of the icons within the icons/statusEffects and icons/ui folders are by the
 
 * AttackDown:		https://game-icons.net/1x1/lorc/shattered-sword.html
 * AttackUp:			https://game-icons.net/1x1/lorc/blade-drag.html
+* Burrowing:        https://game-icons.net/1x1/caro-asercion/mole.html
 * DefDown:			https://game-icons.net/1x1/lorc/cracked-shield.html
 * DefUp:			https://game-icons.net/1x1/lorc/white-tower.html
 * Insubstantial:	https://game-icons.net/1x1/lorc/ghost.html

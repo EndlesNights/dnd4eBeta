@@ -2160,6 +2160,16 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing",
 	},
+	burrowing: {
+		name: "EFFECT.statusBurrowing",
+		img: "systems/dnd4e/icons/statusEffects/burrowing.svg",
+		description: "EFFECTDESC.burrowing",
+	},
+	flying: {
+		name: "EFFECT.statusFlying",
+		img: "systems/dnd4e/icons/statusEffects/flying.svg",
+		description: "EFFECTDESC.flying",
+	},
 	mounted: {
 		name: "EFFECT.statusMounted",
 		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
