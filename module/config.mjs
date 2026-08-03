@@ -1367,9 +1367,6 @@ preLocalize("autoTargetModes");
 DND4E.senses = {
 	nv: {
 		label: "DND4E.VisionNormal",
-		detectionMode: "lightPerception",
-		grantsSight: true,
-		range: Infinity,
 	},
 	lv: {
 		label: "DND4E.VisionLowLight",
