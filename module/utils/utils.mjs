@@ -1865,19 +1865,19 @@ export function computeConcealment(token, target) {
 	const targetLight = target.lightLevel;
 	switch (targetLight) {
 		case LIGHT_LEVEL.DARK:
-			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE > concealmentLevel)) {
+			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE >= concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.NONE;
 			}
-			else if (CONCEALMENT.TOTAL > concealmentLevel) {
+			else if (CONCEALMENT.TOTAL >= concealmentLevel) {
 				concealmentLevel = CONCEALMENT.TOTAL;
 			}
 			break;
 		case LIGHT_LEVEL.DIM:
-			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE > concealmentLevel)) {
+			if (token.actor.system.senses.special.dv.value && (CONCEALMENT.NONE >= concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.NONE;
-			} else if (token.actor.system.senses.special.lv.value && (CONCEALMENT.NONE > concealmentLevel)) {
+			} else if (token.actor.system.senses.special.lv.value && (CONCEALMENT.NONE >= concealmentLevel)) {
 				concealmentLevel = CONCEALMENT.NONE;
-			} else if (CONCEALMENT.PARTIAL > concealmentLevel) {
+			} else if (CONCEALMENT.PARTIAL >= concealmentLevel) {
 				concealmentLevel = CONCEALMENT.PARTIAL;
 			}
 			break;
