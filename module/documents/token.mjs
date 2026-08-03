@@ -75,10 +75,9 @@ export default class TokenDocument4e extends TokenDocument {
 		}
 
 		const sight = maxSightRange > -Infinity
-			? { enabled: true, range: maxSightRange }
+			? { enabled: true, range: maxSightRange, visionMode: sightVisionMode ?? "basic" }
 			: {};
 
-		if (sightVisionMode) sight.visionMode = sightVisionMode;
 		return { sight, detectionModes };
 	}
 
