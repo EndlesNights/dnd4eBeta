@@ -1882,7 +1882,7 @@ export function computeConcealment(token, target) {
 			}
 			break;
 		case LIGHT_LEVEL.BRIGHT:
-			if (CONCEALMENT.NONE > concealmentLevel) concealmentLevel = CONCEALMENT.NONE;
+			if (CONCEALMENT.NONE >= concealmentLevel) concealmentLevel = CONCEALMENT.NONE;
 			break;
 	}
 
