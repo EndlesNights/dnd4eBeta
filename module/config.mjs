@@ -1385,7 +1385,7 @@ DND4E.senses = {
 		label: "DND4E.SpecialSensesBS",
 		detectionMode: "seeAll",
 		grantsSight: true,
-		visionMode: "basicSight",
+		visionMode: "darkvision",
 	},
 	dv: {
 		label: "DND4E.SpecialSensesDV",
@@ -1398,12 +1398,13 @@ DND4E.senses = {
 		label: "DND4E.SpecialSensesTS",
 		detectionMode: "feelTremor",
 		grantsSight: true,
+		visionMode: "tremorsense",
 	},
 	tr: {
 		label: "DND4E.SpecialSensesTR",
 		detectionMode: "seeAll",
 		grantsSight: true,
-		visionMode: "basicSight",
+		visionMode: "darkvision",
 	},
 };
 preLocalize("senses", { keys: ["label"], sort: true });

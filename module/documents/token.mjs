@@ -59,7 +59,7 @@ export default class TokenDocument4e extends TokenDocument {
 	 */
 	static computeSenseOverrides(senses) {
 		const detectionModes = {};
-		let maxSightRange = -1;
+		let maxSightRange = -Infinity;
 		let sightVisionMode = null;
 
 		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
@@ -74,11 +74,10 @@ export default class TokenDocument4e extends TokenDocument {
 			}
 		}
 
-		const sight = maxSightRange > 0
-			? { enabled: true, range: maxSightRange }
+		const sight = maxSightRange > -Infinity
+			? { enabled: true, range: maxSightRange, visionMode: sightVisionMode ?? "basic" }
 			: {};
 
-		if (sightVisionMode) sight.visionMode = sightVisionMode;
 		return { sight, detectionModes };
 	}
 

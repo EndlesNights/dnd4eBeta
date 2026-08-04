@@ -70,7 +70,21 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		const testPoints = targetToken.document.getVisibilityTestPoints();
 		const config = canvas.visibility._createVisibilityTestConfig(testPoints, { object: targetToken, tolerance: 0 });
 		const allowed = modes ? new Set(modes) : null;
-		const detected = Object.entries(this.detectionModes).some(([id, mode]) => {
+		const detectionModes = foundry.utils.mergeObject(this.detectionModes, {
+			lightPerception: {
+				enabled: true,
+				range: Infinity,
+			},
+			basicSight: {
+				enabled: true,
+				range: 0,
+			},
+		}, {
+			insertKeys: true,
+			insertValues: true,
+			overwrite: false,
+		});
+		const detected = Object.entries(detectionModes).some(([id, mode]) => {
 			if (allowed && !allowed.has(id)) return false;
 			return CONFIG.Canvas.detectionModes[id]?.testVisibility(visionSource, mode, config) === true;
 		});
