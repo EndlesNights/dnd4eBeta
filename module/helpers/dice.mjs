@@ -275,7 +275,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 						if (v.checked) {
 							targetBonuses.push(`@${bonusName}`);
 						}
-						if (targDataArray.hasTarget) targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
+						targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
 					}
 				}
 				if (!individualAttack && (k > 21)) {
