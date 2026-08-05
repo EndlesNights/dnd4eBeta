@@ -66,8 +66,9 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 		const numTargets = Math.max(1, game.user.targets.size);
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = !!targetArr.length;
-    
-		if (game.settings.get("dnd4e", "dynamicAutomation")) {
+
+		const automation = game.settings.get("dnd4e", "dynamicAutomation");
+		if (automation) {
 			if (actor.system?.marker) {
 				targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
 				userBonuses.marked.shouldApply = targDataArray.ignoringMark;
@@ -116,7 +117,7 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-				const concealment = game.settings.get("dnd4e", "dynamicAutomation") ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;
+				const concealment = (target && automation) ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;
 				if ((targetStatus.includes("concealedTotal") || (concealment === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 				else if ((targetStatus.includes("concealed") || (concealment === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;	
 	
@@ -374,7 +375,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
 					const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
-					const concealment = game.settings.get("dnd4e", "dynamicAutomation") ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;	
+					const concealment = (target && automation) ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;	
 					if ((targetStatus.includes("concealedTotal") || (concealment === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 					else if ((targetStatus.includes("concealed") || (concealment === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;
 
