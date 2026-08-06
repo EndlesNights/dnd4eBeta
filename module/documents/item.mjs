@@ -2065,7 +2065,7 @@ export default class Item4e extends Item {
 
 		const regionData = {
 			shapes,
-			name: this.parent.name,
+			name: `${this.parent.name} - ${this.name}`,
 			color: game.user.color,
 			levels: [canvas.level.id],
 			highlightMode: "coverage",
