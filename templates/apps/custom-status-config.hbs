@@ -37,16 +37,16 @@
         {{#each customStatuses as |status s|}}
         <tr class="custom-status-line" data-row-id="{{s}}">
           <td class="custom-status-image">
-            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" type="checkbox" data-action="editImage" data-edit="img" alt="{{localize 'DND4E.StatusImage'}}" {{disabled (contains status.id ../originalIds)}} />
+            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" type="checkbox" data-action="editImage" data-edit="img" alt="{{localize 'DND4E.StatusImage'}}" />
           </td>
           <td class="custom-status-name">
-            <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusName'}}" />
+            <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusName'}}" />
           </td>
           <td class="custom-status-id">
-            <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusId'}}" />
+            <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusId'}}" />
           </td>
           <td class="custom-status-description">
-            <textarea id="custom-status-description-{{s}}" class="custom-status-description" name="description" {{disabled (contains status.id ../originalIds)}} placeholder="{{localize 'DND4E.StatusDescription'}}">{{status.description}}</textarea>
+            <textarea id="custom-status-description-{{s}}" class="custom-status-description" name="description" placeholder="{{localize 'DND4E.StatusDescription'}}">{{status.description}}</textarea>
           </td>
           <td class="custom-status-control">
             <a class="custom-status-control" data-action="deleteStatus" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
