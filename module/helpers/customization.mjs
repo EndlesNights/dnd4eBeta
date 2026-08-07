@@ -51,7 +51,7 @@ export async function applyCustomStatusToCompendium() {
 	const effects = await pack.getDocuments();
 
 	const statusEffects = CONFIG.statusEffects;
-	const updates = []
+	const updates = [];
 
 	// Iterate over compendium entries - applying fine-tuned migration functions
 	for (let effect of effects) {
