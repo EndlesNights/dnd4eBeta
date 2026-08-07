@@ -643,15 +643,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (data.system.movement.walk?.traits) data.moveTip += ` (${data.system.movement.walk.traits})`;
 		data.moveTip += `<br />+${parseInt(data.system.movement.run.value)} ${_loc("DND4E.Movement.Unit")} ${_loc("DND4E.Movement.Run")}`;
 		if (data.system.movement.run?.traits) data.moveTip += ` (${data.system.movement.run.traits})`;
-		data.moveTip += `<br />${parseInt(data.system.movement.charge.value)} ${_loc("DND4E.Movement.Unit")} ${_loc("DND4E.Movement.SpeedType", { mode: _loc("DND4E.Movement.Charge") })}`;
+		data.moveTip += `<br />${parseInt(data.system.movement.charge.value)} ${_loc("DND4E.Movement.Unit")} ${_loc("DND4E.Movement.Charge")}`;
 		if (data.system.movement.charge?.traits) data.moveTip += ` (${data.system.movement.charge.traits})`;
 		data.moveTip += `<br />${parseInt(data.system.movement.shift.value)} ${_loc("DND4E.Movement.Unit")} ${_loc("DND4E.Movement.SpeedType", { mode: _loc("DND4E.Movement.Shift") })}`;
 		if (data.system.movement.shift?.traits) data.moveTip += ` (${data.system.movement.shift.traits})`;
-		/*if(data.system.movement.burrow.value) data.moveTip += `<br>${parseInt(data.system.movement.burrow.value)} ${_loc("DND4E.MovementUnit")} ${_loc("DND4E.MovementSpeedBurrowing")}`;
-		if(data.system.movement.climb.value) data.moveTip += `<br>${parseInt(data.system.movement.climb.value)} ${_loc("DND4E.MovementUnit")} ${_loc("DND4E.MovementSpeedClimbing")}`;
-		if(data.system.movement.fly.value) data.moveTip += `<br>${parseInt(data.system.movement.fly.value)} ${_loc("DND4E.MovementUnit")} ${_loc("DND4E.MovementSpeedFlying")}`;
-		if(data.system.movement.swim.value) data.moveTip += `<br>${parseInt(data.system.movement.swim.value)} ${_loc("DND4E.MovementUnit")} ${_loc("DND4E.MovementSpeedSwimming")}`
-		if(data.system.movement.teleport.value) data.moveTip += `<br>${parseInt(data.system.movement.teleport.value)} ${_loc("DND4E.MovementUnit")} ${_loc("DND4E.MovementSpeedTeleporting")}`*/
 
 		const moveModes = ["burrow", "climb", "fly", "swim", "teleport"];
 		for (let m of moveModes) {
