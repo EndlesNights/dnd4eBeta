@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature can't take actions. It has neither line of sight nor line of effect to anything, and nothing has line of sight or line of effect to it.</p>",
+  "description": "The creature can't take actions. It has neither line of sight nor line of effect to anything, and nothing has line of sight or line of effect to it.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 125000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053753979,
-    "modifiedTime": 1784053924763,
+    "modifiedTime": 1786134019468,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

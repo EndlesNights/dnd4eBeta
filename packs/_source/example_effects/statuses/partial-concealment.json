@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature is difficult to see. Melee and ranged attack rolls against it take a -2 penalty.</p>",
+  "description": "The creature is difficult to see. Melee and ranged attack rolls against it take a -2 penalty.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 1900000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053445266,
-    "modifiedTime": 1784175858813,
+    "modifiedTime": 1786134019482,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

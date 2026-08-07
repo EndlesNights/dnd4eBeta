@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature's current hit points are lower than half of its total hit points.</p>",
+  "description": "The creature's current hit points are lower than half of its total hit points.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 2000000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053537924,
-    "modifiedTime": 1784053923518,
+    "modifiedTime": 1786134019470,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature is taking cover. Attacks from a square without four unobstructed corner lines to the creature's square suffer a -2 penalty to hit it. (If three or more corner lines are obstructed, upgrade to Superior Cover.)</p>",
+  "description": "The creature is taking cover. Attacks from a square without four unobstructed corner lines to the creature's square suffer a -2 penalty to hit it. (If three or more corner lines are obstructed, upgrade to Superior Cover.)",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 1800000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053466685,
-    "modifiedTime": 1784053923518,
+    "modifiedTime": 1786134019465,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

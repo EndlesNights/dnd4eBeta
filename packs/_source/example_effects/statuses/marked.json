@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<ul><li><p>The creature takes a -2 penalty to attack rolls if the marking creature is not a target.</p></li><li><p>Only one mark can be applied to a creature at any given time, with a new mark replacing an existing one.</p></li><li><p>A mark expires instantly if its creator dies or falls unconscious.</p></li></ul>",
+  "description": "<ul><li>The creature takes a -2 penalty to attack rolls if the marking creature is not a target.</li><li>Only one mark can be applied to a creature at any given time, with a new mark replacing an existing one.</li><li>A mark expires instantly if its creator dies or falls unconscious.</li></ul>",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 400000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053694240,
-    "modifiedTime": 1784053923517,
+    "modifiedTime": 1786134019482,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

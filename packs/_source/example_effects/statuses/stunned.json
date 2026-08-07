@@ -21,7 +21,7 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<ul><li><p>The creature can't take actions.</p></li><li><p>The creature grants combat advantage.</p></li><li><p>The creature can't flank.</p></li><li><p>The creature falls if it is flying, unless it can hover.</p></li></ul>",
+  "description": "<ul><li>The creature can't take actions.</li><li>The creature grants combat advantage.</li><li>The creature can't flank.</li><li>The creature falls if it is flying, unless it can hover.</li></ul>",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
@@ -33,11 +33,11 @@
   "sort": 100782,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053827479,
-    "modifiedTime": 1784053928803,
+    "modifiedTime": 1786134019466,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
