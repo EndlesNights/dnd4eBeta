@@ -37,7 +37,7 @@ export function customStatusSetup() {
 }
 
 /**
- * Integrats custom status changes into default status AEs
+ * Integrates custom status changes into default status AEs
  */
 export async function applyCustomStatusToCompendium() {
 	const PACK_ID = "dnd4e.example_effects";
