@@ -1489,6 +1489,10 @@
 			"types": {
 				"hint": "If set, only apply effects to Tokens with these creature types.",
 				"label": "Types"
+			},
+			"excludeCreator": {
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"label": "Exclude Creator?"
 			}
 		}
 	},
@@ -1513,6 +1517,10 @@
 			"types": {
 				"hint": "If set, only damage Tokens with these creature types.",
 				"label": "Types"
+			},
+			"excludeCreator": {
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"label": "Exclude Creator?"
 			}
 		}
 	},
@@ -1525,6 +1533,10 @@
 			"types": {
 				"hint": "Types that best describe the source of this difficult terrain, if any.",
 				"label": "Types"
+			},
+			"excludeCreator": {
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"label": "Exclude Creator?"
 			}
 		},
 		"Type": {
@@ -1558,6 +1570,10 @@
 			"types": {
 				"hint": "If set, only Tokens with these creature types are affected by this terrain.",
 				"label": "Types"
+			},
+			"excludeCreator": {
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"label": "Exclude Creator?"
 			}
 		}
 	}
