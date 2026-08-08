@@ -130,7 +130,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 		if (this.dispositions.size && !this.dispositions.has(token.disposition)) return false;
 		if (this.origins.size && !this.origins.has(token.actor.system.details?.origin)) return false;
 		if (this.types.size && !this.types.has(token.actor.system.details?.type)) return false;
-		if (this.excludeCreator && (this.parent?.parent?.flags?.dnd4e?.actorUuid === token.actor?.uuid)) return false;
+		if (this.excludeCreator && (this.parent.parent.flags?.dnd4e?.actorUuid === token.actor.uuid)) return false;
 		return true;
 	}
 }
