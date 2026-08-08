@@ -21,14 +21,14 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<ul><li><p>The creature is lying down.</p></li><li><p>If the creature is climbing or flying, it falls.</p></li><li><p>The creature cannot move except by crawling or teleporting. It can still be pulled, pushed, or slid.</p></li><li><p>The creature takes a -2 penalty to attack rolls.</p></li><li><p>The creature grants combat advantage to attackers making melee attacks against it, but it gains a +2 bonus to all defenses against ranged attacks from attackers that aren't adjacent to it.</p></li></ul>",
+  "description": "<ul><li>The creature is lying down.</li><li>If the creature is climbing or flying, it falls.</li><li>The creature cannot move except by crawling or teleporting. It can still be pulled, pushed, or slid.</li><li>The creature takes a -2 penalty to attack rolls.</li><li>The creature grants combat advantage to attackers making melee attacks against it, but it gains a +2 bonus to all defenses against ranged attacks from attackers that aren't adjacent to it.</li></ul>",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "prone"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 150000,
   "flags": {},
@@ -37,7 +37,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.12",
     "createdTime": 1784053743442,
-    "modifiedTime": 1785478909593,
+    "modifiedTime": 1786134019478,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

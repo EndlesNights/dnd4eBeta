@@ -21,14 +21,14 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<ul><li><p>The creature's speed is reduced to 2. This speed applies to all of the creature's movement modes (walking, flying, swimming, and so on), but it does not apply to forced movement against it, teleportation, or any other movement that doesn't use the creature's speed.</p></li><li><p>If the creature is subjected to this condition while it is moving, it must stop if it has already moved at least 2 squares.</p></li><li><p>The creature cannot benefit from bonuses to speed, although it can use powers and take actions, such as the run action, that allow it to move farther than its speed.</p></li></ul>",
+  "description": "<ul><li>The creature's speed is reduced to 2. This speed applies to all of the creature's movement modes (walking, flying, swimming, and so on), but it does not apply to forced movement against it, teleportation, or any other movement that doesn't use the creature's speed.</li><li>If the creature is subjected to this condition while it is moving, it must stop if it has already moved at least 2 squares.</li><li>The creature cannot benefit from bonuses to speed, although it can use powers and take actions, such as the run action, that allow it to move farther than its speed.</li></ul>",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "slowed"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 103125,
   "flags": {},
@@ -37,7 +37,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.12",
     "createdTime": 1784053801545,
-    "modifiedTime": 1785478949879,
+    "modifiedTime": 1786134019473,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

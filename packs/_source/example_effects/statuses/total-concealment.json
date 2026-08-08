@@ -21,14 +21,14 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature cannot be seen. Melee and ranged attack rolls against it suffer a -5 penalty.</p>",
+  "description": "The creature cannot be seen. Melee and ranged attack rolls against it suffer a -5 penalty.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "concealedFull"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 1100000,
   "flags": {},

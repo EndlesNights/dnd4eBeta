@@ -21,23 +21,23 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature is mounted upon another creature.</p>",
+  "description": "The creature is mounted upon another creature.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "mounted"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 300000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053707138,
-    "modifiedTime": 1784053923517,
+    "modifiedTime": 1786134019469,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
