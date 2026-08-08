@@ -25,6 +25,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 		return {
 			types: new SetField(new StringField()),
 			ignoredDispositions: new SetField(new NumberField({ choices: dispositions })),
+			excludeCreator: new BooleanField(),
 		};
 	}
 
@@ -85,8 +86,11 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 	/** @inheritDoc */
 	_getTerrainEffects(token, segment) {
 		const ignoredTypes = token.actor?.system.movement?.ignoredDifficultTerrain;
-		if ((segment.action === "blink") || this.ignoredDispositions.has(token.disposition) || ignoredTypes.has("all")
-      || (this.types.size && !this.types.difference(ignoredTypes).size)) return [];
+		if ((segment.action === "blink")
+			|| this.ignoredDispositions.has(token.disposition)
+			|| ignoredTypes.has("all")
+			|| (this.types.size && !this.types.difference(ignoredTypes).size)
+			|| (this.excludeCreator && (this.parent.parent.flags?.dnd4e?.actorUuid === token.actor.uuid))) return [];
 		return [{ name: "difficultTerrain" }];
 	}
 }
