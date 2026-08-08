@@ -89,7 +89,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 		if ((segment.action === "blink")
 			|| this.ignoredDispositions.has(token.disposition)
 			|| ignoredTypes.has("all")
-      		|| (this.types.size && !this.types.difference(ignoredTypes).size)
+			|| (this.types.size && !this.types.difference(ignoredTypes).size)
 			|| (this.excludeCreator && (this.parent?.parent?.flags?.dnd4e?.actorUuid === token.actor?.uuid))) return [];
 		return [{ name: "difficultTerrain" }];
 	}
