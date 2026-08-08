@@ -98,7 +98,7 @@ export default class TokenDocument4e extends TokenDocument {
 		}
 
 		if (Object.keys(sight).length) {
-			Object.assign(target.sight, sight);
+			Object.assign(target.sight, { range: sight.range, visionMode: sight.visionMode });
 		}
 	}
 
