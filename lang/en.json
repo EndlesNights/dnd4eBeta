@@ -2003,6 +2003,7 @@
 "SHEET.NPC": "NPC Sheet",
 "SHEET.Hazard": "Trap/Hazard Sheet",
 "SHEET.Item": "Item Sheet",
+"SHEET.Token": "Token Sheet",
 
 "TYPES": {
 	"Actor": {

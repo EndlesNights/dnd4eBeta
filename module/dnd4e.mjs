@@ -158,7 +158,7 @@ Hooks.once("init", async function() {
 	CONFIG.Token.prototypeSheetClass = applications.sheets.token.PrototypeTokenConfig4e;
 	foundry.applications.apps.DocumentSheetConfig.unregisterSheet(TokenDocument, "core", foundry.applications.sheets.TokenConfig);
 	foundry.applications.apps.DocumentSheetConfig.registerSheet(TokenDocument, "dnd4e", applications.sheets.token.TokenConfig4e, {
-		label: "DND4E.SheetClass.Token",
+		label: "SHEET.Token",
 	});
 
 	foundry.applications.apps.DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
