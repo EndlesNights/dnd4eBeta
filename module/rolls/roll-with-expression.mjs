@@ -188,7 +188,7 @@ export default class RollWithOriginalExpression extends Roll4e {
 		if (!this._evaluated) await this.evaluate();
 
 		let formulaData = this.getChatData(isPrivate);
-		const divisor = this.options.divisors?.[this.options.hitType].value || 1;
+		const divisor = this.options.divisors?.[this.options.hitType]?.value || 1;
 		let divisorString = "";
 		if (divisor != 1) {
 			const divisorReasons = this.options.divisors[this.options.hitType].reason.join(", ");

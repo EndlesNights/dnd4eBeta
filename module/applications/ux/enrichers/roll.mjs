@@ -730,6 +730,7 @@ export async function onRender(element) {
 				case "check":
 				case "attack":
 				case "damage":
+				case "healing":
 					return handleRoll(link, ev.target);
 				case "requestCheck":
 					return requestCheck(link, ev);
