@@ -1,6 +1,6 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
-const { DocumentUUIDField, NumberField, SetField, StringField } = foundry.data.fields;
+const { BooleanField, DocumentUUIDField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
  * @import { ActiveEffect4e, Actor4e } from "../../documents/_module.mjs";
@@ -29,6 +29,7 @@ export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.
 			dispositions: new SetField(new NumberField({ choices: dispositions })),
 			origins: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureOrigin })),
 			types: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureType })),
+			excludeCreator: new BooleanField(),
 		};
 	}
 
@@ -45,6 +46,7 @@ export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.
 		if (this.dispositions.size && !this.dispositions.has(token.disposition)) return false;
 		if (this.origins.size && !this.origins.has(token.actor.system.details?.origin)) return false;
 		if (this.types.size && !this.types.has(token.actor.system.details?.type)) return false;
+		if (this.excludeCreator && (this.parent.parent.flags?.dnd4e?.actorUuid === token.actor.uuid)) return false;
 		return true;
 	}
 
