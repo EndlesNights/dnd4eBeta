@@ -21,23 +21,23 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature has taken the squeeze action.</p><ul><li><p>If the creature is Large or larger, its size category effectively decreases by one. When it starts squeezing, it is considered to be leaving spaces it no longer occupies.</p></li><li><p>The creature grants combat advantage.</p></li><li><p>The creature takes a -5 penalty to attack rolls.</p></li></ul>",
+  "description": "<p>The creature has taken the squeeze action.</p><ul><li>If the creature is Large or larger, its size category effectively decreases by one. When it starts squeezing, it is considered to be leaving spaces it no longer occupies.</li><li>The creature grants combat advantage.</li><li>The creature takes a -5 penalty to attack rolls.</li></ul>",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "squeezing"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 101563,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.364",
+    "coreVersion": "14.365",
     "systemId": "dnd4e",
     "systemVersion": "0.8.10",
     "createdTime": 1784053813912,
-    "modifiedTime": 1784053928153,
+    "modifiedTime": 1786134019463,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

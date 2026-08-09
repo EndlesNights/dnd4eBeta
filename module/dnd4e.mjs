@@ -225,7 +225,7 @@ Hooks.once("i18nInit", function() {
 	utils.performPreLocalization(CONFIG.DND4E);
 });
 
-Hooks.once("ready", function() {
+Hooks.once("ready", async function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
 	// Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 	Hooks.on("hotbarDrop", (bar, data, slot) => {
@@ -245,6 +245,9 @@ Hooks.once("ready", function() {
 		else if (data.operation === "refreshDayEndEffects") utils.handleRefreshDayEndEffects(data);
 		else applications.sheets.ItemSheet4e._handleShareItem(data);
 	});
+
+	// Apply custom status config to AE compendium
+	await helpers.customization.applyCustomStatusToCompendium();
 
 	// Determine whether a system migration is required and feasible
 	if (!game.user.isGM) return;

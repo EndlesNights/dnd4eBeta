@@ -21,14 +21,14 @@
     "expiry": null,
     "expired": false
   },
-  "description": "<p>The creature cannot move except by teleportation. It can still be pushed, pulled, or slid.</p>",
+  "description": "The creature cannot move except by teleportation. It can still be pushed, pulled, or slid.",
   "origin": null,
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [
     "immobilized"
   ],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": "taBy8HUxznsopE42",
   "sort": 700000,
   "flags": {},
@@ -37,7 +37,7 @@
     "systemId": "dnd4e",
     "systemVersion": "0.8.12",
     "createdTime": 1784053658569,
-    "modifiedTime": 1785478810899,
+    "modifiedTime": 1786134019483,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
