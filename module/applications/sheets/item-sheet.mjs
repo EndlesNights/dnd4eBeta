@@ -210,11 +210,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	/**
-     * Render an application in the same workspace as this one.
-     * @param {ApplicationV2} app        The application to render.
-     * @param {RenderOptions} [options]  Options passed to render.
-     * @returns {Promise<ApplicationV2>}
-     */
+	 * Render an application in the same workspace as this one.
+	 * @param {ApplicationV2} app        The application to render.
+	 * @param {RenderOptions} [options]  Options passed to render.
+	 * @returns {Promise<ApplicationV2>}
+	 */
 	_renderChild(app, options = {}) {
 		if (this.parent) return this.parent.renderChild(app, options);
 		if (this.window?.windowId) return app.render({
@@ -619,10 +619,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
 	/**
-	* Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
-	* carried by an Actor.
-	* @returns {Promise<Actor4e>}
-	*/
+	 * Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
+	 * carried by an Actor.
+	 * @returns {Promise<Actor4e>}
+	 */
 	convertCurrency() {
 		const curr = foundry.utils.duplicate(this.document.system.currency);
 		const convert = CONFIG.DND4E.currencyConversion;
@@ -647,12 +647,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	/**
-   * Handle opening a configuration application.
-   * @this {ItemSheet4e}
-   * @param {Event} event         Triggering click event.
-   * @param {HTMLElement} target  Button that was clicked.
-   * @returns {any}
-   */
+	 * Handle opening a configuration application.
+	 * @this {ItemSheet4e}
+	 * @param {Event} event         Triggering click event.
+	 * @param {HTMLElement} target  Button that was clicked.
+	 * @returns {any}
+	 */
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.item, keyPath: "system.source" }));
 	}
@@ -894,11 +894,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 	
 	/**
-	* Get the valid weapons targets which exist on the actor
-	* @param {Object} weapon         weapon data for the weapon items being displayed
-	* @returns {{string: string}}   An object of potential consumption targets
-	* @private
-	*/
+	 * Get the valid weapons targets which exist on the actor
+	 * @param {Object} weapon         weapon data for the weapon items being displayed
+	 * @returns {{string: string}}   An object of potential consumption targets
+	 * @private
+	 */
 	_getItemsWeaponUseTargets(weapon) {
 		
 		const weaponType = weapon.system.weaponType || {};
@@ -1044,7 +1044,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		else if (item.type === "ritual") {
 			if (labels.category) props.push(`<li class="category">${labels.category}</li>`);
 		}
-    
+	
 		else if (item.type === "consumable") {
 			if (labels.enh) props.push(`<li class="enhancement">${labels.enh}</li>`);
 		}
@@ -1181,7 +1181,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * Add or remove a damage part from the damage formula
 	 * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
-	 * @param {HTMLElement} target	The target of the event
+	 * @param {HTMLElement} target		The target of the event
 	 * @returns {Promise}
 	 */
 	static async #onDamageControl(event, target) {
@@ -1299,9 +1299,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/**
 	 * Add or remove a damage part from the damage formula
-     * @this {ItemSheet4e}
+	 * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
-	 * @param {HTMLElement} target	The target of the event
+	 * @param {HTMLElement} target		The target of the event
 	 * @returns {Promise}
 	 */
 	static async #onOneTextControl(event, target) {
@@ -1329,7 +1329,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options
 	 * @param {Event} event   			The click event which originated the selection
-	 * @param {HTMLElement} target	The target of the click event
+	 * @param {HTMLElement} target		The target of the click event
 	 * @private
 	 */
 	static #onConfigureClassSkills(event, target) {
@@ -1432,8 +1432,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle the dropping of Folder data onto the Container sheet.
 	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
-	 * @param {Object} data									The data transfer extracted from the event.
-	 * @returns {Promise<Item4e[]>}					The created Item objects.
+	 * @param {Object} data								The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]>}						The created Item objects.
 	 */
 	async _onDropFolder(event, data) {
 		const folder = await Folder.implementation.fromDropData(data);
@@ -1475,8 +1475,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle the dropping of Item data onto an Item Sheet.
 	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
-	 * @param {Object} data									The data transfer extracted from the event.
-	 * @returns {Promise<Item4e[]|boolean>}	The created Item objects or `false` if it couldn't be created.
+	 * @param {Object} data								The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]|boolean>}				The created Item objects or `false` if it couldn't be created.
 	 * @protected
 	 */
 	async _onDropItem(event, data) {
@@ -1549,10 +1549,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	/**
-   * IDs for items on the sheet that have been expanded.
-   * @type {Set<string>}
-   * @protected
-   */
+	 * IDs for items on the sheet that have been expanded.
+	 * @type {Set<string>}
+	 * @protected
+	 */
 	_expanded = new Set();
 
 	/* -------------------------------------------- */
@@ -1561,7 +1561,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * Add or remove a macro
 	 * @this {ItemSheet4e}
 	 * @param {Event} event     		The original click event
-	 * @param {HTMLElement} target	The target of the event
+	 * @param {HTMLElement} target	    The target of the event
 	 * @returns {Promise}
 	 */
 	static async #onMacroControl(event, target) {
@@ -1584,13 +1584,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// Remove a damage component
 		if (action === "deleteMacro") {
 			await this.submit(event); // Submit any unsaved changes
-			const macro = target.closest(".macro");
+			const macro = target.closest(".collapsible");
 			const index = macro.getAttribute("data-macro-number");
 			const macros = foundry.utils.duplicate(this.item.system.macros);
-			macros.splice(macro.getAttribute("data-macro-number"), 1);
+			macros.splice(index, 1);
 			return this.item.update({ "system.macros": macros });
 		}
-    
+	
 		// Expand macro text
 		if (action === "expandMacro") {
 			target.parentElement.classList.toggle("collapsed");
@@ -1599,5 +1599,4 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
 	/* -------------------------------------------- */
-  
 }
