@@ -61,6 +61,6 @@ export function createLink(label, dataset = {}, { classes = "roll-link", tag = "
  */
 export function addDataset(element, dataset) {
 	for (const [key, value] of Object.entries(dataset)) {
-		if (!key.startsWith("_") && (key !== "values") && value) element.dataset[key] = value;
+		if (!key.startsWith("_") && (key !== "values") && (value != null)) element.dataset[key] = value;
 	}
 }

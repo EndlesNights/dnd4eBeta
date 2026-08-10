@@ -150,7 +150,7 @@ export async function enrichCheck(parsedConfig, label, options) {
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
 async function enrichAttack(parsedConfig, label, options) {
-	let { formula, ability, def, title, flavor } = parsedConfig;
+	let { formula, ability, def, applyBonuses, title, flavor } = parsedConfig;
 
 	const longAbilities = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.abilities)).map((arr) => [arr[1].toLowerCase(), arr[0]]));
 	const longDefenses = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.defensives)).map((arr) => [arr[1].labelShort.toLowerCase(), arr[0]]));
@@ -189,6 +189,7 @@ async function enrichAttack(parsedConfig, label, options) {
 		replacedFormula,
 		ability,
 		def,
+		applyBonuses,
 		title,
 		flavor,
 		itemUuid: options.rollData?.item?.uuid,
@@ -238,7 +239,7 @@ async function enrichAttack(parsedConfig, label, options) {
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
 async function enrichDamageHealing(parsedConfig, label, options) {
-	let { type, formula, critFormula, damageType, healingType, title, flavor } = parsedConfig;
+	let { type, formula, critFormula, applyBonuses, damageType, healingType, title, flavor } = parsedConfig;
 	damageType = damageType || "";
 	healingType = healingType || "healing";
 
@@ -270,6 +271,7 @@ async function enrichDamageHealing(parsedConfig, label, options) {
 		critFormula,
 		replacedFormula,
 		replacedCritFormula,
+		applyBonuses,
 		title,
 		flavor,
 		itemUuid: options.rollData?.item?.uuid,
@@ -394,6 +396,8 @@ async function rollAttack(config, event) {
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
+	const applyBonuses = config.applyBonuses ? config.applyBonuses.toLowerCase() === "true" : true;
+
 	const parts = [replacedFormula];
 	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
 
@@ -429,7 +433,7 @@ async function rollAttack(config, event) {
 
 	const powerData = rollData.item;
 	const weaponData = utils.getWeaponUse(powerData, actor)?.getRollData().item;
-	await utils.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
+	if (applyBonuses) await utils.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
 
 	if (!flavor && item) {
 		flavor = `${_loc("DND4E.AttackRoll")}: ${item.name}`;
@@ -471,8 +475,8 @@ async function rollAttack(config, event) {
  * @param {PointerEvent} event
  */
 async function rollDamageHealing(config, event) {
-	let { type, formula, replacedFormula, critFormula, replacedCritFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
-	damageType = damageType?.split(",") || [];
+	let { type, formula, replacedFormula, critFormula, replacedCritFormula, applyBonuses, damageType, title, itemUuid, actorUuid, messageId } = config;
+	damageType = damageType ? damageType.split(",") : [];
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
@@ -502,6 +506,8 @@ async function rollDamageHealing(config, event) {
 		}
 	}
 
+	applyBonuses = applyBonuses ? applyBonuses.toLowerCase() === "true" : (item ? !item.system.hit.damageBonusNull : true);
+
 	const rollData = item?.getRollData() || actor?.getRollData() || {};
 
 	const options = { formulaInnerData: { ...utils.getDataObject(formula, rollData), ...utils.getDataObject(critFormula, rollData) }, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
@@ -510,7 +516,7 @@ async function rollDamageHealing(config, event) {
 	const powerData = rollData.item;
 	const weaponData = utils.getWeaponUse(powerData, actor)?.getRollData().item;
 	let extraDamageParts = [];
-	await utils.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
+	if (applyBonuses) await utils.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
 	// Extra damage
 	if (extraDamageParts.length) {
 		for (const part of extraDamageParts) {
