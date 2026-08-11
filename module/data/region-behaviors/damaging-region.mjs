@@ -34,6 +34,8 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 			dispositions: new SetField(new NumberField({ choices: dispositions })),
 			origins: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureOrigin })),
 			types: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureType })),
+			oncePerTurn: new BooleanField(),
+			onlyInCombat: new BooleanField(),
 			excludeCreator: new BooleanField(),
 		};
 	}
@@ -45,6 +47,8 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 	/** @inheritDoc */
 	async _handleRegionEvent(event) {
 		if (!this.damage) return;
+
+		if (this.onlyInCombat && !game.combat) return;
 
 		const { token } = event.data;
 		if (!this.#evaluateConditions(token)) return;
@@ -117,6 +121,12 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 				await actor.applyDamage(damageTaken);
 			}
 		}
+
+		if (this.oncePerTurn && game.combat) {
+			const perTurnArray = actor.getFlag("dnd4e", "damagingRegionPerTurn") ?? [];
+			perTurnArray.push(this.behavior.uuid);
+			await actor.setFlag("dnd4e", "damagingRegionPerTurn", perTurnArray);
+		}
 	}
 
 	/* ---------------------------------------- */
@@ -131,6 +141,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 		if (this.origins.size && !this.origins.has(token.actor.system.details?.origin)) return false;
 		if (this.types.size && !this.types.has(token.actor.system.details?.type)) return false;
 		if (this.excludeCreator && (this.parent.parent.flags?.dnd4e?.actorUuid === token.actor.uuid)) return false;
+		if (game.combat && token.actor.getFlag("dnd4e", "damagingRegionPerTurn")?.includes(this.behavior.uuid)) return false;
 		return true;
 	}
 }

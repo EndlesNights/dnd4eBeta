@@ -9,6 +9,7 @@ export default class Combat4e extends Combat {
 		//t current turn
 		for (let t of this.turns) {
 			utils.rechargeItems(t.token?.actor, ["turn"]);
+			await t.token?.actor?.unsetFlag("dnd4e", "damagingRegionPerTurn");
 		}
 		
 		// Signal the current actor to check end-of-turn saves
@@ -65,5 +66,13 @@ export default class Combat4e extends Combat {
 		}
 
 		return super.nextTurn(); 
+	}
+
+	/** @inheritDoc */
+	async _onEnter(combatant) {
+		const actor = combatant.actor;
+		if (!actor) return parent._onEnter(combatant);
+		await actor.unsetFlag("dnd4e", "damagingRegionPerTurn")
+		return super._onEnter(combatant);
 	}
 }

@@ -1510,6 +1510,18 @@
 				"hint": "If set, only damage Tokens with these dispositions.",
 				"label": "Dispositions"
 			},
+			"excludeCreator": {
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"label": "Exclude Creator?"
+			},
+			"oncePerTurn": {
+				"hint": "If set, a token will only take this region's damage once per turn.",
+				"label": "Once Per Turn"
+			},
+			"onlyInCombat": {
+				"hint": "If set, this region will only deal damage during combat.",
+				"label": "Only In Combat"
+			},
 			"origins": {
 				"hint": "If set, only damage Tokens with these creature origins.",
 				"label": "Origins"
@@ -1517,10 +1529,6 @@
 			"types": {
 				"hint": "If set, only damage Tokens with these creature types.",
 				"label": "Types"
-			},
-			"excludeCreator": {
-				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
-				"label": "Exclude Creator?"
 			}
 		}
 	},

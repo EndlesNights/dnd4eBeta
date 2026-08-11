@@ -14,6 +14,8 @@
  * @property {Set<number>} dispositions  If not empty, only deal damage to tokens with these dispositions.
  * @property {Set<string>} origins       If not empty, only deal damage to tokens with these creature origins.
  * @property {Set<string>} types         If not empty, only deal damage to tokens with these creature types.
+ * @property {boolean} oncePerTurn       If set, only deal damage to a give token once per turn.
+ * @property {boolean} onlyInCombat      If set, don't deal damage outside of combat.
  * @property {boolean} excludeCreator    If set, don't deal damage to the actor that created the region.
  */
 
