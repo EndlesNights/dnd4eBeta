@@ -2006,6 +2006,7 @@ export default class Actor4e extends Actor {
 		updateData["system.actionpoints.encounteruse"] = false;
 		
 		utils.rechargeItems(this, ["enc", "round", "turn"]);
+		await this.unsetFlag("dnd4e", "damagingRegionPerTurn");
 		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfUserCurrent", "attack", "check", "defence", "save", "damage"]);
 		
 		if (this.type === "Player Character") {
@@ -2075,6 +2076,7 @@ export default class Actor4e extends Actor {
 		updateData["system.actionpoints.encounteruse"] = false;
 		
 		utils.rechargeItems(this, ["enc", "day", "round", "turn"]);
+		await this.unsetFlag("dnd4e", "damagingRegionPerTurn");
 		utils.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfDay", "endOfUserCurrent", "attack", "check", "defence", "save", "damage"]);
 
 		if (this.type === "Player Character") {
