@@ -71,8 +71,18 @@ export default class Combat4e extends Combat {
 	/** @inheritDoc */
 	async _onEnter(combatant) {
 		const actor = combatant.actor;
-		if (!actor) return parent._onEnter(combatant);
-		await actor.unsetFlag("dnd4e", "damagingRegionPerTurn");
+		if (actor) {
+			await actor.unsetFlag("dnd4e", "damagingRegionPerTurn");
+		}
+		return super._onEnter(combatant);
+	}
+
+	/** @inheritDoc */
+	async _onExit(combatant) {
+		const actor = combatant.actor;
+		if (actor) {
+			await actor.unsetFlag("dnd4e", "damagingRegionPerTurn");
+		}
 		return super._onEnter(combatant);
 	}
 }
