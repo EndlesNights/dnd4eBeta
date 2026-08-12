@@ -312,6 +312,11 @@ export default class Actor4e extends Actor {
 			system.encumbrance = this._computeEncumbrance(actorData.system);
 			this._prepareDerivedDataDeathThrow(actorData, system);
 			this._prepareDerivedDataMagicItemUse(actorData, system);
+			for (let r of Object.entries(this.system.resources)) {
+				if (r[1].label && (r[1].max != null)) {
+					system.resources[`${r[0]}`].value = Math.min(r[1].value, r[1].max);
+				}
+			}
 		} else {
 			SourceField.prepareData.call(this.system.source);
 		}

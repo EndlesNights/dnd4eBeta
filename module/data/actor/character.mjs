@@ -44,22 +44,22 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 			resources: new SchemaField({
 				primary: new SchemaField({
 					label: new StringField({ initial: "" }),
-					value: new StringField({ initial: "" }),
-					max: new StringField({ initial: "", deterministic: true }),
+					value: new NumberField({ initial: 0 }),
+					max: new NumberField({ initial: null, nullable: true }),
 					sr: new BooleanField({ initial: false }),
 					lr: new BooleanField({ initial: false }),
 				}),
 				secondary: new SchemaField({
 					label: new StringField({ initial: "" }),
-					value: new StringField({ initial: "" }),
-					max: new StringField({ initial: "", deterministic: true }),
+					value: new NumberField({ initial: 0 }),
+					max: new NumberField({ initial: null, nullable: true }),
 					sr: new BooleanField({ initial: false }),
 					lr: new BooleanField({ initial: false }),
 				}),
 				tertiary: new SchemaField({
 					label: new StringField({ initial: "" }),
-					value: new StringField({ initial: "" }),
-					max: new StringField({ initial: "", deterministic: true }),
+					value: new NumberField({ initial: 0 }),
+					max: new NumberField({ initial: null, nullable: true }),
 					sr: new BooleanField({ initial: false }),
 					lr: new BooleanField({ initial: false }),
 				}),
@@ -102,6 +102,17 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
 		if ("defences" in source) {
 			CombatantTemplate.migrateDefences(source);
+		}
+
+		if ("resources" in source) {
+			for (let r of Object.entries(source.resources)) {
+				if ((source.resources[`${r[0]}`].value != null) && !parseInt(source.resources[`${r[0]}`].value)) {
+					source.resources[`${r[0]}`].value = 0;
+				}
+				if ((source.resources[`${r[0]}`].max != null) && !parseInt(source.resources[`${r[0]}`].max)) {
+					source.resources[`${r[0]}`].max = null;
+				}
+			}
 		}
 
 		return super.migrateData(source);
