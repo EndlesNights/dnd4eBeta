@@ -2313,7 +2313,7 @@ const _attributeLabelCache = new Map();
  * Convert an attribute path to a human-readable label.
  * @param {string} attr							The attribute path.
  * @param {Object} [options]
- * @param {Actor5e} [options.actor]	An optional reference actor.
+ * @param {Actor4e} [options.actor]	An optional reference actor.
  * @returns {string|void}
  */
 export function getHumanReadableAttributeLabel(attr, { actor } = {}) {
