@@ -704,7 +704,10 @@ export default class Item4e extends Item {
 
 		// Powers
 		else if (itemData.type === "power") {
-			try {				
+			try {
+				//Needed for powers to create aura regions, since they don't have this field
+				if(system.effectType.aura && !system?.auraSize) system.auraSize = system?.area || 0;
+
 				//Summary Line
 				let summaryText = "";
 				
