@@ -9,7 +9,7 @@
           <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
           <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
         </header>
-				
+
         <div class="speed-body form-group base" data-movement="base">
           <span class="move-value">{{system.movement.base.value}}</span>
           <input class="move-base" type="text" name="system.movement.base.base" value="{{system.movement.base.base}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0">
@@ -17,9 +17,9 @@
           <input class="move-temp" type="text" name="system.movement.base.temp" value="{{system.movement.base.temp}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0">
         </div>
       </div>
-			
+
       <div class="sep"></div>
-			
+
       <div class="armour-penalty flexcol">
         <header class="speed-header flexrow">
           <div class="move-armour">{{localize 'DND4E.ArmourPenalty'}}</div>
@@ -30,7 +30,7 @@
       </div>
     </div>
   </fieldset>
-	
+
   <fieldset class="movement-standard move-table">
     <legend>{{localize "DND4E.Movement.Standard"}}</legend>
     <header class="speed-header flexrow">
@@ -41,7 +41,7 @@
       <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
       <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
     </header>
-		
+
     <div class="speed-body form-group walk" data-movement="walk">
       <span class="move-name label">{{localize 'DND4E.Movement.Walk'}}</span>
       <span class="move-value">{{system.movement.walk.value}}</span>
@@ -59,9 +59,9 @@
       <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Shift')}}">{{system.movement.shift.bonusValue}}</a>
       <input class="move-temp" type="text" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
     </div>
-    
+
   </fieldset>
-    
+
   <fieldset class="movement-standard move-table">
     <legend>{{localize "DND4E.Movement.Modifiers"}}</legend>
     <header class="speed-header flexrow">
@@ -72,7 +72,7 @@
       <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
       <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
     </header>
-    
+
     <div class="speed-body form-group run" data-movement="run">
       <span class="move-name label">{{localize 'DND4E.Movement.Run'}}</span>
       <span class="move-value">{{numberFormat system.movement.run.value
@@ -92,22 +92,22 @@
       <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Charge')}}">{{system.movement.charge.bonusValue}}</a>
       <input class="move-temp" type="text" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
     </div>
-    
+
     <hr>
-    
-    <div class="form-group">    
+
+    <div class="form-group">
       <label>{{ localize "DND4E.Movement.IgnorePenalties" }}</label>
       <label class="checkbox long">
         <input type="checkbox" name="system.movement.fullCrawl" {{checked system.movement.fullCrawl}}>
         {{ localize "DND4E.Movement.Crawl" }}
       </label>
-        
+
       <label class="checkbox long">
         <input type="checkbox" name="system.movement.fullSqueeze" {{checked system.movement.fullSqueeze}}>
         {{ localize "DND4E.Movement.Squeeze" }}
       </label>
     </div>
-  
+
   </fieldset>
 
   <fieldset class="movement-special move-table">
@@ -120,7 +120,7 @@
       <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
       <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
     </header>
-		
+
     <div class="speed-body form-group burrow" data-movement="burrow">
       <span class="move-name label">{{localize 'DND4E.Movement.Burrow'}}</span>
       <span class="move-value">{{system.movement.burrow.value}}</span>
@@ -171,17 +171,17 @@
       <input type="text" name="system.movement.custom" value="{{system.movement.custom}}" data-dtype="String">
     </div>
   </fieldset>
-	
+
   <fieldset class="form-group vertical">
     <legend>{{localize "DND4E.IgnoredDifficultTerrain"}}</legend>
     <multi-select class="inline" name="system.movement.ignoredDifficultTerrain">
       {{selectOptions config.ignoredDifficultTerrainTypes selected=system.movement.ignoredDifficultTerrain}}
     </multi-select>
   </fieldset>
-	
+
   <div class="form-group vertical">
     <label>{{localize 'DND4E.Notes'}}</label>
     <textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>
   </div>
-	
+
 </div>

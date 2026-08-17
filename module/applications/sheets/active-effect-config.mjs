@@ -37,7 +37,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			scrollable: [".scrollable"],
 		},
 		details: {
-			template: "systems/dnd4e/templates/sheets/active-effect/details.hbs", 
+			template: "systems/dnd4e/templates/sheets/active-effect/details.hbs",
 			scrollable: [".scrollable"],
 		},
 		activation: {
@@ -45,12 +45,12 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			scrollable: [".scrollable"],
 		},
 		changes: {
-			template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs", 
+			template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs",
 			scrollable: [".scrollable"],
 		},
 		footer: { template: "templates/generic/form-footer.hbs" },
 	};
-	
+
 	static TABS = {
 		sheet: {
 			tabs: [
@@ -231,7 +231,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	}
 
 	/* ----------------------------------------- */
-	
+
 	/**
 	* Handle adding a new dot to the dots array - adapted from _addEffectChange
 	*/
@@ -271,15 +271,15 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	*/
 	async _copyStatusDetails(statusId, scope = "copy-all") {
 		if (!statusId) return;
-		
+
 		const statuses = CONFIG.statusEffects;
-		
+
 		try {
 			//I remembered error handling this time! This should be expected to fail if the status id isn't found, such as if you have remapped your conditions since setting up the effect.
-			
+
 			const statusIndex = statuses.findIndex((x) => x.id == statusId);
 			let effectUpdates = {};
-			
+
 			if ((scope == "copyName") || (scope == "copyAll")) {
 				effectUpdates.name = _loc(statuses[statusIndex].name);
 			}
@@ -300,9 +300,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 					}
 				}
 			}
-			
+
 			return this.submit({ preventClose: true, updateData: effectUpdates });
-			
+
 		} catch(err) {
 			ui.notifications.error(_loc("ERROR.4eCopyStatusDetails"));
 			utils.debugLog(err);
@@ -322,11 +322,11 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		// CHANGES FROM CORE START HERE
 		submitData.changes = Array.from(Object.values(submitData.changes || {}));
 		submitData.statuses = Array.from(Object.values(submitData.statuses || {})).filter(x => x);
-		// The form throws an error if it's updated while there is an unselected status condition row. 
+		// The form throws an error if it's updated while there is an unselected status condition row.
 		// I can't find a way to catch it, so instead I'm just trimming - Fox
 
 		if (submitData.conditionLab) {
-			// This doesn't like merging directly, seemingly because of the hyphens in the property name. 
+			// This doesn't like merging directly, seemingly because of the hyphens in the property name.
 			//	Storing it in a separate property and updating manually seems to work. - Fox
 			submitData.flags["condition-lab-triggler"] = submitData.conditionLab;
 		}
@@ -360,7 +360,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		this.document.validate({ changes: submitData, clean: true, fallback: false });
 		return submitData;
 	}
-	
+
 	/* ----------------------------------------- */
 
 	/**

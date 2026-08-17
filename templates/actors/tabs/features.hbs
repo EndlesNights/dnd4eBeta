@@ -11,7 +11,7 @@
       </div>
 
       <div class="filter-search-features">
-        <label for="feature-filter-search">{{localize 'DND4E.Filter'}}</label>	
+        <label for="feature-filter-search">{{localize 'DND4E.Filter'}}</label>
         <br>
         <input type="text" name="feat-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Feature.Feature')}}..." id="filterInput-feat">
       </div>
@@ -20,18 +20,18 @@
     {{#each sections as |section sid|}}
     <li class="items-header flexrow">
       <h3 class="item-name flexrow">{{localize section.groupLabel}}</h3>
-    
+
       {{#if section.hasActions}}
       <div class="item-detail item-uses">{{localize 'DND4E.Uses'}}</div>
       <div class="item-detail item-action">{{localize 'DND4E.Usage'}}</div>
       {{/if}}
-    
+
       {{#if section.columns}}
       {{#each section.columns}}
       <div class="item-detail {{css}}">{{label}}</div>
       {{/each}}
       {{/if}}
-    
+
       {{#if ../owner}}
       <div class="item-controls flexrow">
         <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.Feature.Add'}}" data-type="feature" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
@@ -40,7 +40,7 @@
       </div>
       {{/if}}
     </li>
-    
+
     <ol class="item-list feature-list">
       {{#each section.items as |item iid|}}
       <li class="item flexrow{{#if isUnavailable}} unavailable{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
@@ -51,26 +51,26 @@
           <div class="item-name flexrow rollable" data-action="itemSummary">
             <h4 class="item-title">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
           </div>
-      
+
           {{#if section.hasActions}}
           <div class="item-detail item-uses">
             {{#if item.isOnCooldown}}
             <a class="item-recharge rollable" data-action="itemRecharge">{{item.labels.recharge}}</a>
             {{else if item.system.recharge.value}}
             {{localize 'DND4E.Charged'}}
-      
+
             {{else if item.hasUses}}
             <input type="text" value="{{item.system.uses.value}}" placeholder="0">
             / {{item.system.uses.max}}
             {{/if}}
           </div>
-      
+
           <div class="item-detail item-action">
             {{#if item.system.activation.type }}
             {{item.labels.activation}}
             {{/if}}
           </div>
-      
+
           {{else if section.isClass}}
           <div class="item-detail player-class">
             {{item.system.subclass}}
@@ -79,7 +79,7 @@
             Level {{item.system.levels}}
           </div>
           {{/if}}
-      
+
           {{#if section.columns}}
           {{#each section.columns}}
           <div class="item-detail {{css}}">
@@ -93,7 +93,7 @@
           </div>
           {{/each}}
           {{/if}}
-      
+
           {{#if ../../owner}}
           <div class="item-controls flexrow">
             {{#if section.crewable}}

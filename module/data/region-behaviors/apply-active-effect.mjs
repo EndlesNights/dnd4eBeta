@@ -4,7 +4,7 @@ const { BooleanField, DocumentUUIDField, NumberField, SetField, StringField } = 
 
 /**
  * @import { ActiveEffect4e, Actor4e } from "../../documents/_module.mjs";
- * @import { ApplyActiveEffectRegionBehaviorSystemData } from "./_types.mjs"; 
+ * @import { ApplyActiveEffectRegionBehaviorSystemData } from "./_types.mjs";
  * @import { ActiveEffectData } from "../active-effect/_module.mjs";
  */
 

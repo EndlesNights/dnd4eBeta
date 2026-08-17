@@ -98,11 +98,11 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 			dmgImpact: damageImpact,
 			targetToken: token.id,
 		};
-    
+
 		const html = await foundry.applications.handlebars.renderTemplate(
-			"systems/dnd4e/templates/chat/ongoing-damage.hbs", chatData, 
+			"systems/dnd4e/templates/chat/ongoing-damage.hbs", chatData,
 		);
-                        
+
 		await ChatMessage.create({
 			user: utils.firstOwner(actor),
 			speaker: { actor: actor, alias: token.name },

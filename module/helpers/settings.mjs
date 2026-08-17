@@ -47,7 +47,7 @@ export const registerSystemSettings = function() {
 			disjoint: "SETTINGS.4eCompoundDamageDisjoint",
 		},
 	});
-	
+
 	// Initiative tiebreaker setting
 	game.settings.register("dnd4e", "initiativeDexTiebreaker", {
 		name: "SETTINGS.4eInitTBN",
@@ -72,7 +72,7 @@ export const registerSystemSettings = function() {
 		default: true,
 		type: Boolean,
 	});
-	
+
 	// Allows the ability to turn off half levels for: Ability, Defense, Skills and Initiative score values. Somewhat common house rule.
 	game.settings.register("dnd4e", "halfLevelOptions", {
 		name: "SETTINGS.4eHalfLevelOptionsN",
@@ -117,7 +117,7 @@ export const registerSystemSettings = function() {
 	 	default: false,
 		type: Boolean,
 	});*/
-	
+
 	// Custom Skills
 	game.settings.registerMenu("dnd4e", "show-custom-skill", {
 		name: "SETTINGS.4eCustomSkillsN",
@@ -159,7 +159,7 @@ export const registerSystemSettings = function() {
 	/*************************/
 	/** DEFAULT BEHAVIOURS  **/
 	/*************************/
-	
+
 	// Is Advanced Math Option for NPCs true for new actors
 	game.settings.register("dnd4e", "npcMathOptions", {
 		name: "SETTINGS.4eNpcMathOptionsN",
@@ -169,7 +169,7 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean,
 	});
-	
+
 	// Is Auto Generate Power Card Details true for new powers
 	game.settings.register("dnd4e", "powerAutoGenerateLabelOption", {
 		name: "SETTINGS.4ePowerAutoGenerateLabelOptionN",
@@ -192,7 +192,7 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean,
 	});
-	
+
 	// Apply effects by selecting or targeting
 	game.settings.register("dnd4e", "applyEffectsToSelection", {
 		name: "SETTINGS.4eApplyEffectsToSelectionN",
@@ -248,7 +248,7 @@ export const registerSystemSettings = function() {
 			ui.chat.render();
 		},
 	});
-	
+
 	// Prefer stat name or attack bonus in chat card display
 	game.settings.register("dnd4e", "cardAtkDisplay", {
 		name: "SETTINGS.4eCardAtkDisplayN",
@@ -283,7 +283,7 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean,
 	});
-	
+
 	// Privacy of ongoing damage reminders/reports
 	game.settings.register("dnd4e", "autoDoTsPublic", {
 		name: "SETTINGS.4eAutoDoTsPublicN",
@@ -341,7 +341,7 @@ export const registerSystemSettings = function() {
 		default: true,
 		type: Boolean,
 	});
-  
+
 	// Automatically apply effects to targets upen using powers or attacking
 	game.settings.register("dnd4e", "autoApplyEffects", {
 		name: "SETTINGS.4eAutoApplyEffectsN",
@@ -364,7 +364,7 @@ export const registerSystemSettings = function() {
 			if (canvas?.ready) canvas.draw();
 		},
 	});
-	
+
 	// Prompt end-of-turn saves for applied effects
 	game.settings.register("dnd4e", "saveReminders", {
 		name: "SETTINGS.4eSaveRemindersN",
@@ -374,7 +374,7 @@ export const registerSystemSettings = function() {
 		default: true,
 		type: Boolean,
 	});
-	
+
 	// Apply or remind about ongoing damage effects
 	game.settings.register("dnd4e", "autoDoTs", {
 		name: "SETTINGS.4eAutoDoTsN",
@@ -402,7 +402,7 @@ export const registerSystemSettings = function() {
 		config: true,
 		default: false,
 		type: Boolean,
-	});	
+	});
 
 	// Debug power attack/damage effect bonuses
 	game.settings.register("dnd4e", "debugEffectBonus", {
@@ -417,7 +417,7 @@ export const registerSystemSettings = function() {
 	/*************************/
 	/**      KEYBINDS       **/
 	/*************************/
-	
+
 	// Show player keybind
 	game.keybindings.register("dnd4e", "permShowPlayer", {
 		name: _loc("SETTINGS.4epermShowPlayerN"),
@@ -446,5 +446,5 @@ export const registerSystemSettings = function() {
 	// 	],
 	// 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
 	// });
-	
+
 };

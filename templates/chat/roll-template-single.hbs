@@ -3,14 +3,14 @@
   <div class="dice-flavor">{{flavor}}</div>
   {{/if}}
   <div class="dice-result">
-		
+
     {{#if attackRoll}}
     <div class="target">
       <a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modtext}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.deftext}}</span>)</span>
     </div>
     <div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
     {{/if}}
-		
+
     {{#unless attackRoll.immune}}
     <div class="dice-container" data-action="expandRoll">
       <div class="dice-formula">{{{formula}}}</div>

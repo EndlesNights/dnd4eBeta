@@ -57,9 +57,9 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
 };
 
 /**
- * 
- * @param {Actor4e} actor 
- * @param {Item4e} item 
+ *
+ * @param {Actor4e} actor
+ * @param {Item4e} item
  */
 TokenBarHooks.generateItemTooltip = async (actor, item) => {
 	//see actor-sheet.js line 383

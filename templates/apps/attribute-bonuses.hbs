@@ -3,25 +3,25 @@
   <!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
   <!-- <a>+ Add New Bonus Button</a> -->
   {{#if options.skill}}
-	
+
   <fieldset>
     <legend>{{localize "DND4E.Armour"}}</legend>
     <div class="form-group loose">
       <label class="checkbox long">
-        <input type="checkbox" class="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}}> 
+        <input type="checkbox" class="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}}>
         <span class="label">{{localize "DND4E.SkillACPToggle"}}</span>
       </label>
       {{#if system.armourCheck}}
       <div class="form-group">
-        <label>{{localize "DND4E.ArmourSkillACP"}}:</label> 
+        <label>{{localize "DND4E.ArmourSkillACP"}}:</label>
         <span>{{system.armourPen}}</span>
-      </div>				
+      </div>
       {{/if}}
     </div>
   </fieldset>
 
   {{else if options.ac}}
-	
+
   <fieldset>
     <legend data-tooltip="{{localize 'DND4E.ACAbilityMod'}}">{{localize "DND4E.AbilityModifier"}}</legend>
     <div class="form-group loose">
@@ -42,7 +42,7 @@
   </fieldset>
 
   {{else if options.init}}
-	
+
   <fieldset>
     <legend data-tooltip="{{localize "DND4E.InitAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
     <select name="system.ability">
@@ -50,19 +50,19 @@
       {{selectOptions config.abilities selected=system.ability}}
     </select>
   </fieldset>
-	
+
   {{else if options.secondWind}}
-	
+
   <div class="form-group stacked">
     <label>{{localize "DND4E.SecondWindSpecial"}}</label>
     <input type="text" name="system.custom" value="{{system.custom}}" data-dtype="String">
   </div>
-	
+
   {{/if}}
-	
+
   <fieldset>
     <legend>{{localize "DND4E.Bonuses"}}</legend>
-		
+
     {{#each bonusData as |bonus b|}}
     <fieldset class="bonus-part form-group vertical" data-bonus-part="{{b}}">
       <legend>{{#if bonus.name}}{{bonus.name}} {{localize "DND4E.Bonus"}} {{else}}{{localize "DND4E.Bonus"}} {{b}}{{/if}}</legend>
@@ -76,7 +76,7 @@
           <input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String">
         </div>
         <label class="checkbox right">
-          <input class="checkbox" type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize 'DND4E.BonusToggle'}}"> 
+          <input class="checkbox" type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize 'DND4E.BonusToggle'}}">
           <span class="label">{{localize "DND4E.Active"}}</span>
         </label>
         <a class="bonus-control bonus-delete right" data-action="bonusDelete" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
@@ -84,10 +84,10 @@
       <textarea class="no-mono" type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{bonus.note}}</textarea>
     </fieldset>
     {{/each}}
-		
+
     <div class="form-group right">
       <a class="bonus-control bonus-add label" data-action="bonusAdd">{{localize "DND4EUI.AddNew"}}</a>
     </div>
   </fieldset>
-	
+
 </div>

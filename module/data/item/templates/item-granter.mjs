@@ -7,7 +7,7 @@ export default class ItemGranter extends foundry.abstract.DataModel {
    * @type {Set<string>}
    */
 	static VALID_TYPES = new Set(["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]);
-  
+
 	/* -------------------------------------------- */
 
 	/**

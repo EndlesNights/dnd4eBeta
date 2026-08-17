@@ -75,7 +75,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		context.sourceLabel = this.document.system.source.label;
-    
+
 		return context;
 	}
 	/* -------------------------------------------- */
@@ -90,7 +90,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.actor, keyPath: "system.source" }));
 	}
-  
+
 	/* -------------------------------------------- */
 
 	/**

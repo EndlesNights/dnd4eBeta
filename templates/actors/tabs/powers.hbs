@@ -30,7 +30,7 @@
     {{#each sections as |section sid|}}
     <li class="items-header flexrow">
       <h3 class="item-name flexrow">{{localize section.label}}</h3>
-    
+
       {{#if section.columns}}
       {{#each section.columns}}
       <div class="item-detail {{css}}">{{label}}</div>
@@ -50,7 +50,7 @@
       </div>
       {{/if}}
     </li>
-    
+
     <ol class="item-list power-list">
       {{#each section.items as |item iid|}}
       <li class="item flexrow{{#if isUnavailable}} unavailable{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
@@ -61,7 +61,7 @@
           <div class="item-name flexrow rollable" data-action="itemSummary">
             <h4 class="power-detail item-title">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
           </div>
-            
+
           {{#if section.columns}}
           {{#each section.columns}}
           <div class="item-detail {{css}}">
@@ -109,7 +109,7 @@
             {{/if}}
           </div>
           {{/if}}
-        
+
           {{#if ../owner}}
           <div class="item-controls flexrow">
             <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
@@ -117,7 +117,7 @@
             </a>
           </div>
           {{/if}}
-      
+
           {{#if section.columns}}
           {{#each section.columns}}
           <div class="item-detail {{css}}">
@@ -161,15 +161,15 @@
                 {{{chatData.description.value}}}
                 {{/if}}
               </div>
-							
+
               <div class="item-details">
                 {{{detailsText}}}
               </div>
-					
+
               {{else}}
-				  
+
               <div class="item-description">{{{chatData.description.value}}}</div>
-					
+
               {{/if}}
             </div>
             <ul class="item-properties tags">

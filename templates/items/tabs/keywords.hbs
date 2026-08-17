@@ -14,7 +14,7 @@
     {{/unless}}
     {{/each}}
   </fieldset>
-  
+
   <fieldset class="form-group stacked columns-4">
     <legend>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Effect')}}</legend>
     {{#each config.effectTypes as |name type|}}
@@ -24,7 +24,7 @@
     </label>
     {{/each}}
   </fieldset>
-  
+
   <div class="form-group long">
     <label>{{ localize "DND4E.Custom" }}</label>
     <input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}">

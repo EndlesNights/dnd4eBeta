@@ -39,7 +39,7 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
 			healFormula: new FormulaField({ initial: "" }),
 		};
 	}
-    
+
 	/** @inheritDoc */
 	static defineSchema() {
 		return {

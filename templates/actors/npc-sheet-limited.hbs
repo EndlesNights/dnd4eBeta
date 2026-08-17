@@ -1,4 +1,4 @@
-<section class="{{cssClass}} npc flexcol" autocomplete="off">				
+<section class="{{cssClass}} npc flexcol" autocomplete="off">
   <section class="npc-upper">
     {{!-- SHeet Header --}}
     <header class="sheet-header flexrow">
@@ -12,7 +12,7 @@
             <input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4E.NameNPC'}}" placeholder="{{localize 'DND4E.NameNPC'}}" onClick="this.select();">
           </li>
         </ul>
-	
+
         <ul class="summary flexrow">
           <li class="summary-size">
             <select class="actor-size" name="data.details.size">
@@ -47,7 +47,7 @@
         <prose-mirror toggled name="system.biography" disabled value="{{system.biography}}">
           {{{biographyHTML}}}
         </prose-mirror>
-      </section>			
+      </section>
     </section>
   </section>
 </section>

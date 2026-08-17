@@ -25,7 +25,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 		if (d.total >= critical) {
 			html.querySelectorAll(".dice-total")[i].classList.add("critical");
 		}
-		else if (d.total <= fumble) { 
+		else if (d.total <= fumble) {
 			html.querySelectorAll(".dice-total")[i].classList.add("fumble");
 		}
 		else if (d.options.target) {
@@ -97,7 +97,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		const message = game.messages.get(li.dataset.messageId);
 		return message.isRoll && message.isContentVisible && li.querySelector(".hit-prediction");
 	};
-	
+
 	let canApplyDamage = li => {
 		const message = game.messages.get(li.dataset.messageId);
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
@@ -112,7 +112,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		const itemID = li.querySelector("[data-item-id]")?.dataset.itemId;
 
 		if (!itemID) return false;
-		
+
 		const actorID = li.querySelector("[data-actor-id]")?.dataset.actorId;
 		const tokenUUID = li.querySelector("[data-token-id]")?.dataset.tokenId.split(".");
 
@@ -205,7 +205,7 @@ export const addChatMessageContextOptions = function(html, options) {
 
 /**
  * Sets up event listeners on a chat card.
- * @param {HTMLElement} html 
+ * @param {HTMLElement} html
  */
 export function chatMessageListener(html) {
 	//html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
@@ -221,7 +221,7 @@ export function chatMessageListener(html) {
 		const el = event.target.closest(".target");
 		if (el) this.clickTokenActorName.call(this, event);
 	});
-	
+
 	//html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
 	html.querySelectorAll(".target").forEach((el) => {
 		const targetElement = el.querySelector(".target");
@@ -332,7 +332,7 @@ function applyEffectToSelectTokens(li, effectType) {
 	const itemID = li.querySelector("[data-item-id]")?.dataset.itemId;
 
 	if (!itemID) return false;
-	
+
 	const actorID = li.querySelector("[data-actor-id]")?.dataset.actorId;
 	const tokenUUID = li.querySelector("[data-token-id]")?.dataset.tokenId.split(".");
 
@@ -402,10 +402,10 @@ function applyChatCardDamage(li, multiplier, trueDamage = false) {
 
 /**
  * Applies damage from a chat card roll.
- * @param {Roll4e} roll 
- * @param {number} multiplier 
- * @param {boolean} trueDamage 
- * @returns 
+ * @param {Roll4e} roll
+ * @param {number} multiplier
+ * @param {boolean} trueDamage
+ * @returns
  */
 function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	let damageDealt = [];
@@ -486,7 +486,7 @@ function applyChatCardTempHp(li) {
 
 /**
  * Applies temporary HP from a chat card roll.
- * @param {Roll4e} roll 
+ * @param {Roll4e} roll
  */
 function applyChatCardTempHpInner(roll) {
 	return Promise.all(canvas.tokens.controlled.map(t => {
@@ -497,7 +497,7 @@ function applyChatCardTempHpInner(roll) {
 
 /**
  * Handler to expand or collapse a chat card's die roll.
- * @param {MouseEvent} event 
+ * @param {MouseEvent} event
  */
 export function _onClickDiceRoll(event) {
 	event.preventDefault();
@@ -541,8 +541,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 
 /**
  * Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions.
- * @param {boolean} value 
- * @param {Object} html 
+ * @param {boolean} value
+ * @param {Object} html
  */
 export function updateApplyEffectsTooltips(value, html) {
 

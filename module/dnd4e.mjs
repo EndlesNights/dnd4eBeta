@@ -35,7 +35,7 @@ globalThis.dnd4e = {
 
 Hooks.once("init", async function() {
 	console.log(`D&D4e | Initializing Dungeons & Dragons 4th Edition System\n${DND4E.ASCII}`);
-	
+
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
 
@@ -62,7 +62,7 @@ Hooks.once("init", async function() {
 	// define custom roll extensions
 	CONFIG.Dice.rolls = [rolls.Roll4e, rolls.RollWithOriginalExpression, rolls.MultiAttackRoll];
 	CONFIG.Dice.functions.scale = utils.scaleFn;
-	
+
 	CONFIG.ui.items = applications.sidebar.tabs.ItemDirectory4e;
 
 	CONFIG.Token.objectClass = canvas.placeables.Token4e;
@@ -168,7 +168,7 @@ Hooks.once("init", async function() {
 		label: "DND4E.difficultTerrain.Label",
 		types: ["difficultTerrain"],
 	});
-	
+
 	// Setup Item Sheet
 	foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
 	foundry.documents.collections.Items.registerSheet("dnd4e", applications.sheets.ItemSheet4e, {
@@ -177,7 +177,7 @@ Hooks.once("init", async function() {
 		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature", "backpack"],
 
 	});
-	
+
 	// Items.registerSheet("dnd4e", ContainerItemSheet,{
 	// 	makeDefault: true,
 	// 	label: "Container Sheet",//_loc("SHEET.Item"),
@@ -208,7 +208,7 @@ Hooks.once("init", async function() {
 
 	// Set up token movement actions
 	documents.TokenDocument4e.registerMovementActions();
-	
+
 	// Custom movement cost aggregator
 	CONFIG.Token.movement.costAggregator = (results, distance, segment) => {
 		return Math.max(...results.map(i => i.cost));
@@ -261,7 +261,7 @@ Hooks.once("ready", async function() {
 	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
 	if (!cv && (totalDocuments === 0)) return game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
 	if (cv && !foundry.utils.isNewerVersion(game.system.flags.needsMigrationVersion, cv)) return;
-  
+
 	const cmv = game.system.flags.compatibleMigrationVersion || "0.2.85";
 	// Perform the migration
 	if (cv && foundry.utils.isNewerVersion(cmv, cv)) {
@@ -286,7 +286,7 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	helpers.chat.displayDamageOptionButtons(message, html, data);
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");	
+	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");
 
 	// Mask tiebreaker digits in initiave roll display
 	try {
@@ -319,7 +319,7 @@ Hooks.on("renderChatLog", (app, element, context) => {
 		}
 	} catch(e) {
 		console.error(`Failed to update chat log theme. ${e}`);
-	}	
+	}
 });
 
 // Also activate buttons on popout messages

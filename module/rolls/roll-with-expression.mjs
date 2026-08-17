@@ -148,9 +148,9 @@ export default class RollWithOriginalExpression extends Roll4e {
 	}
 
 	/**
-     * 
-     * @param {string[]} parts 
-     * @param {string[]} expressionParts 
+     *
+     * @param {string[]} parts
+     * @param {string[]} expressionParts
      * @returns {string[]}
      */
 	static _createExpression(parts, expressionParts) {

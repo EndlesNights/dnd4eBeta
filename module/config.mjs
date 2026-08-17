@@ -832,22 +832,22 @@ DND4E.durationAction = {
 		label: "DND4E.DurationActionDeathSave",
 	},
 	heal: {
-		label: "DND4E.DurationActionHeal", 
+		label: "DND4E.DurationActionHeal",
 	},
 	attacked: {
 		label: "DND4E.DurationActionAttacked",
 	},
 	attackedhit: {
-		label: "DND4E.DurationActionAttackedHit", 
+		label: "DND4E.DurationActionAttackedHit",
 	},
 	attackedmiss: {
-		label: "DND4E.DurationActionAttackedMiss", 
+		label: "DND4E.DurationActionAttackedMiss",
 	},
 	damaged: {
-		label: "DND4E.DurationActionDamaged", 
+		label: "DND4E.DurationActionDamaged",
 	},
 	healed: {
-		label: "DND4E.DurationActionHealed", 
+		label: "DND4E.DurationActionHealed",
 	},
 };
 preLocalize("durationAction", { keys: ["label"] });
@@ -937,7 +937,7 @@ preLocalize("weaponProficiencies", { sort: true });
 
 DND4E.weaponProficienciesMap = {
 	simpleM: "SimpleM",
-	simpleR: "SimpleR",	
+	simpleR: "SimpleR",
 	militaryM: "MilitaryM",
 	militaryR: "MilitaryR",
 	superiorM: "SuperiorM",
@@ -1133,7 +1133,7 @@ DND4E.featureSortTypes = {
 preLocalize("featureSortTypes", { keys: ["label"] });
 
 DND4E.featureTypes = {
-	race: { 
+	race: {
 		label: "DND4E.Feature.Race",
 		groupLabel: "DND4E.Group.Feature.Race",
 	},
@@ -1350,7 +1350,7 @@ DND4E.sortValues = {
 		other: 5,
 	},
 };
-  
+
 DND4E.autoTargetModes = {
 	none: "DND4E.AutoTargetModes.None",
 	all: "DND4E.AutoTargetModes.All",
@@ -1830,7 +1830,7 @@ DND4E.weaponTypes = {
 	militaryM: "DND4E.WeaponMilitaryM",
 	superiorM: "DND4E.WeaponSuperiorM",
 	improvM: "DND4E.WeaponImprovisedM",
-	simpleR: "DND4E.WeaponSimpleR",	
+	simpleR: "DND4E.WeaponSimpleR",
 	militaryR: "DND4E.WeaponMilitaryR",
 	superiorR: "DND4E.WeaponSuperiorR",
 	improvR: "DND4E.WeaponImprovisedR",
@@ -2145,7 +2145,7 @@ DND4E.statusEffect = {
 		name: "EFFECT.statusProne",
 		img: "systems/dnd4e/icons/statusEffects/prone.svg",
 		description: "EFFECTDESC.prone",
-	},	
+	},
 	running: {
 		name: "EFFECT.statusRunning",
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
@@ -2214,7 +2214,7 @@ DND4E.SCALE = {
 	},
 };
 
-DND4E.SNEAKSCALE = { //uses @tier to derive value 
+DND4E.SNEAKSCALE = { //uses @tier to derive value
 	1: 2,
 	2: 3,
 	3: 5,
@@ -2224,7 +2224,7 @@ DND4E.SNEAKSCALE = { //uses @tier to derive value
 DND4E.CHARACTER_EXP_LEVELS =	[
 	0, 1000, 2250, 3750, 5500, 7500, 10000, 13000, 16500, 20500,
 	26000, 32000, 39000, 47000, 57000, 69000, 83000, 99000, 119000, 143000,
-	175000, 210000, 255000, 310000, 375000, 450000, 550000, 675000, 825000, 1000000, 
+	175000, 210000, 255000, 310000, 375000, 450000, 550000, 675000, 825000, 1000000,
 ];
 
 // Configure Optional Character Flags (vestigial/5e?)

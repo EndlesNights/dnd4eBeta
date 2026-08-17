@@ -242,7 +242,7 @@ export default class MultiAttackRoll extends Roll4e {
 
 	/**
    * @Override
-   *  
+   *
    * Transform a Roll instance into a ChatMessage, displaying the roll result.
    * This function can either create the ChatMessage directly, or return the data object that will be used to create.
    *

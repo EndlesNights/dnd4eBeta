@@ -40,7 +40,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		if (inBright) return CONFIG.DND4E.LIGHT_LEVEL.BRIGHT;
 		return CONFIG.DND4E.LIGHT_LEVEL.DIM;
 	}
-		
+
 	/* -------------------------------------------- */
 	/*  Detection                                   */
 	/* -------------------------------------------- */
@@ -122,9 +122,9 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 		/**
          * Helper function to get the color the HP bar should be.
-         * @param {number} current 
-         * @param {number} max 
-         * @returns 
+         * @param {number} current
+         * @param {number} max
+         * @returns
          */
 		function getHPColor(current, max) {
 			const pct = Math.clamp(current, 0, max) / max;

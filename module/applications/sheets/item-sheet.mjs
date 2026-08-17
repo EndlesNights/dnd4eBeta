@@ -269,7 +269,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		context.itemTypeLabel = _loc(`TYPES.Item.${itemData.type}`);
 		context.itemStatus = this._getItemStatus(itemData);
 		context.itemProperties = this._getItemProperties(itemData);
-		
+
 		context.isPhysical = ("quantity") in itemData.system;
 
 		context.showLevel = true;
@@ -278,13 +278,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// Potential consumption targets
 		context.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
-				
+
 		if (itemData.type === "feature") {
 			context.isAura = (itemData.system?.auraSize >= 0 ? true : false);
 			context.summaryLabel = CONFIG.DND4E.featureTypes[itemData.system.featureType]?.label;
 			context.showRarity = false;
 		}
-	
+
 		if (itemData.type === "power") {
 			context.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
 			context.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
@@ -398,9 +398,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			if (!["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
 			if (["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
 			if (["none", "enemies"].includes(itemData.system.autoTarget.mode)) itemData.system.excludeUserFromTargeting = true;
-			
+
 			itemData.system.isRecharge = itemData.system?.useType === "recharge";
-			
+
 			//Setup range and area keys
 			let autoKeys = {};
 			if (["melee", "touch", "reach"].includes(itemData.system.rangeType)) autoKeys.melee = { label: _loc("DND4E.Melee") };
@@ -428,7 +428,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.weaponMetaProperties = {};
 			for (let attrib in context.config?.weaponProperties) {
 				context.weaponMetaProperties[attrib] = {
-					propName: context.config.weaponProperties[attrib], 
+					propName: context.config.weaponProperties[attrib],
 					checked: itemData.system.properties[attrib],
 					disabled: ((attrib === "imp") && (itemData.system.weaponType === "implement")),
 				};
@@ -456,7 +456,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// Vehicles
 		//data.isCrewed = itemData.system.activation?.type === 'crew';
 		//data.isMountable = this._isItemMountable(itemData);
-	
+
 		// Prepare Active Effects
 		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
 
@@ -498,13 +498,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		}
 
 		context.editorLang = this.document.system.macro?.type === "script" ? "javascript" : "";
-		
+
 		return context;
 	}
 
 	_getHeaderControls() {
 		let controls = super._getHeaderControls();
-	
+
 		// Share Entry
 		controls.push({
 			icon: "fa-solid fa-eye",
@@ -512,7 +512,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			visible: game.user.isGM,
 			onClick: () => this.shareItem(),
 		});
-	
+
 		// Export JSON
 		controls.push({
 			icon: "fa-solid fa-atlas",
@@ -732,7 +732,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				default: "close",
 				close: () => {},
 			});
-			  
+
 			d.render(true);
 		}
 	}
@@ -750,7 +750,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		else if (item.system.armour.type == "natural") { return null; }
 		else if (item.system.armour.type == "alternative") { return config.equipmentTypesAlt; }
 		else if (item.system.armour.type == "other") { return null; }
-		
+
 		return null;
 	}
 	/* -------------------------------------------- */
@@ -771,13 +771,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// This can work separate to an actor, as the actor's model is known at compile time
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
 		if ((consume.type === "attribute") || (consume.type === "resource") || (consume.type === "currency") || (consume.type === "ritualcomp")) {
-			
+
 			/* Removed the logic to use token bar attributes in v13, as this was no longer returning the full set of attributes. Instead using the actor model for all cases. - Fox
 		if (actor) {
 			const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
 			attributes.bar.forEach(a => a.push("value"));
 			console.debug(attributes);
-			
+
 			if(consume.type === "resource"){
 				return {"": _loc("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 					let k = a.join(".");
@@ -787,7 +787,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					return obj;
 				}, {})};
 			}
-			
+
 			if(consume.type === "currency"){
 				return {"": _loc("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 					console.debug(a);
@@ -798,7 +798,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					return obj;
 				}, {})};
 			}
-			
+
 			return {"": _loc("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 				let k = a.join(".");
 				obj[k] = k;
@@ -808,7 +808,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		else {*/
 			const attributes = CONFIG.Actor.dataModels["Player Character"].schema.getInitialValue();
 			//console.debug(attributes);
-			
+
 			if (consume.type === "resource") {
 				const resourceLabels = {
 					primary: (actor ? actor.system.resources.primary.label : _loc("DND4E.ResourcePrimary")),
@@ -826,7 +826,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				//console.debug(resourceKeys);
 				return { "": _loc("DND4E.None"), ...resourceKeys };
 			}
-			
+
 			if (consume.type === "currency") {
 				const currencyKeys = Object.keys(foundry.utils.flattenObject(attributes.currency)).reduce((obj, a) => {
 					obj[`system.currency.${a}`] = CONFIG.DND4E.currencies[a];
@@ -834,7 +834,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				}, {});
 				return { "": _loc("DND4E.None"), ...currencyKeys };
 			}
-			
+
 			if (consume.type === "ritualcomp") {
 				const ritualcompKeys = Object.keys(foundry.utils.flattenObject(attributes.ritualcomp)).reduce((obj, a) => {
 					obj[`system.ritualcomp.${a}`] = CONFIG.DND4E.ritualComponents[a];
@@ -842,12 +842,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				}, {});
 				return { "": _loc("DND4E.None"), ...ritualcompKeys };
 			}
-			
+
 			const attributeKeys = Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
 				obj[`system.${a}`] = a;
 				return obj;
 			}, {});
-			
+
 			return { "": _loc("DND4E.None"), ...attributeKeys };
 			/*}*/
 		}
@@ -890,9 +890,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		}
 		else return {};
 	}
-	
+
 	/* -------------------------------------------- */
-	
+
 	/**
 	 * Get the valid weapons targets which exist on the actor
 	 * @param {Object} weapon         weapon data for the weapon items being displayed
@@ -900,22 +900,22 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * @private
 	 */
 	_getItemsWeaponUseTargets(weapon) {
-		
+
 		const weaponType = weapon.system.weaponType || {};
 		if (!weaponType) return [];
 		const actor = this.item.actor;
 		if (!actor) return {};
-		
+
 		if (weaponType === "any") {
 			return actor.itemTypes.weapon.reduce((obj, i) => {
 				obj[i.id] = `${i.name}`;
 				return obj;
-			}, {});		
+			}, {});
 		}
 
 		let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-		
+
 		if (weaponType === "melee") {
 			return actor.itemTypes.weapon.reduce((obj, i) => {
 				if (setMelee.includes(i.system.weaponType)) {
@@ -924,7 +924,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				return obj;
 			}, {});
 		}
-		
+
 		if (weaponType === "ranged") {
 			return actor.itemTypes.weapon.reduce((obj, i) => {
 				if (setRanged.includes(i.system.weaponType)) {
@@ -942,16 +942,16 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				return obj;
 			}, {});
 		}
-		
+
 		if (weaponType === "implement") {
 			return actor.itemTypes.weapon.reduce((obj, i) => {
 				if (i.system.properties.imp) {
 					obj[i.id] = `${i.name}`;
 				}
 				return obj;
-			}, {});			
+			}, {});
 		}
-						
+
 		return {};
 	}
 
@@ -982,11 +982,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		//console.debug(this.item.labels);
 		const props = [];
 		const labels = this.item.labels || {};
-		
+
 		if (item?.type === "weapon") {
 			props.push(`<li class="weapon-summary">${CONFIG.DND4E.weaponTypes[item.system.weaponType]}</li>`);
 			const shortType = item.system.weaponType.substring(0, 3) || "";
-						
+
 			if (labels.enh) props.push(`<li class="enhancement">${labels.enh}</li>`);
 
 			props.push(...Object.entries(item.system.properties)
@@ -997,19 +997,19 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					return `<li class="${e[0]}">${CONFIG.DND4E.weaponProperties[e[0]]}</li>`;
 				}),
 			);
-			
+
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => (e[1] === true) && (e[0] != "physical"))
 				.map(e => `<li class="${e[0]}">${CONFIG.DND4E.damageTypes[e[0]]}</li>`),
 			);
-			
+
 			if (item.system?.implementGroup) {
 				props.push(...Object.entries(item.system?.implementGroup)
 					.filter(e => e[1] === true)
 					.map(e => `<li class="${e[0]}">${CONFIG.DND4E.implement[e[0]]}</li>`),
 				);
 			}
-			
+
 			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
 				.map(e => `<li class="${e[0]}">${CONFIG.DND4E.weaponGroup[e[0]]}</li>`),
@@ -1044,11 +1044,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		else if (item.type === "ritual") {
 			if (labels.category) props.push(`<li class="category">${labels.category}</li>`);
 		}
-	
+
 		else if (item.type === "consumable") {
 			if (labels.enh) props.push(`<li class="enhancement">${labels.enh}</li>`);
 		}
-		
+
 		// Action type
 		if ((item.type !== "power") && item.system?.actionType && (item.system?.consumableType != "ammo")) {
 			if (item.system.actionType) {
@@ -1119,10 +1119,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (damageImp) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d.formula || "", d.type || ""]);
 		const damageCritImp = formData.system?.damageCritImp;
 		if (damageCritImp) damageCritImp.parts = Object.values(damageCritImp?.parts || {}).map(d => [d.formula || "", d.type || ""]);
-		
+
 		const damageRes = formData.system.armour?.damageRes;
 		if (damageRes) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-	
+
 		const damageDice = formData.system?.damageDice;
 		if (damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d.numDice || "", d.numFaces || "", d.modifier || ""]);
 
@@ -1174,7 +1174,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const macroIndex = event.target.getAttribute("data-macro-index");
 		return macros.executeMacro(this.document, this.document.system.macros[macroIndex]);
 	}
-	
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1201,7 +1201,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			damage.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({ "system.damage.parts": damage.parts });
 		}
-	
+
 		// Add new critical damage component
 		if (action === "addCriticalDamage") {
 			await this.submit(event); // Submit any unsaved changes
@@ -1217,7 +1217,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({ "system.damageCrit.parts": damageCrit.parts });
 		}
-	
+
 		// Add new Miss damage component
 		if (action === "addMissDamage") {
 			await this.submit(event); // Submit any unsaved changes
@@ -1249,7 +1249,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			damageImp.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({ "system.damageImp.parts": damageImp.parts });
 		}
-	
+
 		// Add new implement critical damage component
 		if (action === "addCriticalDamageImp") {
 			await this.submit(event); // Submit any unsaved changes
@@ -1590,12 +1590,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			macros.splice(index, 1);
 			return this.item.update({ "system.macros": macros });
 		}
-	
+
 		// Expand macro text
 		if (action === "expandMacro") {
 			target.parentElement.classList.toggle("collapsed");
 		}
-	
+
 	}
 
 	/* -------------------------------------------- */

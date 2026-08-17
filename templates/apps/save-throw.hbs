@@ -1,15 +1,15 @@
 <div id="save-throw" class="dialogue-content save-throw" onsubmit="event.preventDefault();">
   {{log effectId}}
   <div class="form-group vertical">
-	
+
     <h1 class="form-title">
       {{#if effectName}}
       {{localize 'DND4E.SaveVsPrompt' effect=effectName}}
       {{else}}
-      {{localize 'DND4E.SavePrompt'}} 
+      {{localize 'DND4E.SavePrompt'}}
       {{/if}}
     </h1>
-		
+
     {{#unless effectSave}}
     {{#if savableEffects.length}}
     <div class="form-group">
@@ -20,7 +20,7 @@
     </div>
     {{/if}}
     {{/unless}}
-		
+
     <div class="form-group">
       <label>{{localize 'DND4E.SaveDCSet'}}:</label>
       <input type="text" name="dc" value="{{#if saveDC}}{{saveDC}}{{else}}10{{/if}}" placeholder="10">
@@ -50,7 +50,7 @@
         {{selectOptions messageModes selected=messageMode.value labelAttr="label" localize=true}}
       </select>
     </div>
-		
+
   </div>
-	
+
 </div>

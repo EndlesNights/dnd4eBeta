@@ -11,8 +11,8 @@ export const preloadHandlebarsTemplates = async function() {
 
 		// Shared Partials
 		"systems/dnd4e/templates/shared/self-effects.hbs",
-		
-		// Item Sheet Partials	
+
+		// Item Sheet Partials
 		"systems/dnd4e/templates/items/parts/details-consumable.hbs",
 		"systems/dnd4e/templates/items/parts/details-equipment.hbs",
 		"systems/dnd4e/templates/items/parts/details-feature.hbs",
@@ -30,7 +30,7 @@ export const preloadHandlebarsTemplates = async function() {
 		paths[path.replace(".hbs", ".html")] = path;
 		paths[`dnd4e.${path.split("/").pop().replace(".hbs", "")}`] = path;
 	}
-	
+
 	// Load the template parts
 	return foundry.applications.handlebars.loadTemplates(paths);
 };

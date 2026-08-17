@@ -3,7 +3,7 @@
     <img class="profile" src="{{item.img}}" alt="{{item.name}}" data-tooltip="{{item.name}}" data-action="editImage" data-edit="img" height="100" width="100">
     <a class="hover-icon item-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="showImage"><i class="fas fa-image fa-fw"></i></a>
   </div>
-  
+
   <div class="header-details flexrow">
     <div class="inputs">
       <h1 class="item-name">
@@ -17,7 +17,7 @@
         {{/if}}
         {{#if this.showLevel}}
         <li class="item-level">
-          <label>{{ localize 'DND4E.Level' }}</label> 
+          <label>{{ localize 'DND4E.Level' }}</label>
           <input type="number" name="system.level" value="{{system.level}}" data-tooltip="{{ localize 'DND4E.Level' }}" placeholder="1">
         </li>
         {{/if}}
