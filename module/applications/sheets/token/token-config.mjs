@@ -22,7 +22,7 @@ export class TokenConfig4e extends foundry.applications.sheets.TokenConfig {
 	_applySenseSyncNotice(html) {
 		if (!game.settings.get("dnd4e", "senseVisionSync")) return;
 		const actor = this.actor ?? this.object?.actor;
-		const senses = actor?.system?.senses?.special;
+		const senses = actor?.system?.senses;
 		if (!senses) return;
 
 		const { sight, detectionModes } = CONFIG.Token.documentClass.computeSenseOverrides(senses);
@@ -45,7 +45,21 @@ export class TokenConfig4e extends foundry.applications.sheets.TokenConfig {
 		notice.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${
 			_loc("SETTINGS.4eSenseVisionNotice", { senses: link })}`;
 		notice.querySelector("[data-action=editSenses]")?.addEventListener("click", () => {
-			const options = { name: "system.senses.special", window: { title: _loc("DND4E.SpecialSenses") }, choices: CONFIG.DND4E["senses"] };
+			const valuelessTraits = {
+				allAround: {
+					label: _loc("DND4E.SpecialSensesAA"),
+					path: "system.senses.allAround",
+					chosen: this.actor.system.senses.allAround,
+					value: this.actor.system.senses.allAround,
+				},
+				blind: {
+					label: _loc("DND4E.VisionBlind"),
+					path: "system.senses.blind",
+					chosen: this.actor.system.senses.blind,
+					value: this.actor.system.senses.blind,
+				},
+			};
+			const options = { name: "system.senses.special", window: { title: _loc("DND4E.SpecialSenses") }, valuelessTraits, choices: CONFIG.DND4E["senses"], custom: "system.senses.custom" };
 			new TraitSelectorValues({ document: actor, ...options }).render(true, { force: true });
 		});
 		tab.prepend(notice);

@@ -46,7 +46,7 @@ export default class TokenDocument4e extends TokenDocument {
 	 */
 	_applySenseVision() {
 		if (!game.settings.get("dnd4e", "senseVisionSync")) return;
-		const senses = this.actor?.system?.senses?.special;
+		const senses = this.actor?.system?.senses;
 		if (senses) TokenDocument4e.applySenseOverrides(senses, this);
 	}
 
@@ -62,9 +62,16 @@ export default class TokenDocument4e extends TokenDocument {
 		let maxSightRange = -Infinity;
 		let sightVisionMode = null;
 
+		if (senses.blind) detectionModes["lightPerception"] = 0;
+
 		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
-			if (!senses[key]?.value) continue;
-			const range = config.range ?? senses[key]?.range ?? Infinity;
+			if (!senses.special[key]?.value) continue;
+			let range;
+			if (senses.blind && ["nv", "lv", "dv"].includes(key)) {
+				range = 0;
+			} else {
+				range = config.range ?? senses.special[key]?.range ?? Infinity;
+			}
 
 			if (config.detectionMode) detectionModes[config.detectionMode] = range;
 
@@ -207,7 +214,7 @@ export default class TokenDocument4e extends TokenDocument {
 	_onRelatedUpdate(update = {}, operation = {}) {
 		super._onRelatedUpdate(update, operation);
 		if (!game.settings.get("dnd4e", "senseVisionSync")) return;
-		const senses = this.actor?.system?.senses?.special;
+		const senses = this.actor?.system?.senses;
 		if (!senses) return;
 
 		// Re-derive vision whenever sense-granting data changes, covering direct edits and item/effect-granted senses.

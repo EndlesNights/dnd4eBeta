@@ -1367,6 +1367,10 @@ preLocalize("autoTargetModes");
 DND4E.senses = {
 	nv: {
 		label: "DND4E.VisionNormal",
+		detectionMode: "basicSight",
+		grantsSight: true,
+		range: 0,
+		visionMode: "basic",
 	},
 	lv: {
 		label: "DND4E.VisionLowLight",
@@ -1374,12 +1378,6 @@ DND4E.senses = {
 		grantsSight: true,
 		range: 0,
 		visionMode: "darkvision",
-	},
-	bv: {
-		label: "DND4E.VisionBlind",
-	},
-	aa: {
-		label: "DND4E.SpecialSensesAA",
 	},
 	bs: {
 		label: "DND4E.SpecialSensesBS",

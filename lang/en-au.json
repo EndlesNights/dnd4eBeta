@@ -1121,7 +1121,7 @@
 "DND4E.Trained": "Trained",
 "DND4E.TraitarmourProf": "Armour Proficiencies",
 "DND4E.TraitSave": "Update",
-"DND4E.TraitSelectorSpecial": "Special (Split with Semi-Colon)",
+"DND4E.TraitSelectorSpecial": "Custom (Split with Semi-Colon)",
 "DND4E.TraitWeaponProf": "Weapon Proficiencies",
 "DND4E.Transmutation": "Transmutation",
 "DND4E.Trigger": "Trigger",
@@ -1914,12 +1914,12 @@
 	"UnknownCondition.Label": "Unknown value",
 	"UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
   "NOTIFICATIONS": {
-    "ammoInsufficient": "The {resourceType} requires {quantity} of '{target}' but the character only has {ammoCount}",
-    "ammoMissing": "The {resourceType} requires ammunition, but none could be found on the character",
-    "ammoUncounted": "The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
-    "ammoUntyped": "The {resourceType} requires ammunition, but the type ('{target}') was empty",
-    "cantAttack": "You may not make an Attack Roll with this Item.",
-    "cantDamage": "You may not make a Damage Roll with this Item."
+	"ammoInsufficient": "The {resourceType} requires {quantity} of '{target}' but the character only has {ammoCount}",
+	"ammoMissing": "The {resourceType} requires ammunition, but none could be found on the character",
+	"ammoUncounted": "The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
+	"ammoUntyped": "The {resourceType} requires ammunition, but the type ('{target}') was empty",
+	"cantAttack": "You may not make an Attack Roll with this Item.",
+	"cantDamage": "You may not make a Damage Roll with this Item."
   },
 	"Yes": "Yes"
 },

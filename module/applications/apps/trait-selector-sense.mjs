@@ -32,11 +32,19 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 	/* -------------------------------------------- */
 
 	/**
-     * Returns a reference to the target attribute
-     * @type {string}
-     */
+	 * Returns a reference to the target attribute
+	 * @type {string}
+	 */
 	get attribute() {
 		return this.options.name;
+	}
+
+	/**
+	 * Returns a reference to the target's custom path (or null)
+	 * @type {string}
+	 */
+	get custom() {
+		return this.options.custom ?? this.attribute.custom ?? null;
 	}
 
 	/** @inheritDoc */
@@ -56,6 +64,8 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
 		let values = Object.keys(attr).map((key) => [key, attr[key]]);
 
+		context.valuelessTraits = this.options.valuelessTraits;
+
 		// Populate choices
 		let choices = foundry.utils.duplicate(this.options.choices);
 
@@ -69,7 +79,13 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 
 		context.allowCustom = this.options.allowCustom;
 		context.choices = choices;
-		context.custom = attr ? attr.custom : "";
+		if (this.options.custom) {
+			context.custom = foundry.utils.getProperty(this.document, this.options.custom);
+		} else if (attr.custom) {
+			context.custom = attr.custom;
+		} else {
+			context.custom = "";
+		}
 		context.buttons = [{ type: "submit", icon: "far fa-save", label: "DND4E.Save" }];
 		context.heading = this.options.window.title;
 
@@ -87,12 +103,17 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 
 		// Obtain choices
 		for (let [k, v] of Object.entries(formData)) {
-			if (k !== "custom") updateData[`${this.attribute}.${k}`] = { value: v[0], range: v[0] ? v[1] : "" };
+			if (k === "custom") continue;
+			if (Object.keys(this.options.valuelessTraits).includes(k)) {
+				updateData[this.options.valuelessTraits[k].path] = v;
+			} else {
+				updateData[`${this.attribute}.${k}`] = { value: v[0], range: v[0] ? v[1] : "" };
+			}
 		}
 
 		// Include custom
-		if (this.options.allowCustom) {
-			updateData[`${this.attribute}.custom`] = formData.custom;
+		if (this.options.allowCustom && this.custom) {
+			updateData[this.custom] = formData.custom;
 		}
 
 		return foundry.utils.expandObject(updateData);

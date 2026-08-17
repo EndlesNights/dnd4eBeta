@@ -1,6 +1,21 @@
 <div class="dialogue-content">
   <h1 class="form-title">{{heading}}</h1>
 
+  {{#if valuelessTraits}}
+  <div class="form-group vertical">
+    <ol class="trait-list">
+      {{#each valuelessTraits as |trait key|}}
+      <li>
+        <label class="checkbox">
+          <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked trait.chosen}}>
+          {{trait.label}}
+        </label>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
+
   <div class="form-group vertical">
     <ol class="trait-list">
       {{#each choices as |choice key|}}
