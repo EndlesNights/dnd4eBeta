@@ -1103,6 +1103,7 @@
 "DND4E.TerrainMultiplierLabel": "Terrain Multiplier",
 "DND4E.TerrainMultiplierHint": "Determines the number of squares of movement it takes to move through each grid square of terrain.",
 "DND4E.Theme": "Theme",
+"DND4E.ThingKeywords": "{thing} Keywords",
 "DND4E.ThingType": "{thing} Type",
 "DND4E.ThingSubtypes": "{thing} Subtypes",
 "DND4E.TimeDay": "Days",
