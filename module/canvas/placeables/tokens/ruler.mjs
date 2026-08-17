@@ -4,7 +4,7 @@ import * as utils from "../../../utils/utils.mjs";
 
 export default class TokenRuler4e extends foundry.canvas.placeables.tokens.TokenRuler {
 	static WAYPOINT_LABEL_TEMPLATE = "systems/dnd4e/templates/hud/waypoint-label.hbs";
-	
+
 	/** @inheritDoc */
 	_getWaypointStyle(waypoint) {
 		if (!waypoint.explicit && waypoint.next && waypoint.previous && waypoint.actionConfig.visualize
@@ -106,7 +106,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		let currActionSpeed;
 		const runBonus = ["shift", "teleport"].includes(waypoint.action) ? 0 : movement.run.value;
 		const chargeBonus = ["shift"].includes(waypoint.action) ? 0 : movement.charge.value;
-		
+
 		if ((waypoint.action === "walk") && this.token?.actor?.statuses.has("prone")) {
 			// Probably you can only crawl while walking? The other modes all use three-dimensional movement so can get up for free. - Fox
 			currActionSpeed = movement?.fullCrawl ? movement.walk.value : movement.walk.value / 2;
@@ -122,7 +122,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 			if (CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
 				|| !CONFIG.DND4E.movementTypes[waypoint.action]) {
 				currActionSpeed = Math.max(currActionSpeed, movement.walk.value);
-			}      
+			}
 		}
 
 		let runSpeed = currActionSpeed + runBonus;

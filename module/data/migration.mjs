@@ -7,7 +7,7 @@ export const migrateWorld = async function(migrationVersion) {
 	migrationVersion = migrationVersion || game.settings.get("dnd4e", "systemMigrationVersion");
 	// Update these versions whenever we make data model changes that require immediately saving the changes to the DB.
 	const migrateActiveEffects = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
-	const migrateActors = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateActors = foundry.utils.isNewerVersion("0.9.1", migrationVersion);
 	const migrateItems = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
 	ui.notifications.info(_loc("MIGRATION.4eBegin", { version }), { permanent: true });
 
@@ -34,7 +34,7 @@ export const migrateWorld = async function(migrationVersion) {
 			err.message = `Failed dnd4e system migration for Actor ${a.name}: ${err.message}`;
 			console.error(err);
 		}
-		
+
 		// Migrate items contained by an actor
 		for (let i of a.items) {
 			try {
@@ -111,7 +111,6 @@ export const migrateWorld = async function(migrationVersion) {
 	// Set the migration as complete
 	game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
 	ui.notifications.info(_loc("MIGRATION.4eComplete", { version }), { permanent: true });
-
 };
 
 /* -------------------------------------------- */
@@ -156,8 +155,8 @@ export const migrateCompendium = async function(pack, migrateActiveEffects, migr
 			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 			await doc.update(updateData, { diff });
 			if (((documentName === "ActiveEffect") && migrateActiveEffects)
-                || ((documentName === "Actor") && migrateActors)
-                || ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
+				|| ((documentName === "Actor") && migrateActors)
+				|| ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
@@ -374,7 +373,7 @@ function _migrateActorAddProfKeys(actorData, updateData) {
  */
 function _migrateActorSkills(actorData, updateData) {
 	if (actorData?.type === "Hazard") return;
-	
+
 	const skills = actorData?.system?.skills;
 	if (!skills) return;
 
@@ -386,8 +385,8 @@ function _migrateActorSkills(actorData, updateData) {
 	}
 
 	if ((foundry.utils.getType(actorData?.system?.skillTraining?.untrained) !== "Object")
-        || (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
-        || (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
+		|| (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
+		|| (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
 		updateData["system.skillTraining"] = {
 			untrained: {
 				value: 0,
@@ -708,7 +707,7 @@ function _migrateItemsGMDescriptions(itemData, updateData) {
 	if (!("gm" in itemData.system.description)) {
 		updateData["system.description.gm"] = "";
 	}
-	
+
 	return updateData;
 }
 
@@ -767,7 +766,7 @@ export function removeDeprecatedObjects(data) {
  * @private
  */
 function _migrateActorDefAndRes(actorData, updateData) {
-	
+
 	const defences = actorData?.system?.defences;
 	if (defences) {
 		for (const [id, def] of Object.entries(defences)) {
@@ -776,7 +775,7 @@ function _migrateActorDefAndRes(actorData, updateData) {
 			}
 		}
 	}
-	
+
 	const resistances = actorData?.system?.resistances;
 	if (resistances) {
 		for (const [id, res] of Object.entries(resistances)) {
@@ -801,9 +800,9 @@ function _migrateActorDefAndRes(actorData, updateData) {
 */
 function _migrateNeckGearEnhance(itemData, updateData) {
 	if ((itemData.type !== "equipment") || (itemData.system?.armour.type !== "neck")) return;
-	
+
 	if (((itemData.system?.armour.fort !== itemData.system?.armour.ref) || (itemData.system?.armour.fort !== itemData.system?.armour.wil)) || (itemData.system?.armour.fort === 0)) return;
-	
+
 	updateData["system.armour.enhance"] = itemData.system.armour.fort;
 	updateData["system.armour.fort"] = 0;
 	updateData["system.armour.ref"] = 0;
@@ -821,7 +820,7 @@ function _migrateNeckGearEnhance(itemData, updateData) {
 */
 function _migratePowerBasicAndGlobal(itemData, updateData) {
 	if (itemData.type !== "power") return;
-		
+
 	if (itemData.system?.attack?.isBasic === undefined) {
 		updateData["system.attack.isBasic"] = false;
 	}
@@ -841,7 +840,7 @@ function _migratePowerBasicAndGlobal(itemData, updateData) {
 		const newFormula = itemData.system.miss.formula;
 		if (itemData.system.miss.formula !== newFormula) updateData["system.miss.formula"] = newFormula;
 	}
-	
+
 	return updateData;
 }
 
@@ -853,9 +852,9 @@ function _migratePowerBasicAndGlobal(itemData, updateData) {
 * @private
 */
 function _migrateActorGlobalMods(actorData, updateData) {
-	
+
 	const modifiers = actorData?.system?.modifiers;
-	
+
 	if (modifiers?.skills === undefined) {
 		updateData["system.modifiers.skills"] = {
 			value: 0,
@@ -868,7 +867,7 @@ function _migrateActorGlobalMods(actorData, updateData) {
 			bonus: [{}],
 		};
 	}
-	
+
 	if (modifiers?.defences === undefined) {
 		updateData["system.modifiers.defences"] = {
 			value: 0,
@@ -893,10 +892,10 @@ function _migrateActorGlobalMods(actorData, updateData) {
 * @private
 */
 function _migrateActorSwim(actorData, updateData) {
-	
+
 	if (actorData?.type === "Hazard") return;
 	const movement = actorData?.system?.movement;
-	
+
 	if (movement?.swim === undefined) {
 		updateData["system.movement.swim"] = {
 			value: 0,
@@ -922,7 +921,7 @@ function _migrateActorSwim(actorData, updateData) {
  */
 function _migrateFeature(itemData, updateData) {
 	const sourceType = itemData.type;
-	
+
 	if (sourceType === "feature") {
 		if (!["activation", "duration", "target", "range", "uses", "consume"].some(i => itemData.system[i])) return updateData;
 		//Catch any features that were migrated early during beta/testing
@@ -933,12 +932,12 @@ function _migrateFeature(itemData, updateData) {
 		updateData["system.uses"] = null;
 		updateData["system.consume"] = null;
 		return updateData;
-	}	
-	
+	}
+
 	if (!(["classFeats", "feat", "raceFeats", "pathFeats", "destinyFeats"].includes(sourceType))) return;
-	
+
 	updateData["type"] = "feature";
-	
+
 	switch (sourceType) {
 		case "classFeats":
 			updateData["system.featureType"] = "class";
@@ -959,13 +958,13 @@ function _migrateFeature(itemData, updateData) {
 			updateData["system.featureType"] = "other";
 			break;
 	}
-	
+
 	if (!itemData.system?.level) updateData["system.level"] = "";
 	if (!itemData.system?.requirements) updateData["system.requirements"] = "";
 	updateData["system.featureSource"] = "";
 	updateData["system.featureGroup"] = "";
 	updateData["system.auraSize"] = "";
-	
+
 	//Remove obsolete properties
 	updateData["system.activation"] = null;
 	updateData["system.duration"] = null;
@@ -973,7 +972,7 @@ function _migrateFeature(itemData, updateData) {
 	updateData["system.range"] = null;
 	updateData["system.uses"] = null;
 	updateData["system.consume"] = null;
-	
+
 	return updateData;
 }
 
@@ -984,18 +983,18 @@ function _migrateFeature(itemData, updateData) {
  * @returns {Object}           Modified version of update data.
  * @private
  */
-function _migrateRitualCategory(itemData, updateData) {	
+function _migrateRitualCategory(itemData, updateData) {
 	if ((itemData.type !== "ritual") || itemData.system.category) return;
-	
+
 	updateData["system.category"] = "other";
 	//console.debug(CONFIG.DND4E.ritualTypes);
 	for (const [id, group] of Object.entries(CONFIG.DND4E.ritualTypes)) {
 		//console.debug(`${id} ${group.label}`);
 		if ((itemData.system.category == id) || (itemData.system.category == group.label)) {
 			updateData["system.category"] = id;
-		}	
+		}
 	}
-	
+
 	return updateData;
 }
 
@@ -1023,20 +1022,20 @@ function _migrateType(documentData, updateData) {
 * @private
 */
 function _migrateHazardSpeed(actorData, updateData) {
-	
+
 	if (actorData?.type !== "Hazard") return;
 	console.debug(actorData.system.movement);
 	const moveTemplate = { base: {}, walk: {}, run: {}, charge: {}, climb: {}, swim: {}, shift: {} };
-	
+
 	const movement = actorData.system.movement === undefined ? moveTemplate : actorData.system.movement;
 	console.debug(movement);
-	
+
 	for (const [m, mode] of Object.entries(movement)) {
 		console.debug(m);
-		console.debug(mode);	
+		console.debug(mode);
 		if (["notes", "custom", "none", "ignoredDifficultTerrain"].includes(m)) continue;
-		
-		if (mode?.bonus === undefined) {			
+
+		if (mode?.bonus === undefined) {
 			updateData[`system.movement.${m}`] = {
 				value: mode.value || 0,
 				bonus: [{}],
@@ -1047,9 +1046,9 @@ function _migrateHazardSpeed(actorData, updateData) {
 				untyped: mode.untyped || 0,
 				temp: mode.temp || 0,
 			};
-			
+
 			if (m != "base") {
-				let spdFormula = "@base";				
+				let spdFormula = "@base";
 				if (m === "run") {
 					spdFormula = "@base + 2";
 				} else if (m === "shift") {
@@ -1061,9 +1060,9 @@ function _migrateHazardSpeed(actorData, updateData) {
 			}
 		}
 	}
-	
+
 	if (movement.none === undefined) updateData["system.movement.none"] = true;
-	
+
 	return updateData;
 }
 
@@ -1075,10 +1074,10 @@ function _migrateHazardSpeed(actorData, updateData) {
 * @private
 */
 function _migrateActorMarker(actorData, updateData) {
-	
+
 	if (!["Player Character", "NPC", "Hazard"].includes(actorData?.type)) return;
 	const system = actorData.system;
-	
+
 	if (system?.marker === undefined) updateData["system.marker"] = null;
 	return updateData;
 }
@@ -1092,14 +1091,14 @@ function _migrateActorMarker(actorData, updateData) {
  */
 function _migrateFeatureKeywords(itemData, updateData) {
 	const sourceType = itemData.type;
-	
+
 	if (sourceType == "feature") {
 		//Add new properties from 0.6.13
 		if (itemData.system?.effectType === undefined) updateData["system.effectType"] = {};
 		if (itemData.system?.damageType === undefined) updateData["system.damageType"] = {};
 		if (itemData.system?.customKeywords === undefined) updateData["system.customKeywords"] = "";
 		return updateData;
-	}	
+	}
 }
 
 /**

@@ -45,13 +45,13 @@ export async function create4eMacro(dropData, slot) {
 			flags: { "dnd4e.effectMacro": true },
 		});
 	}
-	
+
 	// Assign the macro to the hotbar
 	const macro = game.macros.find(m => {
 		return (m.name === macroData.name) && (m.command === macroData.command) && m.isAuthor;
 	}) || await Macro.create(macroData);
 	game.user.assignHotbarMacro(macro, slot);
-	
+
 }
 
 /* -------------------------------------------- */

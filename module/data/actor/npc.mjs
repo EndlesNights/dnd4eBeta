@@ -10,7 +10,7 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
-  
+
 	/** @inheritDoc */
 	static defineSchema() {
 		const { details: creatureDetails, ...creatureSchema } = CreatureTemplate.defineSchema();
@@ -64,7 +64,7 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
 
 	/** @inheritdoc */
-	static migrateData(source) {    
+	static migrateData(source) {
 		if ("movement" in source) {
 			SpeedTemplate.migrateSpeed(source);
 		}

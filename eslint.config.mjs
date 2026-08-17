@@ -78,6 +78,7 @@ export default defineConfig([
 		rules: {
 			// "no-undef": "off",
 			"no-unused-vars": 0,
+			"no-trailing-spaces": "error",
 			// "sort-imports": ["warn"],
 
 			"@stylistic/indent": ["error", "tab", {

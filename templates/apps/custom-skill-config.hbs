@@ -1,5 +1,5 @@
 <div id="custom-skill-config" class="dialogue-content nonscrolling flexcol" onsubmit="event.preventDefault();">
-	
+
   <header class="flexrow">
     <div class="info">
       <h1 class="form-title">{{localize 'SETTINGS.4eCustomSkillsN'}}</h1>
@@ -10,7 +10,7 @@
       <a class="custom-skill-control custom-skill-add right label" data-action="createSkill">{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
     </div>
   </header>
-	
+
   <div class="table-holder">
     <table id="custom-skill-list" class="custom-skill-list">
       <thead>
@@ -31,15 +31,15 @@
           </th>
         </tr>
       </thead>
-      
+
       <tbody class="scrollable">
         {{#each customSkills as |skill s|}}
         <tr class="custom-skill-line" data-row-id="{{s}}">
           <td class="custom-skill-label">
-            <input id="custom-skill-label-{{s}}" class="custom-skill-label" type="text" name="label" value="{{skill.label}}" data-dtype="String"placeholder="{{localize 'DND4E.SkillLabel'}}" />
+            <input id="custom-skill-label-{{s}}" class="custom-skill-label" type="text" name="label" value="{{skill.label}}" data-dtype="String"placeholder="{{localize 'DND4E.SkillLabel'}}">
           </td>
           <td class="custom-skill-id">
-            <input id="custom-skill-id-{{s}}" class="custom-skill-id" type="text" name="id" value="{{skill.id}}" data-dtype="String" placeholder="{{localize 'DND4E.SkillID'}}" />
+            <input id="custom-skill-id-{{s}}" class="custom-skill-id" type="text" name="id" value="{{skill.id}}" data-dtype="String" placeholder="{{localize 'DND4E.SkillID'}}">
           </td>
           <td class="custom-skill-ability">
             <select id="custom-skill-attribute-{{s}}" class="custom-skill-ability" name="ability">
@@ -48,15 +48,15 @@
             </select>
           </td>
           <td class="custom-skill-acp">
-            <input id="custom-skill-acp-{{s}}" class="custom-skill-acp" type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean" data-tooltip="{{localize 'DND4E.Attribute'}}" />
+            <input id="custom-skill-acp-{{s}}" class="custom-skill-acp" type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean" data-tooltip="{{localize 'DND4E.Attribute'}}">
           </td>
           <td class="custom-skill-control">
-            <a class="custom-skill-control" data-action="deleteSkill" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
+            <a class="custom-skill-control" data-action="deleteSkill" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
           </td>
         </tr>
         {{/each}}
       </tbody>
-    </table>    
+    </table>
   </div>
-  
+
 </div>

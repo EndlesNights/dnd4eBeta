@@ -9,9 +9,9 @@
   </header>
 
   <div class="card-content{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}">
-	
+
     {{#if item.system.autoGenChatPowerCard}}
-		
+
     {{#if item.system.description.chat}}
     <div class="flavour">
       <p>{{{item.system.description.chat}}}</p>
@@ -23,17 +23,17 @@
     </div>
     {{/unless}}
     {{/if}}
-			
+
     <div class="item-details">
       {{{cardData}}}
     </div>
-			
+
     {{else}}
-		
+
     {{{system.description.value}}}
-			
+
     {{/if}}
-		
+
     {{#unless isPower}}
     <ul class="properties tags">
       {{#each data.properties}}
@@ -45,7 +45,7 @@
     </ul>
     {{/unless}}
   </div>
-	
+
   <footer class="card-footer">
     {{#if isRoll}}
     <div class="card-buttons">
@@ -144,5 +144,5 @@
     </div>
     {{/if}}
   </footer>
-	
+
 </div>

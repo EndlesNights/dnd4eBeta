@@ -10,21 +10,21 @@
       <input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}">
       {{/each}}
     </ol>
-	
+
     {{#unless isNPC}}
     <div class="flexrow daily-item-power-use">
       <div class="daily-item-power-use-counter">
-        <span>{{localize 'DND4E.ItemUseDaily'}}:</span> 
-        <input type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" data-tooltip="{{localize 'DND4E.ItemUseDailyRem'}}" placeholder="0" data-dtype="Number" onClick="this.select();">    
+        <span>{{localize 'DND4E.ItemUseDaily'}}:</span>
+        <input type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" data-tooltip="{{localize 'DND4E.ItemUseDailyRem'}}" placeholder="0" data-dtype="Number" onClick="this.select();">
         <span data-tooltip="{{localize 'DND4E.ItemUseDaily'}}">/ {{system.magicItemUse.perDay}}</span>
       </div>
       <div class="daily-item-power-use-check flexrow">
         <span>{{localize 'DND4E.ItemUseDailyEnc'}}</span>
         <input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} data-tooltip="{{localize 'DND4E.ItemUseDailyEnc'}}">
-      </div>      
+      </div>
     </div>
     {{/unless}}
-	
+
   </div>
 
   <ol class="item-list inventory-list">
@@ -65,7 +65,7 @@
           </div>
           <h4 class="item-title">
             {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
-            
+
             {{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize 'DND4E.Attuned'}}"></i>{{/if}}
           </h4>
           {{/if}}

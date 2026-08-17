@@ -2,7 +2,7 @@ import * as utils from "../../utils/utils.mjs";
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class AttributeBonusDialog extends DocumentSheet4e {
-	
+
 	static DEFAULT_OPTIONS = {
 		id: `attribute-bonus-${foundry.utils.randomID()}`,
 		classes: ["dnd4e", "standard-form", "default"],
@@ -27,7 +27,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 	};
 
 	/** @inheritDoc */
-	get title() {		
+	get title() {
 		return `${this.document.name} - ${this.options.label}`;
 	}
 
@@ -55,7 +55,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/**
      * @param {Event} event
      * @param {Object} form
@@ -93,7 +93,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 
 		this.document.update(updateData);
 	}
-	
+
 	static #onBonusAdd(event, target) {
 		if (!this.isEditable) return;
 		event.preventDefault();
@@ -102,7 +102,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 		//this.position.height += 76;
 		return this.document.update({ [`${this.options.target}.bonus`]: bonusData.concat(newBonus) });
 	}
-	
+
 	static #onBonusDelete(event, target) {
 		if (!this.isEditable) return;
 		event.preventDefault();

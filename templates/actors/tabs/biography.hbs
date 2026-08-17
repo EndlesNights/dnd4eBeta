@@ -2,7 +2,7 @@
   <prose-mirror class="{{#if system.biography}}has-content{{/if}}" toggled name="system.biography" {{disabled (not editable)}} value="{{system.biography}}">
     {{{biographyHTML}}}
   </prose-mirror>
-  
+
   {{#if isNPC}}
   <div class="npc-details flexrow">
     {{#if (eq system.details.role.secondary 'companion')}}
@@ -10,9 +10,9 @@
       {{formGroup systemFields.controller value=system.controller classes="controller flexrow" localize=true label="DND4EUI.Handler"}}
     </div>
     {{/if}}
-    <div class="npc-source flexrow">    
+    <div class="npc-source flexrow">
       <div class="source">
-        <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong> 
+        <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong>
         <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
           {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}} <i class="icon fa-solid fa-cog"></i>
         </button>

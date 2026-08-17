@@ -44,7 +44,7 @@ export default class ShortRestDialog extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/**
      * @param {Event} event
      * @param {Object} form
@@ -57,5 +57,5 @@ export default class ShortRestDialog extends DocumentSheet4e {
 			...this.options,
 			...restOptions,
 		});
-	}  
+	}
 }

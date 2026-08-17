@@ -14,11 +14,11 @@
       </div>
       <footer class="resource-footer flexrow">
         <label class="recharge checkbox">
-          {{ localize 'DND4E.AbbreviationSR' }} 
+          {{ localize 'DND4E.AbbreviationSR' }}
           <input name="system.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}>
         </label>
         <label class="recharge checkbox">
-          {{ localize 'DND4E.AbbreviationLR' }} 
+          {{ localize 'DND4E.AbbreviationLR' }}
           <input name="system.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}>
         </label>
       </footer>
@@ -52,7 +52,7 @@
           <input id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" data-tooltip="{{localize 'DND4E.Weight'}}" placeholder="{{localize 'DND4E.Weight'}}" onClick="this.select();">
         </div>
       </div>
-    
+
       <div class="flexcol details-mechanical">
         <div class="detail form-group size">
           <label>{{localize 'DND4E.Size'}}:</label>
@@ -77,7 +77,7 @@
           <input id="other" type="text" name="system.details.other" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" placeholder="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" onClick="this.select();">
         </div>
       </div>
-		
+
     </div>
   </section>
 
@@ -96,7 +96,7 @@
         {{/each}}
       </ul>
     </div>
-    
+
     <div class="traits-row" data-tooltip="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Implement')}}">
       <a class="trait-selector" data-action="traitSelector" data-options="implementProficiencies" data-target="system.details.implementProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Implement')}}">
         <span class="subgroup-header label">{{ localize 'DND4E.Implement' }}</span>
@@ -108,7 +108,7 @@
         {{/each}}
       </ul>
     </div>
-    
+
     <div class="traits-row" data-tooltip="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Armour')}}">
       <a class="trait-selector" data-action="traitSelector" data-options="profArmor" data-target="system.details.armourProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Armour')}}">
         <span class="subgroup-header label">{{ localize 'DND4E.Armour' }}</span>
@@ -120,13 +120,13 @@
         {{/each}}
       </ul>
     </div>
-    
+
   </div>
 
   {{!-- Languages --}}
   <div class="traits languages">
     <h4 class="group-header">{{ localize 'DND4E.Languages' }}</h4>
-	
+
     <div class="traits-row">
       <a class="trait-selector" data-action="traitSelector" data-options="spoken" data-target="system.languages.spoken" data-app-title="{{ localize 'DND4E.Spoken' }} {{ localize 'DND4E.Languages' }}">
         <span class="subgroup-header label">{{ localize 'DND4E.Spoken' }}</span>
@@ -138,7 +138,7 @@
         {{/each}}
       </ul>
     </div>
-    
+
     <div class="traits-row">
       <a class="trait-selector" data-action="traitSelector" data-options="script" data-target="system.languages.script" data-app-title="{{ localize 'DND4E.Script' }} {{ localize 'DND4E.Languages' }}">
         <span class="subgroup-header label">{{ localize 'DND4E.Script' }}</span>
@@ -150,12 +150,12 @@
         {{/each}}
       </ul>
     </div>
-	
+
   </div>
 
   {{!-- Senses --}}
   <div class="traits senses">
-    <h4 class="group-header">{{ localize 'DND4E.SpecialSenses' }}</h4>    
+    <h4 class="group-header">{{ localize 'DND4E.SpecialSenses' }}</h4>
     <div class="traits-row">
       <a class="trait-selector-senses" data-action="traitSelectorSenses" data-options="senses" data-target="system.senses.special" data-app-title="{{ localize 'DND4E.SpecialSenses' }}">
         <span class="subgroup-header label">{{ localize 'DND4E.SpecialSenses' }}</span>

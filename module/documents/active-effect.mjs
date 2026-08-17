@@ -32,7 +32,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 		} catch(e) {
 			console.error(`Effect default config failed. Please check parent data! ${e}`);
 		}
-		
+
 		super(data, context);
 	}
 
@@ -55,7 +55,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 	/* --------------------------------------------- */
 
 	// Work in progress, evaluate from other actors given ID?
-	
+
 	/*otherActorLink(actor, change) {
 		//Should only be based on terms not the start, cut up the string nad check by terms instead of this garbage
 		if (!change.value.startsWith("@actor.")) return;
@@ -68,7 +68,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 		change.value.replace(`@actor.${match[1]}@`, "@");
 		actor = targetActor;
-		
+
 	}*/
 
 	/* --------------------------------------------- */
@@ -87,7 +87,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 				for (const [key, value] of Object.entries(durationConfig)) {
 					updates[`duration.${key}`] = value;
 				}
-				
+
 				if (["endOfTargetTurn", "startOfTargetTurn", "endOfUserTurn", "startOfUserTurn"].includes(durationType)) {
 					let relevantActor;
 					switch (durationType) {
@@ -106,7 +106,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 					if (decreaseDuration) updates["duration.value"] = durationConfig.value - 1;
 				}
 			}
-			
+
 			updates.transfer = false;
 		}
 
@@ -117,8 +117,19 @@ export default class ActiveEffect4e extends ActiveEffect {
 		if (Object.keys(updates).length) {
 			this.updateSource(updates);
 		}
-
 	}
+
+	/* --------------------------------------------- */
+
+	/** @inheritdoc */
+	static applyChange(targetDoc, change, { replacementData = {}, modifyTarget = true } = {}) {
+		if (change.key.startsWith("@")) {
+			change.key = change.key.replace("@", "flags.dnd4e.custom-variables.");
+		}
+		super.applyChange(targetDoc, change, { replacementData, modifyTarget });
+	}
+
+	/* --------------------------------------------- */
 
 	/** @inheritDoc */
 	isExpiryEvent(event, context) {
@@ -178,7 +189,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 		if (durationType) {
 			return !!durationType;
 		}
-		
+
 		return super.isTemporary;
 	}
 
@@ -227,9 +238,9 @@ export default class ActiveEffect4e extends ActiveEffect {
 	}
 
 	/**
-     * Gets whether or not the effect can be ended on a save.
-     * @returns {boolean}
-     */
+	 * Gets whether or not the effect can be ended on a save.
+	 * @returns {boolean}
+	 */
 	_getIsSave() {
 		return this.system.durationType === "saveEnd";
 	}
@@ -290,12 +301,12 @@ export default class ActiveEffect4e extends ActiveEffect {
 		const systemKeywords = this.system.keywords;
 		const customString = this.system.keywordsCustom;
 		const customKeywords = customString ? customString.split(";") : [];
-		
+
 		let keywordLabels = [];
 		if (systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
 		keywordLabels = [...keywordLabels, ...customKeywords];
 		let keywordString = keywordLabels.join(", ");
-		
+
 		return { system: systemKeywords, custom: customKeywords, string: keywordString };
 	}
 

@@ -1,7 +1,7 @@
-<div class="form-group select">	
+<div class="form-group select">
   <label>{{ localize 'DND4E.Category' }}</label>
   <select name="system.category">
-    {{selectOptions config.ritualTypes selected=system.category labelAttr="label"}}	
+    {{selectOptions config.ritualTypes selected=system.category labelAttr="label"}}
   </select>
 </div>
 
@@ -64,7 +64,7 @@
       <input type="checkbox" name="system.autoCard" data-dtype="Boolean" {{checked system.autoCard}}>
     </label>
   </div>
-	
+
   <textarea type="text" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavor' }}">
     {{system.description.chat}}</textarea>
 </div>
