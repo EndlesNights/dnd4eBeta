@@ -506,7 +506,7 @@ async function rollDamageHealing(config, event) {
 		}
 	}
 
-	applyBonuses = applyBonuses ? applyBonuses.toLowerCase() === "true" : (item ? !item.system.hit.damageBonusNull : true);
+	applyBonuses = applyBonuses ? applyBonuses.toLowerCase() === "true" : (item ? !item.system?.hit?.damageBonusNull : true);
 
 	const rollData = item?.getRollData() || actor?.getRollData() || {};
 

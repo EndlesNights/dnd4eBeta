@@ -705,6 +705,9 @@ export default class Item4e extends Item {
 		// Powers
 		else if (itemData.type === "power") {
 			try {
+				//If an aura has no specified size, infer its size from power area
+				if(system.effectType.aura && !system?.auraSize) system.auraSize = system?.area || 0;
+
 				//Summary Line
 				let summaryText = "";
 
