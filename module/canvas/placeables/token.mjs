@@ -22,8 +22,8 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 	/**
 	 * Getter for the degree of environmental light the token is subject to.
-     * @type {Number}
-     */
+	 * @type {Number}
+	 */
 	get lightLevel() {
 		if (this.document.parent.environment.globalLight.enabled) return CONFIG.DND4E.LIGHT_LEVEL.BRIGHT;
 		let c = Object.values(this.center);
@@ -80,8 +80,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 				range: 0,
 			},
 		}, {
-			insertKeys: true,
-			insertValues: true,
+			inplace: false,
 			overwrite: false,
 		});
 		const detected = Object.entries(detectionModes).some(([id, mode]) => {
@@ -121,11 +120,11 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		const colorPct = Math.clamp(value, 0, max) / max;
 
 		/**
-         * Helper function to get the color the HP bar should be.
-         * @param {number} current
-         * @param {number} max
-         * @returns
-         */
+		 * Helper function to get the color the HP bar should be.
+		 * @param {number} current
+		 * @param {number} max
+		 * @returns
+		 */
 		function getHPColor(current, max) {
 			const pct = Math.clamp(current, 0, max) / max;
 			return Color.fromRGB([(1 - (pct / 2)), pct, 0]);

@@ -7,7 +7,7 @@ export const migrateWorld = async function(migrationVersion) {
 	migrationVersion = migrationVersion || game.settings.get("dnd4e", "systemMigrationVersion");
 	// Update these versions whenever we make data model changes that require immediately saving the changes to the DB.
 	const migrateActiveEffects = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
-	const migrateActors = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateActors = foundry.utils.isNewerVersion("0.9.1", migrationVersion);
 	const migrateItems = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
 	ui.notifications.info(_loc("MIGRATION.4eBegin", { version }), { permanent: true });
 
@@ -111,7 +111,6 @@ export const migrateWorld = async function(migrationVersion) {
 	// Set the migration as complete
 	game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
 	ui.notifications.info(_loc("MIGRATION.4eComplete", { version }), { permanent: true });
-
 };
 
 /* -------------------------------------------- */
@@ -156,8 +155,8 @@ export const migrateCompendium = async function(pack, migrateActiveEffects, migr
 			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 			await doc.update(updateData, { diff });
 			if (((documentName === "ActiveEffect") && migrateActiveEffects)
-                || ((documentName === "Actor") && migrateActors)
-                || ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
+				|| ((documentName === "Actor") && migrateActors)
+				|| ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
@@ -386,8 +385,8 @@ function _migrateActorSkills(actorData, updateData) {
 	}
 
 	if ((foundry.utils.getType(actorData?.system?.skillTraining?.untrained) !== "Object")
-        || (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
-        || (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
+		|| (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
+		|| (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
 		updateData["system.skillTraining"] = {
 			untrained: {
 				value: 0,

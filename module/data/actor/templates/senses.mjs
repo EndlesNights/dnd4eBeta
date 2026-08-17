@@ -1,44 +1,21 @@
 const { BooleanField, SchemaField, NumberField, StringField } = foundry.data.fields;
+import { default as MappingField } from "../../fields/mapping-field.mjs";
 
 export default class SensesTemplate extends foundry.abstract.DataModel {
 	/** Getter for sense data. */
 	static get common() {
 		return {
-			special: new SchemaField({
-				aa: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.SpecialSensesAA" }),
-				bs: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.SpecialSensesBS" }),
-				bv: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.VisionBlind" }),
-				dv: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.SpecialSensesDV" }),
-				lv: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.VisionLowLight" }),
-				nv: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.VisionNormal" }),
-				tr: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.SpecialSensesTR" }),
-				ts: new SchemaField({
-					value: new BooleanField({ initial: false }),
-					range: new NumberField({ required: true, nullable: true, initial: null }),
-				}, { label: "DND4E.SpecialSensesTS" }),
-				custom: new StringField({ initial: "" }),
+			special: new MappingField(new SchemaField({
+				value: new BooleanField({ initial: false }),
+				range: new NumberField({ required: true, nullable: true, initial: null }),
+			}), {
+				initialKeys: CONFIG.DND4E.senses,
+				initialKeysOnly: true,
+				label: "DND4E.SpecialSenses",
 			}),
+			allAround: new BooleanField({ initial: false, label: "DND4E.SpecialSensesAA" }),
+			blind: new BooleanField({ initial: false, label: "DND4E.VisionBlind" }),
+			custom: new StringField({ initial: "" }),
 			notes: new StringField({ initial: "" }),
 		};
 	}
@@ -55,9 +32,9 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 	/* -------------------------------------------- */
 
 	/**
-     * Convert single macro into macro array.
-     * @param {Object} source  The candidate source data from which the model will be constructed.
-     */
+	 * Convert single macro into macro array.
+	 * @param {Object} source  The candidate source data from which the model will be constructed.
+	 */
 	static migrateSenses(source) {
 		if (source.senses?.special?.value) {
 			const oldSenses = Array.from(source.senses?.special?.value);
@@ -67,6 +44,21 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 					source.senses.special[`${sense[0]}`] = { value: true, range: sense[1] };
 				}
 			}
+		}
+
+		if (source.senses?.special?.aa) {
+			source.senses.allAround = source.senses.special.aa.value;
+			delete source.senses.special.aa;
+		}
+
+		if (source.senses?.special?.bv) {
+			source.senses.blind = source.senses.special.bv.value;
+			delete source.senses.special.bv;
+		}
+
+		if (source.senses?.special?.custom) {
+			source.senses.custom = source.senses.special.custom;
+			delete source.senses.special.custom;
 		}
 	}
 }

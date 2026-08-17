@@ -479,11 +479,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				obj[l[0]] = (l[1].range && (l[1].range > 0)) ? `${choices[l[0]].label} ${l[1].range} sq` : choices[l[0]].label;
 				return obj;
 			}, {});
+			// Add all-around vision
+			if (senses.allAround) {
+				trait.selected["aa"] = _loc(this.actor.system.schema.getField("senses.allAround").label);
+			}
 			// Add custom entry
-			if (trait.custom) {
-				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i + 1}`] = c.trim());
+			if (senses.custom) {
+				senses.custom.split(";").forEach((c, i) => trait.selected[`custom${i + 1}`] = c.trim());
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
+		}
+		if (!foundry.utils.isEmpty(senses.special.selected)) {
+			senses.special.selected = Object.values(senses.special.selected).sort();
 		}
 		return senses;
 	}
@@ -1777,8 +1784,22 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const label = target.getAttribute("data-app-title") || "Label error";
+		const valuelessTraits = {
+			allAround: {
+				label: _loc(this.actor.system.schema.getField("senses.allAround").label),
+				path: "system.senses.allAround",
+				chosen: this.actor.system.senses.allAround,
+				value: this.actor.system.senses.allAround,
+			},
+			blind: {
+				label: _loc(this.actor.system.schema.getField("senses.blind").label),
+				path: "system.senses.blind",
+				chosen: this.actor.system.senses.blind,
+				value: this.actor.system.senses.blind,
+			},
+		};
 		const choices = CONFIG.DND4E["senses"];
-		const options = { name: target.dataset.target, window: { title: label }, choices };
+		const options = { name: target.dataset.target, window: { title: label }, valuelessTraits, choices, custom: "system.senses.custom" };
 		new apps.TraitSelectorValues({ document: this.actor, ...options }).render(true);
 	}
 
