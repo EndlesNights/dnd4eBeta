@@ -67,9 +67,9 @@ export default class SecondWindDialog extends DocumentSheet4e {
 
 		/**
          * Helper function to set the enabled state of a button.
-         * @param {string} buttonId 
-         * @param {boolean} enabled 
-         * @param {string} text 
+         * @param {string} buttonId
+         * @param {boolean} enabled
+         * @param {string} text
          */
 		function setButtonEnabled(buttonId, enabled, text) {
 			const button = document.getElementsByName(buttonId)[0];

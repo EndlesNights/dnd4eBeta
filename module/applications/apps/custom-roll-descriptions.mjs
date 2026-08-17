@@ -1,7 +1,7 @@
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class CustomRolldDescriptions extends DocumentSheet4e {
-	
+
 	static DEFAULT_OPTIONS = {
 		id: "custom-roll",
 		classes: ["dnd4e", "actor-rest", "standard-form", "default"],
@@ -33,7 +33,7 @@ export default class CustomRolldDescriptions extends DocumentSheet4e {
 	get title() {
 		return `${this.document.name} - ${_loc("DND4EUI.CustomizeRollDescriptions")}`;
 	}
-	
+
 	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
@@ -45,12 +45,12 @@ export default class CustomRolldDescriptions extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/** @inheritDoc */
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for (let system in formData) { updateData[`${system}`] = formData[`${system}`];}
 		return this.document.update(updateData);
 	}
-	
+
 }

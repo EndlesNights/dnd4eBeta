@@ -1,7 +1,7 @@
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class SaveThrowDialog extends DocumentSheet4e {
-	
+
 	constructor(...args) {
 		super(...args);
 		this.saveOptions = {
@@ -10,7 +10,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 			saveDC: this.options.saveDC || 10,
 		};
 	}
-	
+
 	static DEFAULT_OPTIONS = {
 		id: "save-throw",
 		classes: ["dnd4e", "actor-save-throw", "standard-form", "default"],
@@ -52,9 +52,9 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		const context = await super._prepareContext(options);
 		const saveOptions = this.saveOptions;
 		let savableEffects = [];
-		
+
 		const actor = this.document;
-		
+
 		if (actor && !saveOptions.effectSave) {
 			Array.from(actor.effects).forEach((e) => {
 				if (e.system.durationType === "saveEnd") savableEffects.push({ name: e.name, id: e.id });
@@ -63,9 +63,9 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		if (savableEffects.length) {
 			savableEffects = [{ name: _loc("DND4E.None"), id: "" }].concat(savableEffects);
 		}
-		
+
 		let saveEffect = ((actor && saveOptions.effectSave) ? actor.effects.get(saveOptions.effectId) : null);
-		
+
 		foundry.utils.mergeObject(context, {
 			system: actor.system,
 			messageModes: CONFIG.ChatMessage.modes,
@@ -79,7 +79,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
@@ -88,10 +88,10 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 
 	_onChooseEffect(event) {
 		const targetEffect = this.document.effects.get(event.target.value);
-		
+
 		this.saveOptions.saveDC = targetEffect?.system.saveDC;
 		this.saveOptions.effectId = targetEffect?.id || "";
-		
+
 		this.render();
 	}
 
@@ -122,8 +122,8 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 	}
 
 	/**
-     * @param {Event} event 
-     * @param {HTMLElement} target 
+     * @param {Event} event
+     * @param {HTMLElement} target
      */
 	static #onMinus(event, target) {
 		const input = this.element.querySelector("#d20");
@@ -133,8 +133,8 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 	}
 
 	/**
-     * @param {Event} event 
-     * @param {HTMLElement} target 
+     * @param {Event} event
+     * @param {HTMLElement} target
      */
 	static #onPlus(event, target) {
 		const input = this.element.querySelector("#d20");

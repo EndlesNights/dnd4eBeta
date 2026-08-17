@@ -35,7 +35,7 @@ export default class HPOptions extends DocumentSheet4e {
 			template: "templates/generic/form-footer.hbs",
 		},
 	};
-	
+
 	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
@@ -47,7 +47,7 @@ export default class HPOptions extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/* -------------------------------------------- */
 
 	/**

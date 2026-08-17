@@ -3,15 +3,15 @@ import * as utils from "../utils/utils.mjs";
 export default class Combat4e extends Combat {
 	/** @inheritDoc */
 	async nextTurn() {
-		const currentTurn = this.turn;	
+		const currentTurn = this.turn;
 		const nextTurn = currentTurn + 1 < this.turns.length ? currentTurn + 1 : 0;
-		
+
 		//t current turn
 		for (let t of this.turns) {
 			utils.rechargeItems(t.token?.actor, ["turn"]);
 			await t.token?.actor?.unsetFlag("dnd4e", "damagingRegionPerTurn");
 		}
-		
+
 		// Signal the current actor to check end-of-turn saves
 		utils.debugLog("Begin autosaves phase");
 		const currentActor = await this.turns[currentTurn]?.token.actor;
@@ -19,7 +19,7 @@ export default class Combat4e extends Combat {
 		if (currentActor) {
 			utils.debugLog(`Checking for owner of ${currentActor.name}`);
 			const targetUser = utils.firstOwner(currentActor);
-			
+
 			//Work out which user makes the save; "game.user" is whoever ended the turn
 			//If game.user is a non-GM with ownership of this actor, it's them
 			//If game.user is a GM and this actor has no specfic owner, it's them
@@ -37,11 +37,11 @@ export default class Combat4e extends Combat {
 				});
 			}
 		}
-		
+
 		// After EoT durations are resolved, collect ongoing damage instances from effects
 		utils.debugLog("Begin ongoing damage phase");
 		const nextCombatant = await this.turns[nextTurn]?.token.actor || null;
-		
+
 		if (nextCombatant) {
 			//Triggers for the beginning of the next turn
 			utils.rechargeItems(nextCombatant, ["round"]);
@@ -65,7 +65,7 @@ export default class Combat4e extends Combat {
 			}
 		}
 
-		return super.nextTurn(); 
+		return super.nextTurn();
 	}
 
 	/** @inheritDoc */

@@ -66,8 +66,8 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 	}
 
 	/**
-     * @param {Event} event 
-     * @param {HTMLElement} target 
+     * @param {Event} event
+     * @param {HTMLElement} target
      */
 	static #onMinus(event, target) {
 		const input = this.element.querySelector("#d20");
@@ -77,8 +77,8 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 	}
 
 	/**
-     * @param {Event} event 
-     * @param {HTMLElement} target 
+     * @param {Event} event
+     * @param {HTMLElement} target
      */
 	static #onPlus(event, target) {
 		const input = this.element.querySelector("#d20");

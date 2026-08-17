@@ -52,28 +52,28 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		const context = await super._prepareContext(options);
 		//console.debug(coreData);
 		let hazardData = {};
-		
+
 		hazardData.descHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.description, {
 			secrets: context.owner,
 			relativeTo: this.actor,
 		});
-		
+
 		hazardData.countersHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.countermeasures, {
 			secrets: context.owner,
 			relativeTo: this.actor,
 		});
-		
+
 		hazardData.notesHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.notes, {
 			secrets: context.owner,
 			relativeTo: this.actor,
 		});
-		
+
 		hazardData.sourceLabel = this.document.system.source.label;
-    
-		let combinedData = { ...context, ...hazardData };		
+
+		let combinedData = { ...context, ...hazardData };
 		return combinedData;
 	}
-  
+
 	/* -------------------------------------------- */
 
 	/**
@@ -86,7 +86,7 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.actor, keyPath: "system.source" }));
 	}
-  
+
 	/* -------------------------------------------- */
 
 	/**

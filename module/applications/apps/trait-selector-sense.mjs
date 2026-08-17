@@ -51,19 +51,19 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-	
+
 		// Get current values
 		const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
 		let values = Object.keys(attr).map((key) => [key, attr[key]]);
-	
+
 		// Populate choices
 		let choices = foundry.utils.duplicate(this.options.choices);
-		
+
 		for (let [k, v] of Object.entries(choices)) {
 			choices[k] = {
 				label: v.label,
 				chosen: attr[k].value,
-				value: attr[k].value ? attr[k].range : null, 
+				value: attr[k].value ? attr[k].range : null,
 			};
 		}
 
@@ -72,7 +72,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		context.custom = attr ? attr.custom : "";
 		context.buttons = [{ type: "submit", icon: "far fa-save", label: "DND4E.Save" }];
 		context.heading = this.options.window.title;
-	
+
 		// Return data
 		return context;
 	}

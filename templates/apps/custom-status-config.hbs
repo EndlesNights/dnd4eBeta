@@ -1,5 +1,5 @@
 <div id="custom-status-config" class="dialogue-content nonscrolling flexcol" onsubmit="event.preventDefault();">
-	
+
   <header class="flexrow">
     <div class="info">
       <h1 class="form-title">{{localize 'SETTINGS.4eCustomStatusesN'}}</h1>
@@ -11,7 +11,7 @@
       <a class="custom-status-control custom-status-restore right label" data-action="restoreLegacy" data-tooltip="{{localize 'DND4EUI.RestoreLegacyStatusesTip'}}">{{localize 'DND4EUI.RestoreLegacyStatuses'}} <i class="fa-solid fa-arrow-rotate-left"></i></a>
     </div>
   </header>
-	
+
   <div class="table-holder">
     <table id="custom-status-list" class="custom-status-list">
       <thead>
@@ -32,29 +32,29 @@
           </th>
         </tr>
       </thead>
-      
+
       <tbody class="scrollable">
         {{#each customStatuses as |status s|}}
         <tr class="custom-status-line" data-row-id="{{s}}">
           <td class="custom-status-image">
-            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" type="checkbox" data-action="editImage" data-edit="img" alt="{{localize 'DND4E.StatusImage'}}" />
+            <img class="status-image" src="{{status.img}}" id="custom-status-img-{{s}}" type="checkbox" data-action="editImage" data-edit="img" alt="{{localize 'DND4E.StatusImage'}}">
           </td>
           <td class="custom-status-name">
-            <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusName'}}" />
+            <input id="custom-status-name-{{s}}" class="custom-status-name" type="text" name="name" value="{{status.name}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusName'}}">
           </td>
           <td class="custom-status-id">
-            <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusId'}}" />
+            <input id="custom-status-id-{{s}}" class="custom-status-id" type="text" name="id" value="{{status.id}}" data-dtype="String" placeholder="{{localize 'DND4E.StatusId'}}">
           </td>
           <td class="custom-status-description">
             <textarea id="custom-status-description-{{s}}" class="custom-status-description" name="description" placeholder="{{localize 'DND4E.StatusDescription'}}">{{status.description}}</textarea>
           </td>
           <td class="custom-status-control">
-            <a class="custom-status-control" data-action="deleteStatus" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
+            <a class="custom-status-control" data-action="deleteStatus" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
           </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
   </div>
-	
+
 </div>

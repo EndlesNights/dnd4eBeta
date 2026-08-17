@@ -38,7 +38,7 @@ export default class ActionPointDialog extends DocumentSheet4e {
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const extra = this.document.system.actionpoints.custom !== "" ? this.document.system.actionpoints.custom.split("\n") : "";
-		foundry.utils.mergeObject(context, { 
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			extra: extra,
 			buttons: [

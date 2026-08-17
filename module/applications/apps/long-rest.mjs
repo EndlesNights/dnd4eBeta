@@ -45,7 +45,7 @@ export default class LongRestDialog extends DocumentSheet4e {
 		});
 		return context;
 	}
-	
+
 	/**
      * @param {Event} event
      * @param {Object} form

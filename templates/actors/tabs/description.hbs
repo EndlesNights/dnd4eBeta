@@ -4,18 +4,18 @@
     <prose-mirror toggled name="system.description" {{disabled (not editable)}} value="{{system.description}}">
       {{{descHTML}}}
     </prose-mirror>
-	
+
     <h4 class="group-header">{{localize 'DND4E.Hazard.Counter'}}</h4>
     <prose-mirror toggled name="system.details.countermeasures" {{disabled (not editable)}} value="{{system.details.countermeasures}}">
       {{{countersHTML}}}
     </prose-mirror>
-	
+
     <h4 class="group-header">{{localize 'DND4E.Notes'}}</h4>
     <prose-mirror toggled name="system.details.notes" {{disabled (not editable)}} value="{{system.details.notes}}">
       {{{notesHTML}}}
     </prose-mirror>
   </div>
-	
+
   {{#unless isCharacter}}
   <div class="npc-details flexrow">
     {{#if (eq system.details.role.secondary 'companion')}}
@@ -23,9 +23,9 @@
       {{formGroup systemFields.controller value=system.controller classes="controller flexrow" localize=true label="DND4EUI.Handler"}}
     </div>
     {{/if}}
-    <div class="npc-source flexrow">    
+    <div class="npc-source flexrow">
       <div class="source">
-        <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong> 
+        <strong>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}:</strong>
         <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
           {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}} <i class="icon fa-solid fa-cog"></i>
         </button>

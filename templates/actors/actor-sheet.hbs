@@ -31,7 +31,7 @@
         </li>
       </ul>
     </header>
-		
+
     <section class="header-2 flexrow">
       <div class="image-frame">
         <img class="profile-img" src="{{actor.img}}" alt="{{actor.name}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}" width="100" height="100">
@@ -160,7 +160,7 @@
         </div>
         {{/each}}
         {{/if}}
-				
+
       </section>
       {{!-- Skills --}}
       <section class="section section--skills">
@@ -222,15 +222,15 @@
         {{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
 
         {{> "systems/dnd4e/templates/actors/tabs/details.hbs" tab=tabs.details}}
-				
+
         {{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
-				
+
         {{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
-				
+
         {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
-				
+
         {{> "systems/dnd4e/templates/actors/tabs/rituals.hbs" tab=tabs.rituals sections=rituals}}
-				
+
         {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
       </section>
     </section>

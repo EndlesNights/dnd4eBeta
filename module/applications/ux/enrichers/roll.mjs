@@ -77,7 +77,7 @@ export async function enrichCheck(parsedConfig, label, options) {
 		}
 		if (skillOrAbility) linkConfig.skillOrAbility.push(skillOrAbility);
 		if (!isNaN(parseInt(value))) linkConfig.dc = parseInt(value);
-	}	
+	}
 
 	if (!linkConfig.skillOrAbility.length) return null;
 
@@ -206,7 +206,7 @@ async function enrichAttack(parsedConfig, label, options) {
 		}
 	}
 	const evaluatedFormula = await item?.getAttackBonus() || utils.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true });
-	let attackString;		
+	let attackString;
 	if (evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "bonus")) {
 		attackString = `+${evaluatedFormula}`;
 	} else if (ability && evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "both")) {
@@ -408,7 +408,7 @@ async function rollAttack(config, event) {
 			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
 			return;
 		}
-		if (actors.size) {		
+		if (actors.size) {
 			actor = Array.from(actors)[0];
 		}
 	}
@@ -492,7 +492,7 @@ async function rollDamageHealing(config, event) {
 			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
 			return;
 		}
-		if (actors.size) {		
+		if (actors.size) {
 			actor = Array.from(actors)[0];
 		}
 	}
@@ -546,7 +546,7 @@ async function rollDamageHealing(config, event) {
 		}
 		for (let i = 0; i < partsCrit?.length; i++) {
 			partsCrit[i] = `(${partsCrit[i]})[${damageType.join(",")}]`;
-		}  
+		}
 	}
 
 	// Compose roll options

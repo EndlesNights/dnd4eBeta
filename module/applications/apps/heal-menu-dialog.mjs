@@ -133,10 +133,10 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		//console.debug(JSON.stringify(healData));
 
 		let roll = await utils.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
-		
+
 		const surgeValue = healData["gain-healing-surge-value"] ? this.document.system.details.surgeValue : 0;
 		let healTotal = this.document.system.details.surges.value > 0 ? surgeValue + roll.total : roll.total;
-		
+
 		if (healType === "tempHP") {
 			await this.document.applyTempHpChange(healTotal);
 		} else if (healData["spend-healing-surge"] && (this.document.system.details.surges.value == 0) && (this.document.system.attributes.hp.value <= 0)) {
@@ -151,9 +151,9 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		let messageText = "";
 		if (healData["spend-healing-surge"] && this.document.system.details.surges.value) {
 			if (healType === "tempHP") {
-				messageText = _loc("DND4E.HealingResultSurgeTemp", { name: charName, temps: rollText });	
+				messageText = _loc("DND4E.HealingResultSurgeTemp", { name: charName, temps: rollText });
 			} else {
-				messageText = _loc("DND4E.HealingResultSurge", { name: charName, healing: rollText });		
+				messageText = _loc("DND4E.HealingResultSurge", { name: charName, healing: rollText });
 			}
 			updateData["system.details.surges.value"] = Math.max(this.document.system.details.surges.value - 1, 0);
 			await this.document.update(updateData);
@@ -162,7 +162,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 				messageText = _loc("DND4E.HealingResultTemp", { name: charName, temps: rollText });
 			} else {
 				messageText = _loc("DND4E.HealingResult", { name: charName, healing: rollText });
-			}			
+			}
 		}
 
 		ChatMessage.create({

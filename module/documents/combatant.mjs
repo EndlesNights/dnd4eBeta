@@ -12,7 +12,7 @@ export default class Combatant4e extends Combatant {
 		const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
 		const parts = ["1d20", init];
 		if (actor.getFlag("dnd4e", "initiativeAdv")) parts[0] = "2d20kh";
-		
+
 		if (tiebreaker === "system") {
 			//Official system behaviour: append ititiative modifier as tiebreaker
 			parts.push(actor.system.attributes.init.value / 100);
@@ -22,7 +22,7 @@ export default class Combatant4e extends Combatant {
 		}
 		//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
 		parts.push(Math.floor(Math.random() * 98 + 1) / 10000);
-		
+
 		return parts.filter(p => p !== null).join(" + ");
 	};
 }

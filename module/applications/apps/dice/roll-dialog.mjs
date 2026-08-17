@@ -103,15 +103,15 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
 	}
 
 	/**
-   * Function to toggle the state of the attack bonus tabs between Shared and 
+   * Function to toggle the state of the attack bonus tabs between Shared and
    * Per-target attack bonuses based on the current value of the toggle button.
    *
-   * Each option will update the button value, then update the toggle value, 
-   * then update the button text. 
+   * Each option will update the button value, then update the toggle value,
+   * then update the button text.
    *
    * The condition for toggling from true to false then sets the current tab index
    * to 0 to show only the first tab.
-   * 
+   *
    * Both conditions then call the showTab function to update the currently
    * displayed tab.
    * @this {RollDialog}
@@ -139,7 +139,7 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
 	}
 
 	/**
-   * @this {RollDialog} 
+   * @this {RollDialog}
    */
 	static #nextPrev(event, target) {
 		const toAdd = target.dataset.action === "next" ? 1 : -1;

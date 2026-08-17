@@ -9,7 +9,7 @@
     <input type="text" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}">
   </div>
 
-  {{#if isD20Roll}}	
+  {{#if isD20Roll}}
   <div class="form-group roll-times flexrow">
     <label class="label">{{localize 'DND4E.RollTimes'}}</label>
     <span class="buttons flexrow">
@@ -23,10 +23,10 @@
     </span>
   </div>
   {{/if}}
-	
+
   {{#if isAttackRoll}}
   <fieldset class="form-group target-detail stacked">
-	
+
     <div class="multitarget-np-flex{{#if targetData.hasTarget}} has-target{{/if}}{{#if targetData.multiTargetCheck}} has-multi{{/if}}">
       <button type="button" class="button hollow circle" id="prevBtn" data-action="prev">
         <i class="fas fa-arrow-left" aria-hidden="true"></i>
@@ -39,7 +39,7 @@
       </button>
       <button class="button" type="button" id="multibonus-toggle" data-action="toggleMultiBonus" data-tooltip="{{localize 'DND4E.RollGroupTip'}}" value="true"></button>
     </div>
-		
+
     {{#each targetData.targets as | t n |}}
     <div class="multitarget-tab">
       <div class="target-label" id="targetName-{{n}}" style="display:none">
@@ -52,24 +52,24 @@
             <option value="" {{#if (eq t.attackMod "")}}selected{{/if}}></option>
             {{selectOptions ../config.abilityScores selected=t.attackMod labelAttr='labelShort'}}
             <option value="form" {{#if (eq t.attackMod "form")}}selected{{/if}}>{{ localize "DND4E.FormulaAttackShort" }}</option>
-          </select> 
+          </select>
           <label>{{localize 'DND4E.VS'}}</label>
           <select class="attackDef" name="{{n}}.attackDef">
             {{selectOptions ../config.defensives selected=t.attackDef labelAttr='abbreviation'}}
           </select>
         </div>
       </div>
-			
+
       {{#if t.immune}}
       <!--<div class="immunity">Target is immune to attacks against this defence.</div>-->
       {{/if}}
-				
+
       <fieldset class="form-group stacked">
         <legend>{{localize 'DND4EUI.ConditionalAtkMods'}}</legend>
         {{#each ../data.commonAttackBonuses as | a b |}}
         <div class="form-group bonus">
           <label class="checkbox">
-            <input type="checkbox" class="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" 
+            <input type="checkbox" class="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean"
 
               {{!-- Try to infer already active bonuses --}}
 
@@ -111,8 +111,8 @@
 				{{/if}}
 
 				{{!-- End already active --}}
-					
-			value="{{../checked}}"/> 
+
+			value="{{../checked}}"/>
             <span class="label">{{ localize a.label}} ({{lookup (lookup t.targetBonuses b) "value"}})</span>
           </label>
         </div>
@@ -133,5 +133,5 @@
     <label>{{localize 'DND4EUI.ChatFlavor'}}</label>
     <input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{localize 'DND4EUI.ChatFlavor'}}">
   </div>
-	
+
 </div>

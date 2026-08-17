@@ -185,16 +185,16 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.isEditable) return;
 
 		const html = this.element;
-	
+
 		if (this.actor.isOwner) {
 			//Inventory & Item management
 			html.querySelectorAll(".item-uses input").forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-			
+
 			html.querySelectorAll(".item-roll").forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-			
+
 			// Context Menus
 			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], { onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true });
 		}
@@ -207,7 +207,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			});
 		}
 	}
-	
+
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
 		const numCustomSkills = game.settings.get("dnd4e", "custom-skills")?.length;
@@ -270,7 +270,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (/^[0-9]+$/.test(value)) {
 			return super._onChangeForm(formConfig, event);
 		}
-		
+
 		if (!/^[-=+ 0-9]+$/.test(value)) {
 			input.value = foundry.utils.getProperty(this.actor, input.name);
 			return super._onChangeForm(formConfig, event);
@@ -354,7 +354,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					rollData: item.getRollData(),
 				});
 			}
-			i.collapsed = !this.#expandedItemIds.has(i._id); 
+			i.collapsed = !this.#expandedItemIds.has(i._id);
 		}
 
 		this._prepareItems(context);
@@ -363,18 +363,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		if (context.isCombatant) {
 			context.skills = this._prepareSkills();
-			
+
 			if (Object.entries(CONFIG.DND4E.coreSkills).length != Object.entries(context.skills).length) {
 				const skillNames = Object.keys(context.skills);
 
 				// Sort the skill names based on the label property
 				skillNames.sort((a, b) => context.skills[a].label?.localeCompare(context.skills[b].label));
-				
+
 				const sortedSkills = skillNames.reduce((acc, skillName) => {
 					acc[skillName] = context.skills[skillName];
 					return acc;
 				}, {});
-				
+
 				context.skills = sortedSkills;
 			}
 
@@ -385,7 +385,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			for (let [a, abl] of Object.entries(actorData.abilities)) {
 				abl.label = abl.label ? abl.label : DND4E.abilities[a];
 			}
-			
+
 			this._prepareDataSave(actorData.details,
 				{ saves: CONFIG.DND4E.saves },
 			);
@@ -408,7 +408,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					CONFIG.DND4E.improvisedR,
 				) },
 			);
-			context.implementProfs = this._prepareDataProfs(actorData.details?.implementProf, 
+			context.implementProfs = this._prepareDataProfs(actorData.details?.implementProf,
 				{ implement: Object.assign(
 					CONFIG.DND4E.implementProficiencies,
 				) },
@@ -437,9 +437,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			actorData.size = DND4E.actorSizes;
 
 			context.senses = this._prepareDataSenses();
-			
+
 			context.languages = this._prepareDataLanguages();
-	
+
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
 				relativeTo: actor,
@@ -487,7 +487,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 		return senses;
 	}
-	
+
 	_prepareDataLanguages() {
 		const map = { spoken: CONFIG.DND4E.spoken, script: CONFIG.DND4E.script };
 		const languages = foundry.utils.deepClone(this.actor.system.languages);
@@ -541,7 +541,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const features = this.#configItemToDisplayConfig(DND4E.featureTypes);
 		const powers = this._generatePowerGroups();
 		const rituals = this.#configItemToDisplayConfig(DND4E.ritualTypes);
-		
+
 		// Partition items by category
 		let [items, pow, feats, rits] = data.items.reduce((arr, item) => {
 			// Item details
@@ -550,7 +550,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			//Causing error in v10, only getter no setter now.
 			// item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
 			// item.hasTarget = !!item.system.target && !(["none",""].includes(item.system.target.type));
-			
+
 			//item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 
 			// Item toggle state
@@ -599,7 +599,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			p.isUnavailable = p.isDepleted || p.system.notAvailable;
 			powers[this._groupPowers(p, powers)].items.push(p);
 		}
-		
+
 		for (let r of rits) {
 			const ritual = this.actor.items.get(r._id);
 			this._checkItemAvailable(r);
@@ -633,7 +633,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			label: skl.label ?? DND4E.skills[s]?.label,
 		}])));
 	}
-	
+
 	_prepareMovement(data) {
 		if (!data.hasSpeed) return;
 		data.moveDisplay = `${parseInt(data.system.movement.walk.value)} ${_loc("DND4E.Movement.Unit")}`;
@@ -688,16 +688,16 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			if (terrainString != "") {
 				if (this.actor.type === "Player Character") {
 					data.moveTip += `<br />(${terrainString})`;
-				} else {					
+				} else {
 					data.moveDisplay += ` (${terrainString})`;
 				}
 			}
 		}
-	}	
+	}
 
 	_compareValues(key, order = "asc") {
 		return function innerSort(a, b) {
-			if ((key in a) && (key in b)) {	
+			if ((key in a) && (key in b)) {
 				let varA;
 				let varB;
 				if (DND4E.sortValues[key]) {
@@ -708,7 +708,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					varA = (typeof a[key] === "string") ? a[key].toUpperCase() : a[key];
 					varB = (typeof b[key] === "string") ? b[key].toUpperCase() : b[key];
 				}
-	
+
 				let comparison = 0;
 				if (varA > varB) {
 					comparison = 1;
@@ -817,7 +817,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 	}
-	
+
 	_sortRituals(rituals) {
 		const sort = this.document.system.ritualSortTypes || "level";
 		if (sort === "none") {return;}
@@ -838,7 +838,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			else if (Object.keys(powerGroups).includes(power.system.actionType)) {
 				return power.system.actionType;
-			}	
+			}
 			return "other";
 		}
 		else if (this.document.system.powerGroupTypes === "type") {
@@ -878,8 +878,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if ((!itemData.system.uses.value && itemData.system.preparedMaxUses && itemData.system.uses.per) || ((itemData.type === "power") && !itemData.system.prepared)) {
 			itemData.system.notAvailable = true;
 		}
-		
-		//If there's a consumed asset, check its availability	
+
+		//If there's a consumed asset, check its availability
 		const consume = itemData.system.consume || {};
 		if (consume.type && consume.target && consume.amount) {
 			//console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
@@ -919,8 +919,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					itemData.system.notAvailable = true;
 				}
 			}
-		}			
-	
+		}
+
 	}
 	/* -------------------------------------------- */
 	/**
@@ -959,9 +959,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			item.toggleTitle = _loc(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 		}
 	}
-	
+
 	_prepareDataSave(data, map) {
-		
+
 		for (let [l, choices] of Object.entries(map)) {
 			const trait = data[l];
 			if (!trait) continue;
@@ -979,10 +979,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i + 1}`] = c.trim());
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-			
+
 		}
 	}
-	
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1007,7 +1007,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			return true;
 		});
-	}	
+	}
 
 	_getTrainingIcon(level) {
 		const icons = {
@@ -1017,7 +1017,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		};
 		return icons[level];
 	}
-	
+
 	/* -------------------------------------------- */
 	/**
 	 * Retrieve the list of fields that are currently modified by Active Effects on the Actor.
@@ -1045,7 +1045,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		for (const key of overrides) {
 			for (const bonus of bonusSuffixes) {
 				// accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
-				if (key.includes("system.attributes.hp.")) { //Exception for HP as to not block 
+				if (key.includes("system.attributes.hp.")) { //Exception for HP as to not block
 					candidateKeys.add(key.replace(bonus, ".max"));
 				} else {
 					accumulatorSuffixes.forEach(accumulator => {
@@ -1091,7 +1091,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const p = new foundry.applications.apps.ImagePopout({ src: this.document.img });
 		p.render(true);
 	}
-  
+
 	/* -------------------------------------------- */
 
 	static async #onEditImage() {
@@ -1117,7 +1117,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @private
    */
 	static #onItemToggle(event, target) {
-		if (!this.actor.isOwner) return;	
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
@@ -1212,9 +1212,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLabelOption");
-		
+
 		if (this.actor.type === "NPC") {
-			
+
 			itemData.system.weaponType = "none";
 			itemData.system.weaponUse = "none";
 
@@ -1232,14 +1232,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		if (game.settings.get("dnd4e", "halfLevelOptions")) {
 			if (this.actor.type === "NPC") {
-				itemData.system.attack.formula = ""; 
+				itemData.system.attack.formula = "";
 			} else {
 				itemData.system.attack = {
 					formula: "@wepAttack + @powerMod + @atkMod",
 				};
 			}
 		}
-		
+
 		utils.debugLog(itemData);
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
@@ -1272,7 +1272,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @private
    */
 	static async #onItemDelete(event, target) {
-		if (!this.actor.isOwner) return;	
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
@@ -1290,7 +1290,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			if (shouldDelete) return item.delete();
 		}
 	}
-  
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1306,11 +1306,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		event.target.value = uses;
 		return item.update({ "system.uses.value": uses });
 	}
-  
+
 	/* -------------------------------------------- */
-  
+
 	/**
-	*Opens dialog config window for HP options 
+	*Opens dialog config window for HP options
 	*turns on/off auto calculation of HP based on class stats
 	*keep or reset tempHP on short rest.
 	*/
@@ -1320,12 +1320,12 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		new apps.HPOptions({ document: this.actor }).render(true);
 	}
-	
+
 	/* -------------------------------------------- */
 	/**
 	* Opens bonuses dialog config window for selected Skills
 	*/
-	
+
 	static #onSkillBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
@@ -1349,52 +1349,52 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.details.deathsavebon", label: _loc("DND4E.DeathSavingThrowBonus") };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onSurgeBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.details.surgeBon", label: _loc("DND4E.HealingSurgeBonus") };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onSurgeEnv(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.details.surgeEnv", label: `${_loc("DND4E.HealingSurges")} ${_loc("DND4E.SurgeEnv")}` };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
 
 	static #onSecondWindBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.details.secondwindbon", label: _loc("DND4E.SecondWindBonus"), secondWind: true };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onDefencesBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const defName = target.parentElement.dataset.defence;
 		const targetDef = `system.defences.${defName}`;
 		const options = { document: this.actor, target: targetDef, label: `${_loc("DND4E.DefenceBonus", { def: this.actor.system.defences[defName].label })}`, ac: (defName === "ac") };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onInitiativeBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.attributes.init", label: _loc("DND4E.InitiativeBonus"), init: true };
-		new apps.AttributeBonusDialog(options).render(true);		
+		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onMovementDialog(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new apps.MovementDialog({ document: this.actor }).render(true);
 	}
-	
+
 	static #onConBonConfig(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
@@ -1421,8 +1421,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const skillName = this.actor.system.passive[passName].skill;
 		const targetPassive = `system.passive.${passName}`;
 		const options = { document: this.actor, target: targetPassive, label: `${_loc("DND4E.PasBonus", { skill: this.actor.system.skills[skillName].label })}` };
-		new apps.AttributeBonusDialog(options).render(true);		
-	}	
+		new apps.AttributeBonusDialog(options).render(true);
+	}
 
 	static #onModifiersBonus(event, target) {
 		if (!this.actor.isOwner) return;
@@ -1431,7 +1431,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const targetMod = `system.modifiers.${modifierName}`;
 		const options = { document: this.actor, target: targetMod, label: this.actor.system.modifiers[modifierName].label };
 		new apps.AttributeBonusDialog(options).render(true);
-	}	
+	}
 
 	static #onResistancesBonus(event, target) {
 		if (!this.actor.isOwner) return;
@@ -1441,7 +1441,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const options = { document: this.actor, target: targetRes, label: `${_loc("DND4E.DamResVulnBonus", { type: this.actor.system.resistances[resName].label })}` };
 		new apps.AttributeBonusDialog(options).render(true);
 	}
-	
+
 	static #onCustomRolldDescriptions(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
@@ -1459,9 +1459,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			return this.actor.secondWind(event, { isFF });
 		}
 		// this logic is duplicated for TAH, if changing please update module/compatibility/tokenActionHud.mjs
-		new apps.SecondWindDialog({ document: this.actor }).render(true);		
+		new apps.SecondWindDialog({ document: this.actor }).render(true);
 	}
-	
+
 	/* -------------------------------------------- */
 
 	static #onActionPointDialog(event, target) {
@@ -1495,9 +1495,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 		new apps.ShortRestDialog({ document: this.actor }).render(true);
 	}
-	
+
 	/* -------------------------------------------- */
-  
+
 	/**
 	*Opens dialog window to long rest.
 	*reset HP, surges, encounter powers, daily powers, magic item use, actions points set to default.
@@ -1545,7 +1545,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: "system.details.saves", label: _loc("DND4E.SavingThrowBonus") };
-		new apps.AttributeBonusDialog(options).render(true);	
+		new apps.AttributeBonusDialog(options).render(true);
 	}
 
 	static #onCycleSkillProficiency(event, target) {
@@ -1591,7 +1591,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (item.type === "power") {
 			const fastForward = utils.isRollFastForwarded(event);
 			return this.actor.usePower(item, {
-				configureDialog: !fastForward, 
+				configureDialog: !fastForward,
 				fastForward: fastForward,
 				//Temporary traits from special roll modes
 				variance: variance,
@@ -1605,7 +1605,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		
+
 		if (item && (item.type === "power") && item.hasAttack) {
 			const bonus = await item.getAttackBonus();
 
@@ -1630,10 +1630,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		event.preventDefault();
 		//console.debug("roll Save Throw v Effect!");
 		const effectId = target.closest(".item").dataset.effectId;
-		const effect = this.actor.effects.get(effectId);	
+		const effect = this.actor.effects.get(effectId);
 		const saveDC = effect.system.saveDC || 10;
 		const isFF = utils.isRollFastForwarded(event);
-		
+
 		if (isFF) {
 			return this.actor.rollSave(event, { isFF, effectSave: true, dc: saveDC, effectId: effectId }, {});
 		}
@@ -1666,7 +1666,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				r.dice[0].options.fumble = r.dice[0].options.critical - 1;
 				// r.evaluate({async: false});
 				await r.evaluate();
-	
+
 				let flav = `${_loc("DND4E.PowerRechargeFail", { type: item.name })}`;
 				if (r.total >= r.dice[0].options.critical) {
 					this.document.updateEmbeddedDocuments("Item", [{ _id: itemId, "system.uses.value": item.system.preparedMaxUses }]);
@@ -1747,7 +1747,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 		return this.document.update({ "system.currency": curr });
 	}
-  
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1781,7 +1781,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const options = { name: target.dataset.target, window: { title: label }, choices };
 		new apps.TraitSelectorValues({ document: this.actor, ...options }).render(true);
 	}
-	
+
 	static async #onListStringInput(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
@@ -1841,7 +1841,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		this.actor.rollSkill(skillId, { event: event });
 	}
 	/* -------------------------------------------- */
-  
+
 	/**
    * Handle posting a chat message for displaying passive skills.
    * @param {Event} event   The originating click event
@@ -1857,7 +1857,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			user: game.user.id,
 			speaker: { actor: this.document, alias: this.document.name },
 			content: `${_loc("DND4E.PasCheck", { skill: this.actor.system.skills[skillName].label })}: <strong>${this.document.system.passive[passName].value}</strong>`,
-		});	
+		});
 	}
 
 	/* -------------------------------------------- */
@@ -1894,7 +1894,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {ActiveEffect4e} effect         The ActiveEffect for which the context menu is activated
 	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the ActiveEffect
 	 * @protected
-	 */	
+	 */
 
 	/* -------------------------------------------- */
 	_getActiveEffectContextOptions(effect) {
@@ -1979,7 +1979,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			icon: "<i class='fas fa-sun fa-fw'></i>",
 			callback: () => item.update({ "system.prepared": !item.system.prepared }),
 		});
-		
+
 		// Special Roll Options for Basic and Tagged Attacks
 		if ((item.type == "power") && (item.system?.attack?.isBasic || item.system?.attack?.canCharge)) {
 			options.unshift({
@@ -2053,7 +2053,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/** @inheritDoc */
 	async _onDropFolder(event, data) {
 		// return super._onDropFolder(event, data);
-		
+
 		if (!this.actor.isOwner) return [];
 		const folder = await Folder.implementation.fromDropData(data);
 		if (folder.type !== "Item") return [];
@@ -2078,11 +2078,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			ui.notifications.warn(_loc("DND4E.WarnCantAddMultipleAdvancements"));
 			items = itemsWithoutAdvancement;
 		}
-	
+
 		// Filter out items already in containers to avoid creating duplicates
 		const containers = new Set(items.filter(i => i.type === "backpack").map(i => i._id));
 		items = items.filter(i => !containers.has(i.system.container));
-	
+
 		// Create the owned items & contents as normal
 		const toCreate = await Item4e.createWithContents(items, {
 			transformFirst: item => this._onDropSingleItem(item.toObject()),

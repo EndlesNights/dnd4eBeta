@@ -1,4 +1,4 @@
-<section class="{{cssClass}} npc flexcol" autocomplete="off">				
+<section class="{{cssClass}} npc flexcol" autocomplete="off">
   <section class="npc-upper">
     {{!-- Sheet Header --}}
     <header class="sheet-header flexrow">
@@ -16,37 +16,37 @@
               {{selectOptions config.creatureRoleSecond selected=system.details.role.secondary labelAttr="label"}}
             </select>
           </li>
-					
-          <li class="summary-role">				
+
+          <li class="summary-role">
             <select class="actor-role-prim" name="system.details.role.primary" data-tooltip="{{#if (eq system.details.role.secondary 'companion')}}{{localize 'DND4E.Role.ThingRole' thing=(localize 'DND4E.Role.Companion')}}{{else}}{{localize 'DND4E.Role.ThingRole' thing=(localize 'DND4E.Creature')}}{{/if}}">
               <option value=""{{#unless system.details.role}} selected{{/unless}}></option>
               {{#if (eq system.details.role.secondary "companion")}}
-              {{selectOptions config.companionType selected=system.details.role.primary labelAttr="label"}}					
+              {{selectOptions config.companionType selected=system.details.role.primary labelAttr="label"}}
               {{else}}
               {{selectOptions config.creatureRole selected=system.details.role.primary labelAttr="label"}}
               {{/if}}
             </select>
           </li>
-					
+
           {{#unless (eq system.details.role.secondary 'companion')}}
           <li class="summary-leader">
-            <label>{{localize 'DND4E.Role.Leader'}}</label> 
+            <label>{{localize 'DND4E.Role.Leader'}}</label>
             <input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} data-tooltip="{{localize 'DND4E.Role.Leader'}}">
           </li>
           {{/unless}}
-					
+
           <li class="summary-level">
             <label>{{localize 'DND4E.Level'}}</label>
             <input type="text" name="system.details.level" value="{{system.details.level}}" data-tooltip="{{localize 'DND4E.Level'}}" data-dtype="Number" onClick="this.select();">
           </li>
 
           <li class="automath">
-            <span class="label" data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}">{{localize 'DND4E.NPCAutoMath'}}</span> 
+            <span class="label" data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}">{{localize 'DND4E.NPCAutoMath'}}</span>
             <input type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}">
             <img class="button" src="/systems/dnd4e/icons/ui/calc.svg" alt="{{localize 'DND4E.NPCAutoMath'}}" height="40" width="30">
           </li>
         </ul>
-	
+
         <ul class="summary flexrow">
           <li class="summary-size" data-tooltip="{{localize 'DND4E.Size'}}">
             <select class="actor-size" name="system.details.size">
@@ -67,7 +67,7 @@
           <li class="summary-typeother">
             <input name="system.details.other" type="text" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" placeholder="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" onClick="this.select();">
           </li>
-				
+
           <li class="summary-exp">
             <label>{{localize 'DND4E.Exp'}}</label>
             <input type="text" name="system.details.exp" value="{{system.details.exp}}" data-tooltip="{{localize 'DND4E.Exp'}}" data-dtype="Number" onClick="this.select();">
@@ -78,23 +78,23 @@
     </header>
 
     <section class="basics flexrow">
-			
+
       <div class="flexcol resources">
-				
+
         <div class="hitpoints">
           <label data-tooltip="{{localize 'DND4E.HP'}}">{{localize 'DND4E.HPShort'}}</label>
           <input class="number{{#if system.details.isBloodied}}  bloodied{{/if}}" type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4E.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();">
           <span class="sep">/</span>
           <input class="number" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4E.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();">
         </div>
-					
+
         <div class="hitpoints-temp">
           <label data-tooltip="{{localize 'DND4E.TempHPTip'}}">{{localize 'DND4E.Temp'}}</label>
           <input class="number" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4E.TempHPTip'}}" placeholder="0" data-dtype="Number" onClick="this.select();">
           <a class="rest short-rest npc" data-action="shortRest" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize 'DND4E.RestS' }}</a>
           <a class="rest long-rest npc" data-action="longRest" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize 'DND4E.RestL' }}</a>
         </div>
-					
+
         <div class="surges">
           <label>{{localize 'DND4E.HealingSurgesShort'}}</label>
           <input class="number attribute-sub attribute-input" type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" data-tooltip="{{localize 'DND4E.SurgeCur'}}" placeholder="{{localize 'DND4E.SurgeCur'}}" data-dtype="Number" onClick="this.select();">
@@ -111,9 +111,9 @@
           <label class="rest action-point rollable" data-action="actionPoint" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize 'DND4E.ActionPoints'}}</label>
           <input class="number" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4E.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0">
         </div>
-					
+
       </div>
-				
+
       <div class="flexcol defences{{#if system.advancedCals}} advanced{{/if}}">
         {{#each system.defences as |def d|}}
         <div class="defence" data-defence="{{d}}">
@@ -128,31 +128,31 @@
           {{/if}}
         </div>
         {{/each}}
-						
+
       </div>
 
       <div class="flexcol combat">
-					
+
         <div>
           <label class="rollInitiative rollable" data-action="rollInitiative">{{localize 'DND4E.Initiative'}}</label>
-						
+
           {{#if system.advancedCals}}
           <strong class="init-bonus rollable" data-action="initiativeBonus" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
           <label class="def-base">{{localize 'DND4E.Base'}}:</label>
-          <input class="number" name="system.attributes.init.base" value="{{system.attributes.init.base}}" data-dtype="Number" onfocus="this.select()">	
+          <input class="number" name="system.attributes.init.base" value="{{system.attributes.init.base}}" data-dtype="Number" onfocus="this.select()">
           {{else}}
           <input class="number init-base" name="system.attributes.init.base" value="{{system.attributes.init.base}}" data-dtype="Number" onfocus="this.select()">
           <span class="init-value{{#if (lt system.attributes.init.value system.attributes.init.base)}} penalty{{else if (gt system.attributes.init.value system.attributes.init.base)}} bonus{{/if}}" data-tooltip="{{system.attributes.init.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{numberFormat system.attributes.init.value decimals=0 sign=true}})</span>
-						
+
           {{/if}}
         </div>
-					
+
         <div class="senses-perception" data-skill="prc">
           <label class="skill-name rollable" data-action="rollSkillCheck">{{system.skills.prc.label}}</label>
-          <strong class="skill-mod {{#if system.advancedCals}}skill-bonus 
+          <strong class="skill-mod {{#if system.advancedCals}}skill-bonus
 						rollable{{/if}}" {{#if system.advancedCals}}data-action="skillBonus"{{/if}}>{{numberFormat system.skills.prc.total decimals=0 sign=true }}</strong>
         </div>
-					
+
         <div>
           <a class="trait-selector-senses" data-action="traitSelectorSenses" data-options="senses" data-target="system.senses.special">
             <span class="subgroup-header list-label label">{{ localize 'DND4E.Senses' }}</span>
@@ -164,12 +164,12 @@
             {{/each}}
           </ul>
         </div>
-					
+
         <div data-tooltip="{{moveTip}}">
           <label class="movement-dialog rollable" data-action="movementDialog">{{localize 'DND4E.Speed'}}</label>
           <strong class="movement-dialog rollable" data-action="movementDialog">{{{moveDisplay}}}</strong>
         </div>
-					
+
       </div>
 
       <div class="flexcol details">
@@ -184,7 +184,7 @@
               <label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.modHalf decimals=0 sign=true}}</label>
               {{/if}}
             </div>
-							
+
             <div class="ability--score" data-ability="dex">
               <label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.dex.label }}">{{localize 'DND4E.AbilDex'}}</label>
               <input class="number ability-score" name="system.abilities.dex.value" data-dtype="Number" value="{{system.abilities.dex.value}}" onfocus="this.select()" placeholder="10">
@@ -205,7 +205,7 @@
               {{/if}}
             </div>
           </div>
-						
+
           <div class="flexcol ability-scores-right">
             <div class="ability--score" data-ability="int">
               <label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.int.label }}">{{localize 'DND4E.AbilInt'}}</label>
@@ -236,18 +236,18 @@
               <label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.modHalf decimals=0 sign=true}}</label>
               {{/if}}
             </div>
-							
+
           </div>
-						
+
         </div>
-					
+
         <div class="flexcol social">
-					
+
           <div class="alignment">
             <label class="label" for="alignment">{{localize 'DND4E.Alignment'}}:</label>
             <input id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" data-tooltip="{{localize 'DND4E.Alignment'}}" placeholder="{{localize 'DND4E.AlignmentUN'}}" onClick="this.select();">
           </div>
-						
+
           <div class="languages">
             <h4 hidden class="attribute-name box-title">{{localize 'DND4E.SpokenLanguage'}}</h4>
             <a class="trait-selector" data-action="traitSelector" data-options="spoken" data-target="system.languages.spoken" data-app-title="{{ localize 'DND4E.Spoken' }} {{ localize 'DND4E.Languages' }}">
@@ -262,15 +262,15 @@
           </div>
 
         </div>
-					
+
       </div>
-			
+
 			</div>
-			
+
     </section>
-			
+
   </section>
-	
+
   <section class="npc-lower">
     <section class="section section--tabs flexshrink npc">
       {{> "templates/generic/tab-navigation.hbs"}}
@@ -288,7 +288,7 @@
       {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
 
       {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
-		  
+
     </section>
   </section>
 

@@ -10,7 +10,7 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
-  
+
 	/** @inheritDoc */
 	static defineSchema() {
 		const numberConfig = { required: true, nullable: false, integer: true };

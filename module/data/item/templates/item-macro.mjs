@@ -19,7 +19,7 @@ export default class ItemMacroTemplate extends foundry.abstract.DataModel {
 	/* -------------------------------------------- */
 	/*  Data Migration                              */
 	/* -------------------------------------------- */
-    
+
 	/**
      * Convert single macro into macro array.
      * @param {Object} source  The candidate source data from which the model will be constructed.

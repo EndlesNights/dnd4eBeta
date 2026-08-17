@@ -4,7 +4,7 @@
   <fieldset class="collapsible form-group vertical collapsed" data-macro-number="{{@index}}">
     <legend class="fieldset-expand-toggle" data-action="expandMacro">{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
     <div class="form-group loose">
-      
+
       <div class="form-group loose">
         <label>{{localize "DND4E.MACROS.ACTIVATION.Label"}}</label>
         <select name="system.macros.{{@index}}.launchOrder">
@@ -24,15 +24,15 @@
       {{/unless}}
 
       <label class="checkbox right">
-        <input class="checkbox" type="checkbox" name="system.macros.{{@index}}.enabled" data-dtype="Boolean" {{checked macro.enabled}}> 
+        <input class="checkbox" type="checkbox" name="system.macros.{{@index}}.enabled" data-dtype="Boolean" {{checked macro.enabled}}>
         <span class="label">{{localize "DND4E.Active"}}</span>
       </label>
       <a class="macro-control macro-delete right" data-action="deleteMacro" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
-        
+
     </div>
-      
+
     <div class="form-group loose">
-      
+
       {{!--
       <div class="form-group loose">
         <label>{{ localize "Scope" }}</label>
@@ -41,7 +41,7 @@
         </select>
       </div>
       --}}
-        
+
       {{#if autoanimationsActive}}
       {{#unless (eq macro.launchOrder "comBon")}}
       {{#unless (eq macro.launchOrder "preAttack")}}
@@ -55,22 +55,22 @@
       {{/unless}}
       {{/unless}}
       {{/if}}
-        
+
     </div>
-      
+
     <div class="form-group stacked macro-text" tabindex="0">
       <code-mirror name="system.macros.{{@index}}.command" language="{{editorLanguage}}" tabindex="0">
         {{~ macro.command ~}}
       </code-mirror>
     </div>
-      
+
     <div class="form-group flexrow">
       <button class="execute" data-action="executeMacro" type="button" data-macro-index="{{@index}}"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
     </div>
-	
+
   </fieldset>
   {{/each}}
-  
+
   <div class="form-group right">
     <a class="macro-control macro-add label" data-action="addMacro">{{localize "DND4EUI.AddNew"}}</a>
   </div>

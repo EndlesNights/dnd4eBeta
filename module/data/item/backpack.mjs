@@ -22,7 +22,7 @@ export default class BackpackData extends foundry.abstract.TypeDataModel {
 				value: new NumberField({ min: 0, initial: 0 }),
 				weightless: new BooleanField({ initial: false }),
 			}),
-      
+
 		};
 	}
 

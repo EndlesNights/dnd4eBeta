@@ -1,5 +1,5 @@
 <section class="tab scrollable{{#if tab.active}} active{{/if}} activation" data-group="{{tab.group}}" data-tab="{{tab.id}}">
-  
+
   <fieldset>
     <legend>{{localize 'DND4E.Duration'}}</legend>
     {{#if powerParent}}
@@ -12,7 +12,7 @@
       </div>
     </div>
     {{/if}}
-    
+
     {{#unless (eq document.system.durationType "saveEnd")}}
     <div class="form-group">
       <label>{{localize 'DND4E.DurationAction'}}</label>
@@ -28,7 +28,7 @@
       </div>
     </div>
     {{/unless}}
-    
+
     <div class="form-group">
       <label>{{localize 'DND4E.DurationType'}}</label>
       <div class="form-fields">
@@ -41,7 +41,7 @@
         {{/if}}
       </div>
     </div>
-    
+
     {{#if (eq document.system.durationType "custom")}}
     <div class="form-group effect-duration">
       <label class="flexrow" for="{{rootId}}-duration.value">
@@ -97,7 +97,7 @@
     {{/if}}
     {{/if}}
   </fieldset>
-  
+
   {{formGroup fields.disabled value=source.disabled rootId=rootId}}
 
   {{#if isActorEffect}}

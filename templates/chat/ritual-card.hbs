@@ -8,9 +8,9 @@
     </div>
   </header>
 
-  <div class="card-content">	 
+  <div class="card-content">
     {{#if item.system.autoCard}}
-		
+
     <div class="flavour">
       {{#if item.system.description.chat}}
       <p>{{{item.system.description.chat}}}</p>
@@ -18,26 +18,26 @@
       {{{system.description.value}}}
       {{/if}}
     </div>
-			
+
     <ul class="properties tags">
       {{#each system.properties}}
       {{{this}}}
       {{/each}}
     </ul>
-			
+
     <div class="item-details">
       {{{system.description.value}}}
     </div>
-			
+
     {{else}}
-		
+
     {{{system.description.value}}}
-			
+
     {{/if}}
-		 
+
   </div>
 
-  <footer class="card-footer">		
+  <footer class="card-footer">
     {{#if isRoll}}
     {{#if system.attribute}}
     <div class="card-buttons">

@@ -91,7 +91,7 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 		context.custom = attr ? attr.custom : "";
 		context.buttons = [{ type: "submit", icon: "far fa-save", label: "DND4E.Save" }];
 		context.heading = this.options.window.title;
-    
+
 		// Return data
 		return context;
 	}
@@ -131,9 +131,9 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 	/* -------------------------------------------- */
 
 	/**
-     * 
-     * @param {Event} event 
-     * @param {HTMLElement} target 
+     *
+     * @param {Event} event
+     * @param {HTMLElement} target
      */
 	static #onToggle(event, target) {
 		event.preventDefault();
