@@ -1,5 +1,38 @@
 # Changelog
 
+## Version 0.9.1
+A nice assortment of fixes, tweaks and improvements
+### Upgrades and Enhancements
+* Updated senses configuration and automation (SagaTympana)
+  * "Blind" and "All-Around Vision" are simple boolean options. For automation purposes, note that they have been moved from within `system.senses.special` to directly under `system.senses`.
+  * Custom senses have been moved from `system.senses.special.custom` to `system.senses.custom`
+  * "Blind" is now accounted for when syncing token vision
+  * All-Around Vision is now considered when checking for flanking
+  * Concealment automation is now gated behind Dynamic Automation setting
+  * Token Config now includes a Synced Senses notice
+* Region Upgrades (SagaTympana)
+  * Regions created by an item now inherit the item's name
+  * Regions now have the option to exclude the region's creator from its effects
+  * Damaging Regions can now be configured to apply damage "Once Per Turn", and "Only In Combat"
+  * Region templates now infer aura size from burst radius, if Aura is checked but no size is given (Fox)
+* Foundry's Core handling for blind, burrowing and flying creatures is now enabled, and correctly connected with these states (SagaTympana)
+  * This includes restoring the "Flying" condition and adding "Burrowing".
+* The Example Effects compendium now dynamically integrates custom status changes (SagaTympana)
+* Roll enrichers can now specify an "applyBonuses" setting (SagaTympana)
+* The `value` and `max` values for character Resources are now actual numbers, so they can be adjusted with Active Effects (SagaTympana)
+* The NPC sheet now allows entering a race (SagaTympana)
+* Aura keyword and size will no longer be added to the chat card title for items other than Features (Fox)
+### Bugfixes/Under the Hood
+* Common attack bonuses once again works without targets (SagaTympana)
+* System will no longer try to compute Concealment without a target (SagaTympana)
+* Removed an extra tab character that was being inserted into the "Effect" field of powers, due to HTML layout (Fox)
+* Fixed the speed tooltip displaying "Charge Bonus Speed" after charge update (Fox)
+* Fixed an issue where custom skill/status config forms disabled text fields on entries that match core IDs (Fox)
+* Fix a couple of bugs preventing healing/damage enrichers from rolling in certain cases (SagaTympana & Fox)
+* Fixed a bug preventing item macros from being deleted (SagaTympana)
+* Fixed broken localisation on Defence Check Tooltips (SagaTympana)
+* Adjusted custom variables to use flags for storage (SagaTympana)
+
 ## Version 0.9
 ### 🎉New Features/Upgrades
 * __Action-Based Effect Expiration:__ Active Effects can now set a specific game action which to expire. This is a separate setting from the existing timing-based expiry, so you can combine the two to create common expiry conditions like "your next attack before the end of your next turn". Please see the system docs/wiki for the full list of available actions. (Fox)
