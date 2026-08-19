@@ -673,10 +673,10 @@ export function preparePowerCardData(chatData, actorData = null, attackTotal = n
 	if (chatData.powersource) tag.push(powerSource);
 
 	if (["melee", "meleeRanged", "ranged"].includes(chatData.weaponType)) {
-		tag.push("Weapon");
+		tag.push(_loc("DND4E.Weapon"));
 	}
 	else if (chatData.weaponType === "implement") {
-		tag.push("Implement");
+		tag.push(_loc("DND4E.Implement"));
 	}
 
 	if (chatData.powersource && chatData.secondPowersource && (chatData.secondPowersource != chatData.powersource)) {
