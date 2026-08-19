@@ -1108,6 +1108,7 @@ export default class Actor4e extends Actor {
 				changes: [
 					{ key: "system.modifiers.defences.untyped", mode: 2, value: 2 },
 				],
+				durationType: "startOfUserTurn",
 				powerEffectType: "self",
 			},
 		};
