@@ -126,7 +126,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 		if (change.key.startsWith("@")) {
 			change.key = change.key.replace("@", "flags.dnd4e.custom-variables.");
 		}
-		super.applyChange(targetDoc, change, { replacementData, modifyTarget });
+		return super.applyChange(targetDoc, change, { replacementData, modifyTarget });
 	}
 
 	/* --------------------------------------------- */
