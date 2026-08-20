@@ -51,7 +51,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
 				parts: new ArrayField(new SchemaField({
 					numDice: new FormulaField({ initial: "", determinitistic: true }),
 					numFaces: new FormulaField({ initial: "", determinitistic: true }),
-					modifier: new FormulaField({ initial: "" }),
+					modifier: new StringField({ initial: "" }),
 				})),
 			}),
 			damage: new SchemaField({
