@@ -1492,7 +1492,7 @@
 				"label": "Types"
 			},
 			"excludeCreator": {
-				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will not be subject to its effects.",
 				"label": "Exclude Creator?"
 			}
 		}
@@ -1512,7 +1512,7 @@
 				"label": "Dispositions"
 			},
 			"excludeCreator": {
-				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will not be subject to its effects.",
 				"label": "Exclude Creator?"
 			},
 			"oncePerTurn": {
@@ -1530,6 +1530,10 @@
 			"types": {
 				"hint": "If set, only damage Tokens with these creature types.",
 				"label": "Types"
+			},
+			"showGridIcons": {
+				"hint": "Display an icon in each grid space covered by this damaging region.",
+				"label": "Show Grid Icons"
 			}
 		}
 	},
@@ -1544,8 +1548,12 @@
 				"label": "Types"
 			},
 			"excludeCreator": {
-				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will not be subject to its effects.",
 				"label": "Exclude Creator?"
+			},
+			"showGridIcons": {
+				"hint": "Display an icon in each grid space covered by this difficult terrain.",
+				"label": "Show Grid Icons"
 			}
 		},
 		"Type": {
@@ -1581,8 +1589,12 @@
 				"label": "Types"
 			},
 			"excludeCreator": {
-				"hint": "If set, and if the region was created by an actor, the actor who created the region will be not be subject to its effects.",
+				"hint": "If set, and if the region was created by an actor, the actor who created the region will not be subject to its effects.",
 				"label": "Exclude Creator?"
+			},
+			"showGridIcons": {
+				"hint": "Display an icon in each grid space covered by this obscured terrain. Icon is determined by obscurement level.",
+				"label": "Show Grid Icons"
 			}
 		}
 	}
