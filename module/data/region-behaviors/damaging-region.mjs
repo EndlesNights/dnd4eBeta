@@ -1,12 +1,21 @@
-// Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
-
-const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 import { FormulaField } from "../fields/_module.mjs";
 import * as utils from "../../utils/utils.mjs";
 
+const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
+
 /**
  * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";
+ * @import { GridIconData } from "../../canvas/_types.mjs";
  */
+
+/** @type { GridIconData } */
+const GRID_ICON = {
+	key: "default",
+	type: "fontAwesome",
+	source: "fa-solid fa-burst",
+	tint: 0x808080,
+	order: 0,
+};
 
 /**
  * The data model for a region behavior that deals damage to certain tokens.
@@ -37,7 +46,19 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 			oncePerTurn: new BooleanField(),
 			onlyInCombat: new BooleanField(),
 			excludeCreator: new BooleanField(),
+			showGridIcons: new BooleanField({ initial: false }),
 		};
+	}
+
+	/* ---------------------------------------- */
+
+	/**
+	 * Get the difficult terrain grid icon configuration.
+	 * @returns {GridIconData|null}
+	 */
+	get gridIconData() {
+		if (!this.showGridIcons) return null;
+		return GRID_ICON;
 	}
 
 	/* ---------------------------------------- */

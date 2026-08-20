@@ -17,6 +17,7 @@
  * @property {boolean} oncePerTurn       If set, only deal damage to a give token once per turn.
  * @property {boolean} onlyInCombat      If set, don't deal damage outside of combat.
  * @property {boolean} excludeCreator    If set, don't deal damage to the actor that created the region.
+ * @property {boolean} showGridIcons     Whether to display grid icons for this damaging region.
  */
 
 /**
@@ -24,6 +25,7 @@
  * @property {Set<string>} types                Types of difficult terrain represented.
  * @property {Set<number>} ignoredDispositions  Token dispositions that won't be affected by this difficult terrain.
  * @property {boolean} excludeCreator           If set, don't affect the actor that created the region.
+ * @property {boolean} showGridIcons            Whether to display grid icons for this difficult terrain.
  */
 
 /**
@@ -33,4 +35,5 @@
  * @property {Set<string>} origins       If not empty, only tokens with these creature origins are affected.
  * @property {Set<string>} types         If not empty, only tokens with these creature types are affected.
  * @property {boolean} excludeCreator    If set, the actor that created the region is not affected.
+ * @property {boolean} showGridIcons     Whether to display grid icons for this obscured terrain.
  */

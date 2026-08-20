@@ -134,6 +134,8 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeLabels.obscuredTerrain = "DND4E.obscuredTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.obscuredTerrain = "fa-solid fa-smog";
 
+	canvas.RegionBehaviorGridIcons.registerHooks();
+
 	helpers.settings.registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
