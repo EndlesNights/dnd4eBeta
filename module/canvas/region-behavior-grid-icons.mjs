@@ -259,10 +259,6 @@ export default class RegionBehaviorGridIcons {
 	 */
 	static registerHooks() {
 		Hooks.on("canvasReady", () => this.draw());
-		Hooks.on("drawGridLayer", () => {
-			if (canvas.ready) this.draw();
-		});
-		Hooks.on("tearDownGridLayer", () => this.destroy());
 		Hooks.on("canvasTearDown", () => this.destroy());
 		Hooks.on("createRegion", () => this.queueRefresh());
 		Hooks.on("updateRegion", () => this.queueRefresh());
