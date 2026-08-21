@@ -1,21 +1,12 @@
 import { FormulaField } from "../fields/_module.mjs";
 import * as utils from "../../utils/utils.mjs";
 
-const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
+const { BooleanField, ColorField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
  * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";
  * @import { GridIconData } from "../../canvas/_types.mjs";
  */
-
-/** @type { GridIconData } */
-const GRID_ICON = {
-	key: "default",
-	type: "fontAwesome",
-	source: "fa-solid fa-burst",
-	tint: 0x808080,
-	order: 0,
-};
 
 /**
  * The data model for a region behavior that deals damage to certain tokens.
@@ -47,6 +38,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 			onlyInCombat: new BooleanField(),
 			excludeCreator: new BooleanField(),
 			showGridIcons: new BooleanField({ initial: false }),
+			gridIconTint: new ColorField({ nullable: false, initial: "#808080" }),
 		};
 	}
 
@@ -58,11 +50,29 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 	 */
 	get gridIconData() {
 		if (!this.showGridIcons) return null;
+
+		/** @type { GridIconData } */
+		const GRID_ICON = {
+			key: "default",
+			type: "fontAwesome",
+			source: "fa-solid fa-burst",
+			tint: Number(this.gridIconTint),
+			order: 0,
+		};
 		return GRID_ICON;
 	}
 
 	/* ---------------------------------------- */
 	/*  Methods                                 */
+	/* ---------------------------------------- */
+
+	/** @inheritDoc */
+	_preUpdate(changes, options, userId) {
+		if (changes.system?.gridIconTint === null) {
+			changes.system.gridIconTint = this.schema.fields.gridIconTint.initial;
+		}
+	}
+
 	/* ---------------------------------------- */
 
 	/** @inheritDoc */

@@ -1,6 +1,6 @@
 import RegionBehaviorGridIcons from "../../canvas/region-behavior-grid-icons.mjs";
 
-const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
+const { BooleanField, ColorField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
  * @import { ObscuredTerrainRegionBehaviorSystemData } from "./_types.mjs";
@@ -36,6 +36,7 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 			types: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureType })),
 			excludeCreator: new BooleanField(),
 			showGridIcons: new BooleanField({ initial: false }),
+			gridIconTint: new ColorField({ nullable: false, initial: "#808080" }),
 		};
 	}
 
@@ -68,10 +69,19 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 			key: "obscurement",
 			type: "fontAwesome",
 			source,
-			tint: 0x808080,
+			tint: Number(this.gridIconTint),
 			priority: this.level,
 			order: 10,
 		};
+	}
+
+	/* ---------------------------------------- */
+
+	/** @inheritDoc */
+	_preUpdate(changes, options, userId) {
+		if (changes.system?.gridIconTint === null) {
+			changes.system.gridIconTint = this.schema.fields.gridIconTint.initial;
+		}
 	}
 
 	/* ---------------------------------------- */
