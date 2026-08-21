@@ -1538,6 +1538,10 @@
 			"gridIconTint": {
 				"hint": "The color for this damaging region's grid icon.",
 				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this damaging region's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		}
 	},
@@ -1562,6 +1566,10 @@
 			"gridIconTint": {
 				"hint": "The color for this difficult terrain's grid icon.",
 				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this difficult terrain's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		},
 		"Type": {
@@ -1607,6 +1615,10 @@
 			"gridIconTint": {
 				"hint": "The color for this obscured terrain's grid icon.",
 				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this obscured terrain's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		}
 	}

@@ -1,7 +1,8 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 import RegionBehaviorGridIcons from "../../canvas/region-behavior-grid-icons.mjs";
+import { GridIconsTemplate } from "./templates/_module.mjs";
 
-const { BooleanField, ColorField, NumberField, SetField, StringField } = foundry.data.fields;
+const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
  * @import { DifficultTerrainRegionBehaviorSystemData } from "./_types.mjs";
@@ -24,12 +25,12 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 	static defineSchema() {
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
+		const gridSchema = GridIconsTemplate.defineSchema();
 		return {
 			types: new SetField(new StringField()),
 			ignoredDispositions: new SetField(new NumberField({ choices: dispositions })),
 			excludeCreator: new BooleanField(),
-			showGridIcons: new BooleanField({ initial: false }),
-			gridIconTint: new ColorField({ nullable: false, initial: "#808080" }),
+			...gridSchema,
 		};
 	}
 
@@ -48,6 +49,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 			type: "image",
 			source: "systems/dnd4e/icons/ui/difficultTerrain.svg",
 			tint: Number(this.gridIconTint),
+			alpha: this.gridIconAlpha,
 			order: 0,
 		};
 		return GRID_ICON;

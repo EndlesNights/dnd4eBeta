@@ -1,6 +1,7 @@
 import RegionBehaviorGridIcons from "../../canvas/region-behavior-grid-icons.mjs";
+import { GridIconsTemplate } from "./templates/_module.mjs";
 
-const { BooleanField, ColorField, NumberField, SetField, StringField } = foundry.data.fields;
+const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
  * @import { ObscuredTerrainRegionBehaviorSystemData } from "./_types.mjs";
@@ -29,14 +30,14 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 		};
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
+		const gridSchema = GridIconsTemplate.defineSchema();
 		return {
 			level: new NumberField({ choices: OBSCUREMENT_LABELS }),
 			dispositions: new SetField(new NumberField({ choices: dispositions })),
 			origins: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureOrigin })),
 			types: new SetField(new StringField({ choices: () => CONFIG.DND4E.creatureType })),
 			excludeCreator: new BooleanField(),
-			showGridIcons: new BooleanField({ initial: false }),
-			gridIconTint: new ColorField({ nullable: false, initial: "#808080" }),
+			...gridSchema,
 		};
 	}
 
@@ -69,7 +70,8 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 			key: "obscurement",
 			type: "fontAwesome",
 			source,
-			tint: Number(this.gridIconTint),
+			tint: Number(this.gridIconsTint),
+			alpha: this.gridIconAlpha,
 			priority: this.level,
 			order: 10,
 		};
