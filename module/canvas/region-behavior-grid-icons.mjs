@@ -1,7 +1,7 @@
 const CONTAINER_NAME = "region-behavior-grid-icons";
 const ICON_SCALE = 0.2;
 const ICON_PADDING = 0.05;
-const ICON_ALPHA = 1;
+const ICON_ALPHA = 0.65;
 const FONT_AWESOME_TINT = 0x808080;
 const IMAGE_TINT = 0x808080;
 const FONT_SIZE = 128;
@@ -281,9 +281,9 @@ export default class RegionBehaviorGridIcons {
 
 		if (!canvas.ready || canvas.grid.isGridless) return;
 
-		const gridLayer = canvas.interface.grid;
+		const rendered = canvas.rendered;
 
-		if (!gridLayer?.mesh || (gridLayer.mesh.parent !== gridLayer)) return;
+		if (!rendered?.visibility || (rendered.visibility.parent !== rendered)) return;
 
 		const container = new PIXI.Container();
 
@@ -294,7 +294,7 @@ export default class RegionBehaviorGridIcons {
 
 		this.#container = container;
 
-		gridLayer.addChildAt(container, gridLayer.getChildIndex(gridLayer.mesh));
+		rendered.addChildAt(container, rendered.getChildIndex(rendered.visibility));
 		void this.refresh();
 	}
 
