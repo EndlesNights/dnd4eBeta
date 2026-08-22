@@ -1,4 +1,4 @@
-const { BooleanField, ColorField, NumberField, SchemaField } = foundry.data.fields;
+const { BooleanField, ColorField, NumberField } = foundry.data.fields;
 
 export default class GridIconsTemplate extends foundry.abstract.DataModel {
 	/** @inheritDoc */
