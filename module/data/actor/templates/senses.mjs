@@ -56,7 +56,7 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 			delete source.senses.special.bv;
 		}
 
-		if (source.senses?.special?.custom) {
+		if (source.senses?.special && ("custom" in source.senses.special)) {
 			source.senses.custom = source.senses.special.custom;
 			delete source.senses.special.custom;
 		}
