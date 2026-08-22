@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.9.2
+### Upgrades and Enhancements
+* Damage/Difficult Terrain/Obscured regions can now overlay a tintable icon on each affected grid square (SagaTympana)
+* Expanded Dynamic Automation of mutually exclusive conditions; Stances now end older Stances, and Polymorphs now suspend older Polymorphs. (Fox)
+### Bugfixes/Under the Hood
+* Fixed a bug where Damaging Regions would repeat damage for every connected client (SagaTympana)
+* Fixed a bug where trap/hazard actors caused errors when checking their non-existent senses (SagaTympana)
+* Fixed a missing duration in the default Second Wind effect (SagaTympana)
+* Fixed a character sheet bug where configs that should be edit-locked were editable (SagaTympana)
+* Fixed a bug where the weapon damage modifiers field no longer worked with dice syntax (Fox)
+* Fixed some missing localisation on power config and weapon/implement tags (Fox)
+* Fixed a missing label and un-migrated field in senses config (SagaTympana)
+
 ## Version 0.9.1
 A nice assortment of fixes, tweaks and improvements
 ### Upgrades and Enhancements
