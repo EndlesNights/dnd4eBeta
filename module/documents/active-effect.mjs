@@ -348,7 +348,7 @@ export default class ActiveEffect4e extends ActiveEffect {
         // New stances delete old stances
         if (this.system.allKeywords.has("stance")) {
           for (let effect of this.actor.appliedEffects) {
-            if (effect.system.statuses.has("stance") && effect.uuid !== this.uuid) effect.delete();
+            if (effect.system.allKeywords.has("stance") && effect.uuid !== this.uuid) effect.delete();
           }
         }
         // New polymorph suppresses existing polymorphs
