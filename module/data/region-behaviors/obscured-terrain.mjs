@@ -79,15 +79,6 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 
 	/* ---------------------------------------- */
 
-	/** @inheritDoc */
-	_preUpdate(changes, options, userId) {
-		if (changes.system?.gridIconTint === null) {
-			changes.system.gridIconTint = this.schema.fields.gridIconTint.initial;
-		}
-	}
-
-	/* ---------------------------------------- */
-
 	/**
 	 * Called when the obscured terrain behavior is viewed.
 	 * @this {ObscuredTerrainRegionBehaviorType}
