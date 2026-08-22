@@ -67,7 +67,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 
 	/** @inheritDoc */
 	async _handleRegionEvent(event) {
-		if (!game.user.isActiveGM) return;
+		if (!event.user.isSelf) return;
 
 		if (!this.damage) return;
 
