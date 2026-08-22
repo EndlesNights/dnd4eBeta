@@ -74,7 +74,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 	/* --------------------------------------------- */
 
 	/** @inheritdoc */
-	async _preCreate(data, options, user) {
+	async _preCreate(data, options, user) {    
 		await super._preCreate(data, options, user);
 		const updates = {};
 
@@ -116,9 +116,30 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 		if (Object.keys(updates).length) {
 			this.updateSource(updates);
-		}
+		}    
 	}
-
+  
+	async _onCreate(data, options, userId) {
+		await super._onCreate(data, options, userId);
+    // Manage mutually exclusive effects
+    if (game.settings.get("dnd4e", "dynamicAutomation") && game.user.id == userId) this.managePeers("create");
+  }
+  
+	/** @inheritdoc */
+  async _onUpdate(changed, options, userId) {
+    await super._onUpdate(changed, options, userId);
+    if (game.settings.get("dnd4e", "dynamicAutomation") && game.user.id == userId && Object.hasOwn(changed,"disabled")) {
+      this.managePeers(changed.disabled ? "disable" : "enable");
+    }
+  }
+  
+	/** @inheritdoc */
+  async _onDelete(options, userId) {
+    await super._onDelete(options, userId);
+    if (game.settings.get("dnd4e", "dynamicAutomation") && game.user.id == userId) await this.managePeers("delete");
+	}
+  
+  
 	/* --------------------------------------------- */
 
 	/** @inheritdoc */
@@ -309,6 +330,65 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 		return { system: systemKeywords, custom: customKeywords, string: keywordString };
 	}
+  
+	/* --------------------------------------------- */
+
+	/**
+	 * Automate the removal or suspension of mutually exclusive effects
+	 * @param {string} action   The action (expected create/enable/disable/delete) being performed on the current effect
+	 */
+	async managePeers(action = null) {
+    //console.debug(`Managing mutually exclusive effects in mode ${action}`);
+    if (!game.settings.get("dnd4e", "dynamicAutomation") || !this?.actor || action == null) return;    
+    if (["enable","create"].includes(action)) this.unsetFlag("dnd4e", "status.suspendedBy");
+    
+    try{
+      if (["enable","create"].includes(action)) {
+        if(!this?.actor?.appliedEffects) return;
+        // New stances delete old stances
+        if (this.system.allKeywords.has("stance")) {
+          for (let effect of this.actor.appliedEffects) {
+            if (effect.system.statuses.has("stance") && effect.uuid !== this.uuid) effect.delete();
+          }
+        }
+        // New polymorph suppresses existing polymorphs
+        if (this.system.allKeywords.has("polymorph")) {
+          for (let effect of this.actor.appliedEffects) {
+            if (effect.system.allKeywords.has("polymorph") && effect.uuid !== this.uuid) effect.suspend(this.uuid);
+          }
+        }
+      } 
+      else if (["disable","delete"].includes(action)) {
+        if (!this?.actor?.allApplicableEffects()) return;
+        // Restore suspended polymorph, if any
+        if (this.system.allKeywords.has("polymorph") && (this.getFlag("dnd4e","status.suspendedBy") === undefined)) {
+          for (let effect of this.actor.allApplicableEffects()) {
+            if (effect.system.allKeywords.has("polymorph") && effect.uuid !== this.uuid && effect.getFlag("dnd4e","status.suspendedBy") === this.uuid){
+              effect.update({ disabled: false });
+            }
+          }
+        }
+      }
+    } catch(e) {
+      console.error(`There was an error during automatic effect management | mode: ${action} | details: ${e}`);
+    }
+	}
+
+	/* --------------------------------------------- */
+
+	/**
+	 * Temporarily deactivate effect, with a flag matching the source
+	 * @param {string} source   ID of effect causing suspension
+	 */
+	async suspend(source) {
+    //console.debug('Suspending effect');
+    try{
+      this.update({'disabled': true, "flags.dnd4e.status.suspendedBy": source});
+    } catch(e) {
+      console.error(`Error while suspending effect: ${e}`);
+    }
+	}
+
 
 	/* -------------------------------------------- */
 	/*  Data Migration                              */
