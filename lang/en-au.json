@@ -1536,7 +1536,7 @@
 				"label": "Show Grid Icons"
 			},
 			"gridIconTint": {
-				"hint": "The color for this damaging region's grid icon.",
+				"hint": "The colour for this damaging region's grid icon.",
 				"label": "Grid Icon Tint"
 			},
 			"gridIconAlpha": {
@@ -1564,7 +1564,7 @@
 				"label": "Show Grid Icons"
 			},
 			"gridIconTint": {
-				"hint": "The color for this difficult terrain's grid icon.",
+				"hint": "The colour for this difficult terrain's grid icon.",
 				"label": "Grid Icon Tint"
 			},
 			"gridIconAlpha": {
@@ -1613,7 +1613,7 @@
 				"label": "Show Grid Icons"
 			},
 			"gridIconTint": {
-				"hint": "The color for this obscured terrain's grid icon.",
+				"hint": "The colour for this obscured terrain's grid icon.",
 				"label": "Grid Icon Tint"
 			},
 			"gridIconAlpha": {
