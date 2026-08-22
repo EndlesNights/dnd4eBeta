@@ -69,15 +69,6 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 	/* ---------------------------------------- */
 
 	/** @inheritDoc */
-	_preUpdate(changes, options, userId) {
-		if (changes.system?.gridIconTint === null) {
-			changes.system.gridIconTint = this.schema.fields.gridIconTint.initial;
-		}
-	}
-
-	/* ---------------------------------------- */
-
-	/** @inheritDoc */
 	async _handleRegionEvent(event) {
 		if (!this.damage) return;
 
