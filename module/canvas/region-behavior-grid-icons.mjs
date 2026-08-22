@@ -1,9 +1,9 @@
 const CONTAINER_NAME = "region-behavior-grid-icons";
 const ICON_SCALE = 0.2;
 const ICON_PADDING = 0.05;
-const ICON_ALPHA = 1;
+const ICON_ALPHA = 1.0;
 const FONT_AWESOME_TINT = 0x808080;
-const IMAGE_TINT = 0xffffff;
+const IMAGE_TINT = 0x808080;
 const FONT_SIZE = 128;
 const GLYPH_OVERSCAN = 0.25;
 const TEXTURE_RESOLUTION = 2;
@@ -109,6 +109,7 @@ function normalizeGridIconData(data) {
 		: data.type === "fontAwesome"
 			? FONT_AWESOME_TINT
 			: IMAGE_TINT;
+	const alpha = data.alpha ? Math.clamp(data.alpha, 0.0, 1.0) : ICON_ALPHA;
 	const key = String(data.key ?? `${data.type}:${source}:${tint}`).trim();
 
 	if (!key) return null;
@@ -118,6 +119,7 @@ function normalizeGridIconData(data) {
 		type: data.type,
 		source,
 		tint,
+		alpha,
 		priority: Number.isFinite(data.priority) ? data.priority : 0,
 		order: Number.isFinite(data.order) ? data.order : 0,
 		textureKey: `${data.type}:${source}`,
@@ -259,10 +261,6 @@ export default class RegionBehaviorGridIcons {
 	 */
 	static registerHooks() {
 		Hooks.on("canvasReady", () => this.draw());
-		Hooks.on("drawGridLayer", () => {
-			if (canvas.ready) this.draw();
-		});
-		Hooks.on("tearDownGridLayer", () => this.destroy());
 		Hooks.on("canvasTearDown", () => this.destroy());
 		Hooks.on("createRegion", () => this.queueRefresh());
 		Hooks.on("updateRegion", () => this.queueRefresh());
@@ -281,9 +279,9 @@ export default class RegionBehaviorGridIcons {
 
 		if (!canvas.ready || canvas.grid.isGridless) return;
 
-		const gridLayer = canvas.interface.grid;
+		const rendered = canvas.rendered;
 
-		if (!gridLayer?.mesh || (gridLayer.mesh.parent !== gridLayer)) return;
+		if (!rendered?.visibility || (rendered.visibility.parent !== rendered)) return;
 
 		const container = new PIXI.Container();
 
@@ -294,7 +292,7 @@ export default class RegionBehaviorGridIcons {
 
 		this.#container = container;
 
-		gridLayer.addChildAt(container, gridLayer.getChildIndex(gridLayer.mesh));
+		rendered.addChildAt(container, rendered.getChildIndex(rendered.visibility));
 		void this.refresh();
 	}
 
@@ -484,6 +482,7 @@ export default class RegionBehaviorGridIcons {
 				);
 				sprite.scale.set(spriteScale);
 				sprite.tint = iconData.tint;
+				sprite.alpha = iconData.alpha;
 
 				container.addChild(sprite);
 			}

@@ -1534,6 +1534,14 @@
 			"showGridIcons": {
 				"hint": "Display an icon in each grid space covered by this damaging region.",
 				"label": "Show Grid Icons"
+			},
+			"gridIconTint": {
+				"hint": "The color for this damaging region's grid icon.",
+				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this damaging region's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		}
 	},
@@ -1554,6 +1562,14 @@
 			"showGridIcons": {
 				"hint": "Display an icon in each grid space covered by this difficult terrain.",
 				"label": "Show Grid Icons"
+			},
+			"gridIconTint": {
+				"hint": "The color for this difficult terrain's grid icon.",
+				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this difficult terrain's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		},
 		"Type": {
@@ -1595,6 +1611,14 @@
 			"showGridIcons": {
 				"hint": "Display an icon in each grid space covered by this obscured terrain. Icon is determined by obscurement level.",
 				"label": "Show Grid Icons"
+			},
+			"gridIconTint": {
+				"hint": "The color for this obscured terrain's grid icon.",
+				"label": "Grid Icon Tint"
+			},
+			"gridIconAlpha": {
+				"hint": "The transparency for this obscured terrain's grid icon. 0 is fully transparent and 1 is fully opaque.",
+				"label": "Grid Icon Alpha"
 			}
 		}
 	}

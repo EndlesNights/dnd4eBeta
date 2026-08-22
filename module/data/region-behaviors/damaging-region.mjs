@@ -1,4 +1,5 @@
 import { FormulaField } from "../fields/_module.mjs";
+import { GridIconsTemplate } from "./templates/_module.mjs";
 import * as utils from "../../utils/utils.mjs";
 
 const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
@@ -7,15 +8,6 @@ const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields
  * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";
  * @import { GridIconData } from "../../canvas/_types.mjs";
  */
-
-/** @type { GridIconData } */
-const GRID_ICON = {
-	key: "default",
-	type: "fontAwesome",
-	source: "fa-solid fa-burst",
-	tint: 0x808080,
-	order: 0,
-};
 
 /**
  * The data model for a region behavior that deals damage to certain tokens.
@@ -36,6 +28,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 		const damageTypes = { ...CONFIG.DND4E.damageTypes, ...CONFIG.DND4E.healingTypes };
 		delete damageTypes["damage"];
 		delete damageTypes["ongoing"];
+		const gridSchema = GridIconsTemplate.defineSchema();
 		return {
 			events: this._createEventsField(),
 			damage: new FormulaField({ initial: "" }),
@@ -46,7 +39,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 			oncePerTurn: new BooleanField(),
 			onlyInCombat: new BooleanField(),
 			excludeCreator: new BooleanField(),
-			showGridIcons: new BooleanField({ initial: false }),
+			...gridSchema,
 		};
 	}
 
@@ -58,6 +51,16 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 	 */
 	get gridIconData() {
 		if (!this.showGridIcons) return null;
+
+		/** @type { GridIconData } */
+		const GRID_ICON = {
+			key: "default",
+			type: "fontAwesome",
+			source: "fa-solid fa-burst",
+			tint: Number(this.gridIconTint),
+			alpha: this.gridIconAlpha,
+			order: 0,
+		};
 		return GRID_ICON;
 	}
 

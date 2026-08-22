@@ -18,6 +18,8 @@
  * @property {boolean} onlyInCombat      If set, don't deal damage outside of combat.
  * @property {boolean} excludeCreator    If set, don't deal damage to the actor that created the region.
  * @property {boolean} showGridIcons     Whether to display grid icons for this damaging region.
+ * @property {string} gridIconTint       Color to use for grid icons.
+ * @property {number} gridIconAlpha      Transparency for grid icons.
  */
 
 /**
@@ -26,6 +28,8 @@
  * @property {Set<number>} ignoredDispositions  Token dispositions that won't be affected by this difficult terrain.
  * @property {boolean} excludeCreator           If set, don't affect the actor that created the region.
  * @property {boolean} showGridIcons            Whether to display grid icons for this difficult terrain.
+ * @property {string} gridIconTint       Color to use for grid icons.
+ * @property {number} gridIconAlpha      Transparency for grid icons.
  */
 
 /**
@@ -36,4 +40,6 @@
  * @property {Set<string>} types         If not empty, only tokens with these creature types are affected.
  * @property {boolean} excludeCreator    If set, the actor that created the region is not affected.
  * @property {boolean} showGridIcons     Whether to display grid icons for this obscured terrain.
+ * @property {string} gridIconTint       Color to use for grid icons.
+ * @property {number} gridIconAlpha      Transparency for grid icons.
  */

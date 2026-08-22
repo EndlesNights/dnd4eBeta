@@ -1,5 +1,6 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 import RegionBehaviorGridIcons from "../../canvas/region-behavior-grid-icons.mjs";
+import { GridIconsTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 
@@ -7,15 +8,6 @@ const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields
  * @import { DifficultTerrainRegionBehaviorSystemData } from "./_types.mjs";
  * @import { GridIconData } from "../../canvas/_types.mjs";
  */
-
-/** @type { GridIconData } */
-const GRID_ICON = {
-	key: "default",
-	type: "image",
-	source: "systems/dnd4e/icons/ui/difficultTerrain.svg",
-	tint: 0x808080,
-	order: 0,
-};
 
 /**
  * The data model for a region behavior that represents an area of difficult terrain.
@@ -33,11 +25,12 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 	static defineSchema() {
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
+		const gridSchema = GridIconsTemplate.defineSchema();
 		return {
 			types: new SetField(new StringField()),
 			ignoredDispositions: new SetField(new NumberField({ choices: dispositions })),
 			excludeCreator: new BooleanField(),
-			showGridIcons: new BooleanField({ initial: false }),
+			...gridSchema,
 		};
 	}
 
@@ -49,6 +42,16 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 	 */
 	get gridIconData() {
 		if (!this.showGridIcons) return null;
+
+		/** @type { GridIconData } */
+		const GRID_ICON = {
+			key: "default",
+			type: "image",
+			source: "systems/dnd4e/icons/ui/difficultTerrain.svg",
+			tint: Number(this.gridIconTint),
+			alpha: this.gridIconAlpha,
+			order: 0,
+		};
 		return GRID_ICON;
 	}
 
