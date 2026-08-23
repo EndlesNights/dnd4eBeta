@@ -219,6 +219,7 @@ export const migrateItemData = function(item) {
 	_migrateFeature(item, updateData);
 	_migrateRitualCategory(item, updateData);
 	_migrateFlavourText(item, updateData);
+	_migrateInvalidMasterplanLevel(item, updateData);
 	// Always do this last, as it clobbers `system` updates
 	_migrateType(item, updateData);
 	return updateData;
@@ -706,6 +707,22 @@ function _migrateItemsGMDescriptions(itemData, updateData) {
 
 	if (!("gm" in itemData.system.description)) {
 		updateData["system.description.gm"] = "";
+	}
+
+	return updateData;
+}
+
+/**
+ * Migrate the "B" level that was used by old Masterplan imported monsters to indicate basic attacks 
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
+ * @private
+ */
+function _migrateInvalidMasterplanLevel(itemData, updateData) {
+
+	if (itemData.system.level === "B") {
+		updateData["system.level"] = 0;
 	}
 
 	return updateData;
