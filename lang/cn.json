@@ -943,7 +943,7 @@
   "DND4E.ShortRestNoHD": "没有回复力剩余",
   "DND4E.ShortRestNormal": "短休 (15分钟)",
   "DND4E.ShortRestOvernight": "短休 (新一天)",
-  "DND4E.ShortRestResult": "{name} 进行了一次短休花费了 {dice} 次回复力治疗了{health} HP",
+  "DND4E.ShortRestResult": "{name} 进行了一次短休花费了 {dice} 次回复力治疗了{healing} HP",
   "DND4E.ShortRestSelect": "花费的回复力次数",
   "DND4E.ShortRestTake": "进行一次短休",
   "DND4E.Size": "体型",

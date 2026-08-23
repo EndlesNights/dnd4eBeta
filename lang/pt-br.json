@@ -913,7 +913,7 @@
 "DND4E.ShortRestNoHD": "Sem pulos restantes",
 "DND4E.ShortRestNormal": "Descanso Curto (15 minutos)",
 "DND4E.ShortRestOvernight": "Descanso Curto (Novo Dia)",
-"DND4E.ShortRestResult": "{name} faz um descanso curto, gastando {dice} pulsos de cura para recuperar {health} pontos de vida.",
+"DND4E.ShortRestResult": "{name} faz um descanso curto, gastando {dice} pulsos de cura para recuperar {healing} pontos de vida.",
 "DND4E.ShortRestSelect": "Número de pulsos disponíveis",
 "DND4E.ShortRestTake": "Fazer um descanso curto",
 "DND4E.Size": "Tamanho",
