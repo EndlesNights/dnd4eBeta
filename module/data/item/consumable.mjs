@@ -81,6 +81,9 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 				source.damageCritImp.parts[partIndex] = processPart(source.damageCritImp.parts[partIndex]);
 			}
 		}
+		if (("level" in source) && isNaN(source.level)) {
+			source.level = null;
+		}
 		ItemDescriptionTemplate.migrateSource(source);
 		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
