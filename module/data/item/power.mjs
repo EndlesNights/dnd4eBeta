@@ -89,6 +89,11 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
 				source.damageCritImp.parts[partIndex] = processPart(source.damageCritImp.parts[partIndex]);
 			}
 		}
+		// Used to be a string so may cause an item to fail validation.  Masterplan imports especially used a "B" for basic attacks.
+		// all powers /should/ have level, but paranoid check to be sure. 
+		if (("level" in source) && isNaN(source.level)) {
+			source.level = null;
+		}
 		ItemDescriptionTemplate.migrateSource(source);
 		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
