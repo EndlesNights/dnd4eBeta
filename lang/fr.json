@@ -981,7 +981,7 @@
     "DND4E.ShortRestNoHD": "Aucune récupération restante",
     "DND4E.ShortRestNormal": "Repos Court (15 minutes)",
     "DND4E.ShortRestOvernight": "Repos Court (Jusqu'au lendemain)",
-    "DND4E.ShortRestResult": "{name} prend un repos court et dépense {dice} récupération(s) pour récupérer {health} PVs.",
+    "DND4E.ShortRestResult": "{name} prend un repos court et dépense {dice} récupération(s) pour récupérer {healing} PVs.",
     "DND4E.ShortRestSelect": "Nombre de récupération à dépenser",
     "DND4E.ShortRestTake": "Prendre un repos court",
     "DND4E.Size": "Taille",

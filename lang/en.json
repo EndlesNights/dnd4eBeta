@@ -974,7 +974,7 @@
 "DND4E.ShortRestNoHD": "No Surges remaining",
 "DND4E.ShortRestNormal": "Short Rest (15 minutes)",
 "DND4E.ShortRestOvernight": "Short Rest (New Day)",
-"DND4E.ShortRestResult": "{name} takes a short rest, spending {surges} healing surges to recover {health} hit points.",
+"DND4E.ShortRestResult": "{name} takes a short rest, spending {surges} healing surges to recover {healing} hit points.",
 "DND4E.ShortRestSelect": "Number of surges to spend",
 "DND4E.ShortRestTake": "Take a short rest",
 "DND4E.Size": "Size",

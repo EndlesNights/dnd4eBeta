@@ -998,7 +998,7 @@
 "DND4E.ShortRestNoHD": "Sin Esfuerzos Curativos",
 "DND4E.ShortRestNormal": "Descanzo Breve (15 minutos)",
 "DND4E.ShortRestOvernight": "Descanzo Breve (Pasar Día)",
-"DND4E.ShortRestResult": "{name} toma un descanzo corto, gastando {dice} esfuerzos curativos para recuperar {health} puntos de golpe.",
+"DND4E.ShortRestResult": "{name} toma un descanzo corto, gastando {dice} esfuerzos curativos para recuperar {healing} puntos de golpe.",
 "DND4E.ShortRestSelect": "Cantidad de esfuerzos curativos para gastar",
 "DND4E.ShortRestTake": "Toma un descanzo breve",
 "DND4E.Size": "Tamaño",
