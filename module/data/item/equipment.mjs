@@ -63,6 +63,9 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
 			delete source.armour.subType;
 		}
 		if (source.armour?.subtype === "cloth") source.armour.subtype = "light";
+		if (("level" in source) && isNaN(source.level)) {
+			source.level = null;
+		}
 		ItemDescriptionTemplate.migrateSource(source);
 		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);

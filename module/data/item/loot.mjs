@@ -24,6 +24,9 @@ export default class LootData extends foundry.abstract.TypeDataModel {
 
 	/** @inheritdoc */
 	static migrateData(source) {
+		if (("level" in source) && isNaN(source.level)) {
+			source.level = null;
+		}
 		ItemDescriptionTemplate.migrateSource(source);
 		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
