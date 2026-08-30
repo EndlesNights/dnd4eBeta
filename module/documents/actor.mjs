@@ -193,6 +193,8 @@ export default class Actor4e extends Actor {
 		data.wisMod = data?.abilities?.wis.mod || 0;
 		data.chaMod = data?.abilities?.cha.mod || 0;
 
+		data.maxMod = Math.max(data.strMod, data.conMod, data.dexMod, data.intMod, data.wisMod, data.chaMod);
+
 		data.lvhalf = Math.floor(data.details.level / 2) || 0;
 		data.lv = data?.details.level || 0;
 		data.tier = data?.details.tier || 0;
