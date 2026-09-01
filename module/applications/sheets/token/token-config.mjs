@@ -45,21 +45,33 @@ export class TokenConfig4e extends foundry.applications.sheets.TokenConfig {
 		notice.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${
 			_loc("SETTINGS.4eSenseVisionNotice", { senses: link })}`;
 		notice.querySelector("[data-action=editSenses]")?.addEventListener("click", () => {
+			const dropdownTraits = {
+				basic: {
+					label: _loc("DND4E.BasicSightMode"),
+					path: "system.senses.basic",
+					choices: {
+						nv: CONFIG.DND4E.senses.nv,
+						lv: CONFIG.DND4E.senses.lv,
+						dv: CONFIG.DND4E.senses.dv,
+						blind: {
+							label: _loc("DND4E.VisionBlind"),
+						},
+					},
+				},
+			};
 			const valuelessTraits = {
 				allAround: {
-					label: _loc("DND4E.SpecialSensesAA"),
+					label: _loc(actor.system.schema.getField("senses.allAround").label),
 					path: "system.senses.allAround",
 					chosen: this.actor.system.senses.allAround,
 					value: this.actor.system.senses.allAround,
 				},
-				blind: {
-					label: _loc("DND4E.VisionBlind"),
-					path: "system.senses.blind",
-					chosen: this.actor.system.senses.blind,
-					value: this.actor.system.senses.blind,
-				},
 			};
-			const options = { name: "system.senses.special", window: { title: _loc("DND4E.SpecialSenses") }, valuelessTraits, choices: CONFIG.DND4E["senses"], custom: "system.senses.custom" };
+			const choices = foundry.utils.duplicate(CONFIG.DND4E.senses);
+			delete choices.nv;
+			delete choices.lv;
+			delete choices.dv;
+			const options = { name: "system.senses.special", window: { title: _loc("DND4E.SpecialSenses") }, dropdownTraits, valuelessTraits, choices, custom: "system.senses.custom" };
 			new TraitSelectorValues({ document: actor, ...options }).render(true, { force: true });
 		});
 		tab.prepend(notice);

@@ -1,4 +1,19 @@
 <div class="dialogue-content">
+  {{#if dropdownTraits}}
+  <div class="form-group vertical">
+    <ol class="trait-list">
+      {{#each dropdownTraits as |trait key|}}
+      <li>
+        <h1 class="form-title">{{trait.label}}</h1>
+        <select name="{{key}}">
+          {{selectOptions trait.choices selected=trait.chosen labelAttr="label"}}
+        </select>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
+
   <h1 class="form-title">{{heading}}</h1>
 
   {{#if valuelessTraits}}

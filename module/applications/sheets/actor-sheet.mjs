@@ -479,6 +479,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				obj[l[0]] = (l[1].range && (l[1].range > 0)) ? `${choices[l[0]].label} ${l[1].range} sq` : choices[l[0]].label;
 				return obj;
 			}, {});
+			// Add basic sight mode
+			const basicSight = this.actor.system.senses.basic;
+			if (CONFIG.DND4E.senses[basicSight]) trait.selected[basicSight] = CONFIG.DND4E.senses[basicSight].label;
 			// Add all-around vision
 			if (senses.allAround) {
 				trait.selected["aa"] = _loc(this.actor.system.schema.getField("senses.allAround").label);
@@ -1784,6 +1787,20 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const label = target.getAttribute("data-app-title") || "Label error";
+		const dropdownTraits = {
+			basic: {
+				label: _loc("DND4E.BasicSightMode"),
+				path: "system.senses.basic",
+				choices: {
+					nv: CONFIG.DND4E.senses.nv,
+					lv: CONFIG.DND4E.senses.lv,
+					dv: CONFIG.DND4E.senses.dv,
+					blind: {
+						label: _loc("DND4E.VisionBlind"),
+					},
+				},
+			},
+		};
 		const valuelessTraits = {
 			allAround: {
 				label: _loc(this.actor.system.schema.getField("senses.allAround").label),
@@ -1791,15 +1808,12 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				chosen: this.actor.system.senses.allAround,
 				value: this.actor.system.senses.allAround,
 			},
-			blind: {
-				label: _loc(this.actor.system.schema.getField("senses.blind").label),
-				path: "system.senses.blind",
-				chosen: this.actor.system.senses.blind,
-				value: this.actor.system.senses.blind,
-			},
 		};
-		const choices = CONFIG.DND4E["senses"];
-		const options = { name: target.dataset.target, window: { title: label }, valuelessTraits, choices, custom: "system.senses.custom" };
+		const choices = foundry.utils.duplicate(CONFIG.DND4E.senses);
+		delete choices.nv;
+		delete choices.lv;
+		delete choices.dv;
+		const options = { name: target.dataset.target, window: { title: label }, dropdownTraits, valuelessTraits, choices, custom: "system.senses.custom" };
 		new apps.TraitSelectorValues({ document: this.actor, ...options }).render(true);
 	}
 
