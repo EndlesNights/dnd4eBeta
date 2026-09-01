@@ -156,6 +156,7 @@ export default defineConfig([
 			}],
 
 			"@html-eslint/indent": ["error", 2],
+			"@html-eslint/no-multiple-h1": "off",
 		},
 	},
 	{
