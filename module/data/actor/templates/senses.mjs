@@ -4,7 +4,18 @@ import { default as MappingField } from "../../fields/mapping-field.mjs";
 export default class SensesTemplate extends foundry.abstract.DataModel {
 	/** Getter for sense data. */
 	static get common() {
+		const basicSight = {
+			nv: CONFIG.DND4E.senses.nv,
+			lv: CONFIG.DND4E.senses.lv,
+			dv: CONFIG.DND4E.senses.dv,
+			blind: { label: "DND4E.VisionBlind" },
+		};
+		const specialSenses = foundry.utils.duplicate(CONFIG.DND4E.senses);
+		delete specialSenses.nv;
+		delete specialSenses.lv;
+		delete specialSenses.dv;
 		return {
+			basic: new StringField({ required: true, initial: "nv", choices: basicSight }),
 			special: new MappingField(new SchemaField({
 				value: new BooleanField({ initial: false }),
 				range: new NumberField({ required: true, nullable: true, initial: null }),
@@ -14,7 +25,6 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 				label: "DND4E.SpecialSenses",
 			}),
 			allAround: new BooleanField({ initial: false, label: "DND4E.SpecialSensesAA" }),
-			blind: new BooleanField({ initial: false, label: "DND4E.VisionBlind" }),
 			custom: new StringField({ initial: "" }),
 			notes: new StringField({ initial: "" }),
 		};
@@ -59,6 +69,23 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 		if (source.senses?.special && ("custom" in source.senses.special)) {
 			source.senses.custom = source.senses.special.custom;
 			delete source.senses.special.custom;
+		}
+
+		if (source.senses?.special?.nv?.value) {
+			source.senses.basic = "nv";
+			delete source.senses.special.nv;
+		}
+		if (source.senses?.special?.lv?.value) {
+			source.senses.basic = "lv";
+			delete source.senses.special.lv;
+		}
+		if (source.senses?.special?.dv?.value) {
+			source.senses.basic = "dv";
+			delete source.senses.special.dv;
+		}
+		if (source.senses?.blind) {
+			source.senses.basic = "blind";
+			delete source.senses.blind;
 		}
 	}
 }

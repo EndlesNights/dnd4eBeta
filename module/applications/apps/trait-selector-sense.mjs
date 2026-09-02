@@ -64,6 +64,12 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
 		let values = Object.keys(attr).map((key) => [key, attr[key]]);
 
+		let dropdownTraits = foundry.utils.duplicate(this.options.dropdownTraits);
+		for (let [k, v] of Object.entries(dropdownTraits)) {
+			dropdownTraits[k].chosen = foundry.utils.getProperty(this.document, v.path);
+		}
+		context.dropdownTraits = dropdownTraits;
+
 		context.valuelessTraits = this.options.valuelessTraits;
 
 		// Populate choices
@@ -87,7 +93,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 			context.custom = "";
 		}
 		context.buttons = [{ type: "submit", icon: "far fa-save", label: "DND4E.Save" }];
-		context.heading = this.options.window.title;
+		context.heading = _loc("DND4E.SpecialSenses");
 
 		// Return data
 		return context;
@@ -104,10 +110,13 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		// Obtain choices
 		for (let [k, v] of Object.entries(formData)) {
 			if (k === "custom") continue;
-			if (Object.keys(this.options.valuelessTraits).includes(k)) {
+			if (Object.keys(this.options.dropdownTraits).includes(k)) {
+				updateData[this.options.dropdownTraits[k].path] = v;
+			}
+			else if (Object.keys(this.options.valuelessTraits).includes(k)) {
 				updateData[this.options.valuelessTraits[k].path] = v;
 			} else {
-				updateData[`${this.attribute}.${k}`] = { value: v[0], range: v[0] ? v[1] : "" };
+				updateData[`${this.attribute}.${k}`] = { value: v[0], range: v[0] ? v[1] : null };
 			}
 		}
 

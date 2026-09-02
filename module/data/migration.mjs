@@ -7,7 +7,7 @@ export const migrateWorld = async function(migrationVersion) {
 	migrationVersion = migrationVersion || game.settings.get("dnd4e", "systemMigrationVersion");
 	// Update these versions whenever we make data model changes that require immediately saving the changes to the DB.
 	const migrateActiveEffects = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
-	const migrateActors = foundry.utils.isNewerVersion("0.9.1", migrationVersion);
+	const migrateActors = foundry.utils.isNewerVersion("0.9.3", migrationVersion);
 	const migrateItems = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
 	ui.notifications.info(_loc("MIGRATION.4eBegin", { version }), { permanent: true });
 

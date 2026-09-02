@@ -62,12 +62,12 @@ export default class TokenDocument4e extends TokenDocument {
 		let maxSightRange = -Infinity;
 		let sightVisionMode = null;
 
-		if (senses.blind) detectionModes["lightPerception"] = 0;
+		if (senses.basic === "blind") detectionModes["lightPerception"] = 0;
 
 		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
-			if (!senses.special[key]?.value) continue;
+			if (!(senses.special[key]?.value || (senses.basic === key))) continue;
 			let range;
-			if (senses.blind && ["nv", "lv", "dv"].includes(key)) {
+			if ((senses.basic === "blind") && ["nv", "lv", "dv"].includes(key)) {
 				range = 0;
 			} else {
 				range = config.range ?? senses.special[key]?.range ?? Infinity;
