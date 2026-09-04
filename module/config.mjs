@@ -315,14 +315,14 @@ preLocalize("limitedUsePeriods", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
-DND4E.autoanimationHook = {
-	attack: "DND4E.AutoanimationHookAttack",
-	damage: "DND4E.AutoanimationHookDamage",
-	healing: "DND4E.AutoanimationHookHealing",
-	usePower: "DND4E.AutoanimationHookUsePower",
-	template: "DND4E.AutoanimationHookTemplate",
+DND4E.autoanimationsHook = {
+	attack: { label: "DND4E.AutoanimationsHookAttack" },
+	damage: { label: "DND4E.AutoanimationsHookDamage" },
+	healing: { label: "DND4E.AutoanimationsHookHealing" },
+	usePower: { label: "DND4E.AutoanimationsHookUsePower" },
+	template: { label: "DND4E.AutoanimationsHookTemplate" },
 };
-preLocalize("autoanimationHook");
+preLocalize("autoanimationsHook", { keys: ["label"] });
 
 /* -------------------------------------------- */
 

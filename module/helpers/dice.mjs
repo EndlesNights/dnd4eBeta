@@ -585,7 +585,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	}
 	else {
 		roll.populateMultirollData(targetData, critStateArray);
-		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);
+		Hooks.callAll("dnd4e.rollAttack", itemData, targetData, speaker);
 
 		if (targetData.targetHit.length) {
 			if (options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {

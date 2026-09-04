@@ -1,5 +1,8 @@
 <section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
+  {{#if autoanimationsActive}}
+  {{formGroup autoAnimationsField value=source.system.autoanimationsHook localize=true}}
+  {{/if}}
   {{#each system.macros as |macro i|}}
   <fieldset class="collapsible form-group vertical collapsed" data-macro-number="{{@index}}">
     <legend class="fieldset-expand-toggle" data-action="expandMacro">{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
@@ -12,15 +15,13 @@
         </select>
       </div>
 
-      {{#unless (eq macro.launchOrder "comBon")}}
-      {{#unless (eq macro.launchOrder "preAttack")}}
+      {{#unless (or (eq macro.launchOrder "comBonAttacker") (eq macro.launchOrder "comBonTarget") (eq macro.launchOrder "preAttackAttacker") (eq macro.launchOrder "preAttackTarget") (eq macro.launchOrder "evalDef"))}}
       <div class="form-group loose">
         <label>{{ localize "Type" }}</label>
         <select name="system.macros.{{@index}}.type" class="macro-type">
           {{selectOptions ../config.macroType selected=macro.type labelAttr="label"}}
         </select>
       </div>
-      {{/unless}}
       {{/unless}}
 
       <label class="checkbox right">
@@ -41,20 +42,6 @@
         </select>
       </div>
       --}}
-
-      {{#if autoanimationsActive}}
-      {{#unless (eq macro.launchOrder "comBon")}}
-      {{#unless (eq macro.launchOrder "preAttack")}}
-      <div class="form-group loose">
-        <label>Autoanimation Hook</label>
-        <select name="system.macros.{{@index}}.autoanimationHook">
-          <option value=""{{#if (eq macro.autoanimationHook "")}}selected{{/if}}>Automatic</option>
-          {{selectOptions ../config.autoanimationHook selected=macro.autoanimationHook localize=true}}
-        </select>
-      </div>
-      {{/unless}}
-      {{/unless}}
-      {{/if}}
 
     </div>
 
