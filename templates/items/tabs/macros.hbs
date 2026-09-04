@@ -15,15 +15,13 @@
         </select>
       </div>
 
-      {{#unless (eq macro.launchOrder "comBon")}}
-      {{#unless (eq macro.launchOrder "preAttack")}}
+      {{#unless (or (eq macro.launchOrder "comBonAttacker") (eq macro.launchOrder "comBonTarget") (eq macro.launchOrder "preAttackAttacker") (eq macro.launchOrder "preAttackTarget") (eq macro.launchOrder "evalDef"))}}
       <div class="form-group loose">
         <label>{{ localize "Type" }}</label>
         <select name="system.macros.{{@index}}.type" class="macro-type">
           {{selectOptions ../config.macroType selected=macro.type labelAttr="label"}}
         </select>
       </div>
-      {{/unless}}
       {{/unless}}
 
       <label class="checkbox right">
