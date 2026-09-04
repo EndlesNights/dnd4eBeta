@@ -10,9 +10,9 @@ export default class ItemMacroTemplate extends foundry.abstract.DataModel {
 				launchOrder: new StringField({ initial: "off" }),
 				command: new StringField({ initial: "" }),
 				author: new StringField({ initial: "" }),
-				autoanimationHook: new StringField({ initial: "" }),
 				enabled: new BooleanField({ initial: true }),
 			}), { initial: [] }),
+			autoanimationsHook: new StringField({ initial: "", blank: true, choices: CONFIG.DND4E.autoanimationsHook, label: "DND4E.AutoanimationsHook" }),
 		};
 	}
 
