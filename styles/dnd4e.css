@@ -3114,6 +3114,15 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	label.checkbox{
 		font-size:inherit;
 	}
+  & .senses{
+    & label.checkbox{
+      display:flex;
+      & .checkbox-label{
+        flex-basis:6em;
+        min-width:fit-content;
+      }
+    }
+  }
 }
 .dialogue-content{
 	display:flex;

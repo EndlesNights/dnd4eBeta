@@ -1901,6 +1901,7 @@
 	"Delete": "Delete",
 	"Desc": "Desc",
 	"DeterminedBySetting": "Determined by Setting",
+	"Display" : "Display",
 	"DisplayEffect" : "Display after Attack text",
 	"EffectDetailsText": "Effect Text",
 	"EffectReplace": "Replace Effect Details",
