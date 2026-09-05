@@ -1,10 +1,12 @@
 <div class="dialogue-content">
+  <h1 class="form-title">{{heading}}</h1>
+  
   {{#if dropdownTraits}}
-  <div class="form-group vertical">
+  <div class="form-group vertical drop-traits">
     <ol class="trait-list">
       {{#each dropdownTraits as |trait key|}}
-      <li>
-        <h1 class="form-title">{{trait.label}}</h1>
+      <li class="form-fields">
+        <label for="{{key}}">{{trait.label}}</label>
         <select name="{{key}}">
           {{selectOptions trait.choices selected=trait.chosen labelAttr="label"}}
         </select>
@@ -13,17 +15,16 @@
     </ol>
   </div>
   {{/if}}
-
-  <h1 class="form-title">{{heading}}</h1>
-
+{{#if (eq attribute 'system.senses.special')}}
+  <fieldset class="senses"><legend>{{heading2}}</legend>{{/if}}
   {{#if valuelessTraits}}
-  <div class="form-group vertical">
+  <div class="form-group vertical valueless-traits">
     <ol class="trait-list">
       {{#each valuelessTraits as |trait key|}}
       <li>
         <label class="checkbox">
           <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked trait.chosen}}>
-          {{trait.label}}
+          <span class="checkbox-label">{{trait.label}}</span>
         </label>
       </li>
       {{/each}}
@@ -31,14 +32,14 @@
   </div>
   {{/if}}
 
-  <div class="form-group vertical">
+  <div class="form-group vertical valued-traits">
     <ol class="trait-list">
       {{#each choices as |choice key|}}
       <li>
         <label class="checkbox">
           <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+          <span class="checkbox-label">{{choice.label}}</span>
           <input class="checkbox-rider" type="text" name="{{key}}" value="{{choice.value}}" data-tooltip="{{localize 'DND4E.SpecialSensesRange'}}">
-          {{choice.label}}
         </label>
       </li>
       {{/each}}
@@ -51,5 +52,6 @@
     <input type="text" name="custom" value="{{custom}}" data-dtype="String">
   </div>
   {{/if}}
+  {{#if (eq attribute 'system.senses.special')}}</fieldset>{{/if}}
 
 </div>
