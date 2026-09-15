@@ -244,7 +244,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		}
 	}
 
-	/* -------------------------------------------- */
+	/* ----------------------------------------- */
 
 	/**
 		 * Add or remove a macro
@@ -282,8 +282,6 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		}
 
 	}
-
-	/* -------------------------------------------- */
 
 	/* ----------------------------------------- */
 
