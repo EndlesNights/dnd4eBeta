@@ -3093,6 +3093,21 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			/*grid-template-columns: 12fr 7fr 7fr 4fr 1rem;*/
 		}
 	}
+	.tab.macros{
+		.macro-type{
+			min-width:6em;
+		}
+		.macro-text{
+			flex:1em 100 0;
+			min-height:2em;
+			code-mirror{
+				min-height:100%;
+			}
+		}
+		fieldset.collapsible:first-child{
+			flex-basis:calc(100% - 2em);
+		}
+	}
 }
 
 /* ----------------------------------------- */

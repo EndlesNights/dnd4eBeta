@@ -126,14 +126,14 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 			}
 
 			// Check Macros and Trigger Hook
-			for (const actorItem of [...actor.items]) {
+			for (const actorItem of [...actor.items, ...actor.appliedEffects]) {
 				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
 					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
 			if (target?.actor) {
-				for (const actorItem of [...target.actor.items]) {
+				for (const actorItem of [...target.actor.items, ...target.actor.appliedEffects]) {
 					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
 						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 						func(actorItem, item, attacker, target, { bonuses: targetBonuses });
@@ -386,14 +386,14 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 
 			// Check Macros and Trigger Hook
-			for (const actorItem of [...actor.items]) {
+			for (const actorItem of [...actor.items, ...actor.appliedEffects]) {
 				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
 					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
 			if (target?.actor) {
-				for (const actorItem of [...target.actor.items]) {
+				for (const actorItem of [...target.actor.items, ...target.actor.appliedEffects]) {
 					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
 						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 						func(actorItem, item, attacker, target, { bonuses: targetBonuses });
@@ -488,14 +488,14 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					});
 				}
 				const target = targets[rollExpressionIdx];
-				for (const actorItem of [...actor.items]) {
+				for (const actorItem of [...actor.items, ...actor.appliedEffects]) {
 					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
 						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 						func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 					}
 				}
 				if (target?.actor) {
-					for (const actorItem of [...target.actor.items]) {
+					for (const actorItem of [...target.actor.items, ...target.actor.appliedEffects]) {
 						for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackTarget"))) {
 							const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 							func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
@@ -524,7 +524,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 			const targetActor = target.actor;
 			await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "defence", null, null, defOptions);
-			for (const actorItem of [...targetActor.items]) {
+			for (const actorItem of [...targetActor.items, ...targetActor.appliedEffects]) {
 				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "evalDef"))) {
 					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 					func(actorItem, item, attacker, target, { defence: attackedDef, bonuses: defOptions.bonuses });
