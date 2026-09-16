@@ -45,6 +45,7 @@ export default class DetectionModeHearing extends foundry.canvas.perception.Dete
 				type: "sound",
 				mode: "any",
 				source: visionSource,
+				useThreshold: true,
 			},
 		);
 	}
