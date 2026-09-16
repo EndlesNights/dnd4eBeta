@@ -217,6 +217,9 @@ Hooks.once("init", async function() {
 	if (CONFIG.statusEffects.dying && CONFIG.statusEffects.unconscious) {
 		CONFIG.statusEffects.dying.statuses ??= [];
 		CONFIG.statusEffects.dying.statuses.push("unconscious");
+		if (CONFIG.statusEffects.helpless) {
+			CONFIG.statusEffects.unconscious.statuses.push("helpless");
+		}
 	}
 
 	if (CONFIG.statusEffects.grabbed && CONFIG.statusEffects.immobilized) {
@@ -234,6 +237,9 @@ Hooks.once("init", async function() {
 	if (CONFIG.statusEffects.petrified && CONFIG.statusEffects.unconscious) {
 		CONFIG.statusEffects.petrified.statuses ??= [];
 		CONFIG.statusEffects.petrified.statuses.push("unconscious");
+		if (CONFIG.statusEffects.helpless) {
+			CONFIG.statusEffects.unconscious.statuses.push("helpless");
+		}
 	}
 
 	if (CONFIG.statusEffects.unconscious && CONFIG.statusEffects.helpless) {
