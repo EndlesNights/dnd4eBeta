@@ -218,7 +218,7 @@ Hooks.once("init", async function() {
 		CONFIG.statusEffects.dying.statuses ??= [];
 		CONFIG.statusEffects.dying.statuses.push("unconscious");
 		if (CONFIG.statusEffects.helpless) {
-			CONFIG.statusEffects.unconscious.statuses.push("helpless");
+			CONFIG.statusEffects.dying.statuses.push("helpless");
 		}
 	}
 
@@ -238,7 +238,7 @@ Hooks.once("init", async function() {
 		CONFIG.statusEffects.petrified.statuses ??= [];
 		CONFIG.statusEffects.petrified.statuses.push("unconscious");
 		if (CONFIG.statusEffects.helpless) {
-			CONFIG.statusEffects.unconscious.statuses.push("helpless");
+			CONFIG.statusEffects.petrified.statuses.push("helpless");
 		}
 	}
 
