@@ -199,14 +199,49 @@ Hooks.once("init", async function() {
 	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
 		const newEffect = {
 			id,
+			_id: utils.staticID(`dnd4e${id}`),
 			...data,
 		};
+		if (DND4E.grantsCA.includes(id)) {
+			newEffect.statuses = ["grantingCA"];
+		}
 		arr.push(newEffect);
 		return arr;
 	}, []);
 	CONFIG.specialStatusEffects.BLIND = "blinded";
 	CONFIG.specialStatusEffects.BURROW = "burrowing";
+	CONFIG.specialStatusEffects.DEAFENED = "deafened";
 	CONFIG.specialStatusEffects.FLY = "flying";
+	CONFIG.specialStatusEffects.SILENT = "silent";
+
+	if (CONFIG.statusEffects.dying && CONFIG.statusEffects.unconscious) {
+		CONFIG.statusEffects.dying.statuses ??= [];
+		CONFIG.statusEffects.dying.statuses.push("unconscious");
+	}
+
+	if (CONFIG.statusEffects.grabbed && CONFIG.statusEffects.immobilized) {
+		CONFIG.statusEffects.grabbed.statuses ??= [];
+		CONFIG.statusEffects.grabbed.statuses.push("immobilized");
+	}
+
+	if (CONFIG.statusEffects.hidden) {
+		CONFIG.statusEffects.hidden.statuses = [
+			CONFIG.specialStatusEffects.INVISIBLE,
+			CONFIG.specialStatusEffects.SILENT,
+		];
+	}
+
+	if (CONFIG.statusEffects.petrified && CONFIG.statusEffects.unconscious) {
+		CONFIG.statusEffects.petrified.statuses ??= [];
+		CONFIG.statusEffects.petrified.statuses.push("unconscious");
+	}
+
+	if (CONFIG.statusEffects.unconscious && CONFIG.statusEffects.helpless) {
+		CONFIG.statusEffects.unconscious.statuses ??= [];
+		CONFIG.statusEffects.unconscious.statuses.push("helpless");
+	}
+
+	CONFIG.Canvas.detectionModes.hearing = new canvas.perception.DetectionModeHearing();
 
 	// Set up token movement actions
 	documents.TokenDocument4e.registerMovementActions();

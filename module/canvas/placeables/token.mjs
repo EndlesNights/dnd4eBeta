@@ -174,6 +174,10 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		if (applicableEffects.includes(statusId) && this.hasDynamicRing) {
 			this.renderFlags.set({ refreshRingVisuals: true });
 		}
+		if ((statusId === CONFIG.specialStatusEffects.DEAFENED)
+			|| (statusId === CONFIG.specialStatusEffects.SILENT)) {
+			canvas.perception.update({ refreshVision: true });
+		}
 		super._onApplyStatusEffect(statusId, active);
 	}
 

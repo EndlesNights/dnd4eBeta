@@ -63,6 +63,7 @@ export default class TokenDocument4e extends TokenDocument {
 		let sightVisionMode = null;
 
 		if (senses.basic === "blind") detectionModes["lightPerception"] = 0;
+		detectionModes["hearing"] = Infinity;
 
 		for (const [key, config] of Object.entries(CONFIG.DND4E.senses)) {
 			if (!(senses.special[key]?.value || (senses.basic === key))) continue;
