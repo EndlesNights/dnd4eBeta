@@ -6,7 +6,7 @@ export default class DetectionModeHearing extends foundry.canvas.perception.Dete
 		super({
 			id: "hearing",
 			label: "DND4E.SenseHearing",
-			type: foundry.canvas?.perception?.DetectionMode.DETECTION_TYPES.OTHER,
+			type: foundry.canvas?.perception?.DetectionMode.DETECTION_TYPES.SOUND,
 			walls: true,
 			angle: false,
 		});

@@ -1841,7 +1841,7 @@ export function computeConcealment(token, target) {
 	const OBSCUREMENT = CONFIG.DND4E.OBSCUREMENT;
 
 	if (token.canDetect(target, { modes: ["seeAll", "feelTremor"] })) return CONCEALMENT.NONE;
-	if (!token.canDetect(target)) return CONCEALMENT.TOTAL;
+	if (!token.canDetect(target, { modes: ["basicSight", "lightPerception"] })) return CONCEALMENT.TOTAL;
 
 	let concealmentLevel = CONCEALMENT.NONE;
 
