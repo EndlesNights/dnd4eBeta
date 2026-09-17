@@ -1836,9 +1836,7 @@ export function computeFlankedStatus(token) {
  * @returns {Number}                        Calculated concealment level of the target relative to the attacking token
  */
 export function computeConcealment(token, target) {
-	const CONCEALMENT = CONFIG.DND4E.CONCEALMENT;
-	const LIGHT_LEVEL = CONFIG.DND4E.LIGHT_LEVEL;
-	const OBSCUREMENT = CONFIG.DND4E.OBSCUREMENT;
+	const { CONCEALMENT, LIGHT_LEVEL, OBSCUREMENT } = CONFIG.DND4E;
 
 	if (token.canDetect(target, { modes: ["seeAll", "feelTremor"] })) return CONCEALMENT.NONE;
 	if (!token.canDetect(target, { modes: ["basicSight", "lightPerception"] })) return CONCEALMENT.TOTAL;
