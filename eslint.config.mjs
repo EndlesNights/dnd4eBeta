@@ -57,7 +57,7 @@ export default defineConfig([
 				// global namespaces
 				$: "readonly", //jQuery alias
 				canvas: "readonly",
-				DND4E: "readonly",
+				dnd4e: "readonly",
 				foundry: "readonly",
 				game: "readonly",
 				jQuery: "readonly",

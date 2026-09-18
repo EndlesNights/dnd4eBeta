@@ -1478,6 +1478,30 @@
 	"Shadow": "Shadow"
 },
 
+"DND4E.PSEUDO": {
+	"FIELDS": {
+	"name": {
+		"label": "Name"
+	},
+	"img": {
+		"label": "Image"
+	},
+	"type": {
+		"label": "Type"
+	}
+	},
+	"SHEET": {
+	"baseConfiguration": "Base Configuration",
+	"TABS": {
+		"details": "Details",
+		"identity": "Identity"
+	}
+	},
+	"Notifications": {
+	"DeletedInfo": "Deleted {pseudoName} {id} with type {type} from {name}"
+	}
+},
+
 "DND4E.RegionBehaviors": {
 	"ApplyActiveEffect": {
 		"FIELDS": {

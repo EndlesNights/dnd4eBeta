@@ -1,0 +1,110 @@
+import PseudoDocument from "./pseudo-document.mjs";
+
+/** @import { FormSelectOption } from "@client/applications/forms/fields.mjs" */
+
+const { DocumentTypeField } = foundry.data.fields;
+
+/**
+ * A variant of PseudoDocument that allows for polymorphism across different values of `type`.
+ */
+export default class TypedPseudoDocument extends PseudoDocument {
+	/** @inheritdoc */
+	static defineSchema() {
+		return Object.assign(super.defineSchema(), {
+			type: new DocumentTypeField(this),
+		});
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The type of this pseudo-document subclass.
+	 * @type {string}
+	 * @abstract
+	 */
+	static get TYPE() {
+		return "";
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The subtypes of this pseudo-document.
+	 * @type {Record<string, typeof TypedPseudoDocument>}
+	 */
+	static get TYPES() {
+		return Object.values(this.documentConfig).reduce((acc, { documentClass }) => {
+			if (documentClass.TYPE) acc[documentClass.TYPE] = documentClass;
+			return acc;
+		}, {});
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static CREATE_TEMPLATE = "systems/dnd4e/templates/sheets/pseudo-documents/typed-create-dialog.hbs";
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The object that defines this model's subtypes.
+	 * @type {object}
+	 */
+	static get documentConfig() {
+		return dnd4e.CONFIG[this.metadata.documentName];
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	prepareBaseData() {
+		super.prepareBaseData();
+		this.img ||= this.constructor.documentConfig[this.type].defaultImage;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	prepareDerivedData() {
+		super.prepareDerivedData();
+		if (!this.name) {
+			this.name = _loc(`TYPES.${this.documentName}.${this.type}`);
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static async create(data = {}, { parent, ...operation } = {}) {
+		data = foundry.utils.deepClone(data);
+		if (!data.type) data.type = foundry.utils.objectKeys(this.TYPES).next().value;
+		if (!(data.type in this.TYPES)) {
+			throw new Error(`The '${data.type}' type is not a valid type for a '${this.metadata.documentName}' pseudo-document!`);
+		}
+		return super.create(data, { parent, ...operation });
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static _prepareCreateDialogContext(parent) {
+
+		/** @type {FormSelectOption[]} */
+		const typeOptions = Object.entries(this.documentConfig).map(([value, { label }]) => ({ value, label }));
+
+		return {
+			typeOptions,
+			fields: this.schema.fields,
+		};
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static _createDialogRenderCallback(event, dialog) {
+		const typeInput = dialog.element.querySelector("[name=\"type\"]");
+		const nameInput = dialog.element.querySelector("[name=\"name\"]");
+		nameInput.placeholder = this.documentConfig[typeInput.value].label;
+		typeInput.addEventListener("change", () => nameInput.placeholder = this.documentConfig[typeInput.value].label);
+	}
+}

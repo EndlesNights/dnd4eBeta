@@ -1,0 +1,247 @@
+const { HandlebarsApplicationMixin, Application } = foundry.applications.api;
+
+/**
+ * @import Document from "@common/abstract/document.mjs";
+ * @import PseudoDocument from "../../data/pseudo-documents/pseudo-document.mjs";
+ * @import { ApplicationConfiguration } from "@client/applications/_types.mjs";
+ */
+
+/**
+ * Generic sheet class to represent a {@linkcode PseudoDocument}.
+ * @template {PseudoDocument} TPseudo The type of Pseudodocument this covers.
+ * @abstract
+ */
+export default class PseudoDocumentSheet extends HandlebarsApplicationMixin(Application) {
+	/**
+	 * @param {ApplicationConfiguration} options
+	 */
+	constructor(options) {
+		super(options);
+		this.#pseudoDocument = options.document;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static DEFAULT_OPTIONS = {
+		id: "{id}",
+		actions: {
+			copyUuid: {
+				handler: PseudoDocumentSheet.#copyUuid,
+				buttons: [0, 2],
+			},
+		},
+		classes: ["dnd4e", "default"],
+		form: {
+			handler: PseudoDocumentSheet.#onSubmitForm,
+			submitOnChange: true,
+		},
+		position: {
+			width: 500,
+			height: "auto",
+		},
+		tag: "form",
+		window: {
+			contentClasses: ["standard-form"],
+		},
+	};
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static TABS = {
+		primary: {
+			tabs: [
+				{ id: "identity", icon: "fa-solid fa-tag" },
+				{ id: "details", icon: "fa-solid fa-pen-fancy" },
+			],
+			initial: "identity",
+			labelPrefix: "DRAW_STEEL.PSEUDO.SHEET.TABS",
+		},
+	};
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Registered sheets. A map of documents to a map of pseudo-document uuids and their sheets.
+	 * @type {Map<Document, Map<string, PseudoDocumentSheet>>}
+	 */
+	static #sheets = new Map();
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Retrieve or register a new instance of a pseudo-document sheet.
+	 * @param {PseudoDocument} pseudoDocument   The pseudo-document.
+	 * @returns {PseudoDocumentSheet|null}    An existing or new instance of a sheet, or null if the pseudo-
+	 *                                        document does not have a sheet class.
+	 */
+	static getSheet(pseudoDocument) {
+		const doc = pseudoDocument.document;
+		if (!PseudoDocumentSheet.#sheets.get(doc)) {
+			PseudoDocumentSheet.#sheets.set(doc, new Map());
+		}
+		if (!PseudoDocumentSheet.#sheets.get(doc).get(pseudoDocument.uuid)) {
+			const Cls = pseudoDocument.constructor.metadata.sheetClass;
+			if (!Cls) return null;
+			PseudoDocumentSheet.#sheets.get(doc).set(pseudoDocument.uuid, new Cls({ document: pseudoDocument }));
+		}
+		return PseudoDocumentSheet.#sheets.get(doc).get(pseudoDocument.uuid);
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	tabGroups = {};
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The pseudo document.
+	 * @type {PseudoDocument}
+	 */
+	#pseudoDocument;
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The pseudo-document. This can be null if a parent pseudo-document is removed.
+	 * @type {TPseudo|null}
+	 */
+	get pseudoDocument() {
+		return this.#pseudoDocument;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The parent document.
+	 * @type {Document}
+	 */
+	get document() {
+		return this.#pseudoDocument.document;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	get title() {
+		const { documentName, name, id } = this.pseudoDocument;
+		return `${_loc(`DOCUMENT.${documentName}`)}: ${name ? name : id}`;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_initializeApplicationOptions({ document, ...options }) {
+		options = super._initializeApplicationOptions(options);
+		options.uniqueId = `${this.constructor.name}-${document.uuid.replaceAll(".", "-")}`;
+		return options;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_configureRenderOptions(options) {
+		super._configureRenderOptions(options);
+		// Update header title.
+		if (
+			options.renderContext &&
+      foundry.utils.getProperty(options, `renderData.${this.pseudoDocument.fieldPath}.${this.pseudoDocument.id}.name`)
+		) {
+			options.window = Object.assign(options.window ?? {}, { title: this.title });
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	async _onFirstRender(context, options) {
+		await super._onFirstRender(context, options);
+		this.document.apps[this.id] = this;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_onClose(options) {
+		super._onClose(options);
+		delete this.document.apps[this.id];
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_getFrameButtons(options) {
+		const buttons = super._getFrameButtons(options);
+
+		buttons.push({
+			icon: "fa-solid fa-passport",
+			action: "copyUuid",
+			label: "APPLICATION.ACTIONS.CopyUuid",
+		});
+
+		return buttons;
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_canRender(options) {
+		if (!this.pseudoDocument) {
+			if (this.rendered) this.close();
+			return false;
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	async _prepareContext(options) {
+		const document = this.pseudoDocument;
+
+		const context = {
+			tabs: this._prepareTabs("primary"),
+			document,
+			source: document._source,
+			fields: document.schema.fields,
+		};
+
+		return context;
+	}
+
+	/* -------------------------------------------------- */
+	/*   Event handlers                                   */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Handle form submission.
+	 * @this {PseudoDocumentSheet}
+	 * @param {PointerEvent} event            The originating click event.
+	 * @param {HTMLElement} form              The form element.
+	 * @param {FormDataExtended} formData     The form data.
+	 */
+	static #onSubmitForm(event, form, formData) {
+		const submitData = foundry.utils.expandObject(formData.object);
+		this.pseudoDocument.update(submitData);
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Copies the ID or UUID for the pseudo document.
+	 * @this {PseudoDocumentSheet}
+	 * @param {PointerEvent} event      The originating click event.
+	 */
+	static #copyUuid(event) {
+		event.preventDefault(); // Don't open context menu
+		event.stopPropagation(); // Don't trigger other events
+		if (event.detail > 1) return; // Ignore repeated clicks
+		const pseudo = this.pseudoDocument;
+		const id = (event.button === 2) ? pseudo.id : pseudo.uuid;
+		const type = (event.button === 2) ? "id" : "uuid";
+		const label = _loc(`DOCUMENT.${pseudo.documentName}`);
+		game.clipboard.copyPlainText(id);
+		ui.notifications.info("DOCUMENT.IdCopiedClipboard", { format: { label, type, id } });
+	}
+}

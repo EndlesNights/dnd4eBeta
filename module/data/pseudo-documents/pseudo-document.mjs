@@ -1,0 +1,404 @@
+/**
+ * @import Document from "@common/abstract/document.mjs";
+ * @import PseudoDocumentSheet from "../../applications/api/pseudo-document-sheet.mjs";
+ * @import { PseudoDocumentMetadata } from "./_types.mjs";
+ * @import ModelCollection from "../../utils/model-collection.mjs";
+ */
+
+const { DocumentIdField, IntegerSortField, StringField, FilePathField } = foundry.data.fields;
+
+/**
+ * A special subclass of data model that can be treated as a system-defined embedded document.
+ */
+export default class PseudoDocument extends foundry.abstract.DataModel {
+	/**
+	 * Pseudo-document metadata.
+	 * @type {PseudoDocumentMetadata}
+	 */
+	static get metadata() {
+		return {
+			documentName: null,
+			icon: "",
+			embedded: {},
+			sheetClass: null,
+		};
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static defineSchema() {
+		return {
+			_id: new DocumentIdField({ initial: () => foundry.utils.randomID() }),
+			name: new StringField({ required: true }),
+			img: new FilePathField({ categories: ["IMAGE"] }),
+			sort: new IntegerSortField(),
+		};
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	static LOCALIZATION_PREFIXES = ["DND4E.PSEUDO"];
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Template for {@link createDialog}.
+	 */
+	static CREATE_TEMPLATE = "systems/dnd4e/templates/sheets/pseudo-documents/base-create-dialog.hbs";
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The id of this pseudo-document.
+	 * @type {string}
+	 */
+	get id() {
+		return this._id;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The document name of this pseudo document.
+	 * @type {string}
+	 */
+	get documentName() {
+		return this.constructor.metadata.documentName;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The uuid of this document.
+	 * @type {string}
+	 */
+	get uuid() {
+		let parent = this.parent;
+		// Model validation now constructs this without a parent during diff checking
+		// which causes an error when they try to access the UUID for potential logging purposes.
+		if (!parent) return this.id ? `${this.documentName}.${this.id}` : null;
+		while (!(parent instanceof PseudoDocument) && !(parent instanceof foundry.abstract.Document)) parent = parent.parent;
+		return [parent.uuid, this.documentName, this.id].join(".");
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The parent document of this pseudo-document.
+	 * @type {Document}
+	 */
+	get document() {
+		let parent = this;
+		while (!(parent instanceof foundry.abstract.Document)) parent = parent.parent;
+		return parent;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * The property path to this pseudo document relative to its parent document.
+	 * @type {string}
+	 */
+	get fieldPath() {
+		let path = this.parent.constructor.metadata.embedded[this.documentName];
+		if (this.parent instanceof PseudoDocument) path = [this.parent.fieldPath, this.parent.id, path].join(".");
+		return path;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Reference to the sheet of this pseudo-document, registered in a static map.
+	 * A pseudo-document is temporary, unlike regular documents, so the relation here
+	 * is not one-to-one.
+	 * @type {PseudoDocumentSheet | null}
+	 */
+	get sheet() {
+		return dnd4e.applications.api.PseudoDocumentSheet.getSheet(this);
+	}
+
+	/* -------------------------------------------------- */
+
+	/** @inheritdoc */
+	_configure(options = {}) {
+		super._configure(options);
+		Object.defineProperty(this, "collection", {
+			value: options.collection ?? null,
+			writable: false,
+		});
+	}
+
+	/* -------------------------------------------------- */
+	/*   Data preparation                                 */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Prepare base data. This method is not called automatically; it is the responsibility
+	 * of the parent document to ensure pseudo-documents prepare base and derived data.
+	 */
+	prepareBaseData() {
+		const documentNames = Object.keys(this.constructor.metadata.embedded);
+		for (const documentName of documentNames) {
+			for (const pseudoDocument of this.getEmbeddedCollection(documentName)) {
+				pseudoDocument.prepareBaseData();
+			}
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Prepare derived data. This method is not called automatically; it is the responsibility
+	 * of the parent document to ensure pseudo-documents prepare base and derived data.
+	 */
+	prepareDerivedData() {
+		const documentNames = Object.keys(this.constructor.metadata.embedded);
+		for (const documentName of documentNames) {
+			for (const pseudoDocument of this.getEmbeddedCollection(documentName)) {
+				pseudoDocument.prepareDerivedData();
+			}
+		}
+	}
+
+	/* -------------------------------------------------- */
+	/*   Instance Methods                                 */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Construct a UUID relative to another document.
+	 * While ClientDocument#getRelativeUUID is deprecated, this is is still useful
+	 * because buildRelativeUUID does not directly accept pseudodocuments.
+	 * @param {Document | PseudoDocument | string} relative  The document to compare against.
+	 * @returns {string} The relative UUID.
+	 */
+	getRelativeUUID(relative) {
+		const origin = relative instanceof PseudoDocument ? relative.uuid : relative;
+
+		return foundry.utils.buildRelativeUuid(this.uuid, origin);
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Retrieve an embedded pseudo-document.
+	 * @param {string} embeddedName         The document name of the embedded pseudo-document.
+	 * @param {string} id                   The id of the embedded pseudo-document.
+	 * @param {object} [options]            Retrieval options.
+	 * @param {boolean} [options.invalid]   Retrieve an invalid pseudo-document?
+	 * @param {boolean} [options.strict]    Throw an error if the embedded pseudo-document does not exist?
+	 * @returns {PseudoDocument|null}
+	 */
+	getEmbeddedDocument(embeddedName, id, { invalid = false, strict = false } = {}) {
+		return this.getEmbeddedCollection(embeddedName).get(id, { invalid, strict }) ?? null;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Obtain the embedded collection of a given pseudo-document type.
+	 * @param {string} embeddedName   The document name of the embedded collection.
+	 * @returns {ModelCollection}     The embedded collection.
+	 */
+	getEmbeddedCollection(embeddedName) {
+		const collectionPath = this.constructor.metadata.embedded[embeddedName];
+		if (!collectionPath) {
+			throw new Error(`${embeddedName} is not a valid embedded Pseudo-Document within the [${this.type}] ${this.documentName} subtype!`);
+		}
+		return foundry.utils.getProperty(this, collectionPath);
+	}
+
+	/* -------------------------------------------------- */
+	/*   Drag and Drop Support                            */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Create drag data for storing on initiated drag events.
+	 */
+	toDragData() {
+		return {
+			type: this.documentName,
+			uuid: this.uuid,
+		};
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * A helper function to handle obtaining the relevant PseudoDocument from dropped data provided via a DataTransfer event.
+	 * The dropped data must have a UUID.
+	 *
+	 * @param {object} data           The data object extracted from a DataTransfer event.
+	 * @returns {Promise<PseudoDocument>}   The resolved PseudoDocument.
+	 * @throws If a Document could not be retrieved from the provided data.
+	 */
+	static async fromDropData(data) {
+		const pseudo = await foundry.utils.fromUuid(data.uuid);
+
+		// Ensure that we retrieved a valid document
+		if (!pseudo) {
+			throw new Error("Failed to resolve PseudoDocument from provided DragData. A valid UUID must be provided.");
+		}
+		if (pseudo.documentName !== this.metadata.documentName) {
+			throw new Error(`Invalid Document type '${pseudo.type}' provided to ${this.name}.fromDropData.`);
+		}
+
+		return pseudo;
+	}
+
+	/* -------------------------------------------------- */
+	/*   CRUD Handlers                                    */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Does this pseudo-document exist in the document's source?
+	 * @type {boolean}
+	 */
+	get isSource() {
+		const docName = this.documentName;
+		const fieldPath = this.parent.constructor.metadata.embedded[docName];
+		const parent = (this.parent instanceof foundry.abstract.TypeDataModel) ? this.parent.parent : this.parent;
+		const source = foundry.utils.getProperty(parent._source, fieldPath);
+		if (foundry.utils.getType(source) !== "Object") {
+			throw new Error("Source is not an object!");
+		}
+		return this.id in source;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Create a new instance of this pseudo-document.
+	 * @param {object} [data]                                 The data used for the creation.
+	 * @param {object} operation                              The context of the operation.
+	 * @param {foundry.abstract.DataModel} operation.parent   The parent of this document.
+	 * @param {boolean} [operation.renderSheet]               Render the sheet of the created pseudo-document?
+	 * @returns {Promise<PseudoDocument>} A promise that resolves to the created PseudoDocument.
+	 */
+	static async create(data = {}, { parent, renderSheet = true, ...operation } = {}) {
+		if (!parent) {
+			throw new Error("A parent document must be specified for the creation of a pseudo-document!");
+		}
+		const id = operation.keepId && foundry.data.validators.isValidId(data._id) ? data._id : foundry.utils.randomID();
+
+		const fieldPath = parent instanceof foundry.abstract.Document
+			? parent.system.constructor.metadata?.embedded?.[this.metadata.documentName]
+			: parent.constructor.metadata?.embedded?.[this.metadata.documentName];
+		if (!fieldPath) {
+			throw new Error(`A ${parent.documentName} of type '${parent.type}' does not support ${this.metadata.documentName}!`);
+		}
+
+		const update = { [`${fieldPath}.${id}`]: { ...data, _id: id } };
+		this._configureUpdates("create", parent, update, operation);
+		await parent.update(update, operation);
+		const pseudo = parent.getEmbeddedDocument(this.metadata.documentName, id);
+		if (renderSheet) pseudo.sheet?.render({ force: true });
+		return pseudo;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Prompt for creating this pseudo-document.
+	 * @param {object} [data]                                 The data used for the creation.
+	 * @param {object} operation                              The context of the operation.
+	 * @param {foundry.abstract.Document} operation.parent    The parent of this document.
+	 * @returns {Promise<PseudoDocument|null>}     A promise that resolves to the updated document.
+	 */
+	static async createDialog(data = {}, { parent, ...operation } = {}) {
+		// If there's demand or need we can make the template & context more dynamic
+		const content = await foundry.applications.handlebars.renderTemplate(this.CREATE_TEMPLATE, this._prepareCreateDialogContext(parent));
+
+		const result = await dnd4e.applications.api.Dialog4e.input({
+			content,
+			window: {
+				title: _loc("DOCUMENT.New", { type: _loc(`DOCUMENT.${this.metadata.documentName}`) }),
+				icon: this.metadata.icon,
+			},
+			render: (event, dialog) => this._createDialogRenderCallback(event, dialog),
+		});
+		if (!result) return null;
+		return this.create({ ...data, ...result }, { parent, ...operation });
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Prepares context for use with {@link CREATE_TEMPLATE}.
+	 * @param {foundry.abstract.DataModel} parent
+	 * @returns {object}
+	 * @protected
+	 */
+	static _prepareCreateDialogContext(parent) {
+		return {
+			fields: this.schema.fields,
+		};
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Render callback for dynamic handling on the .
+	 * @param {Event} event
+	 * @param {dnd4e.applications.api.Dialog4e} dialog
+	 * @protected
+	 */
+	static _createDialogRenderCallback(event, dialog) {}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Delete this pseudo-document.
+	 * @param {object} [operation]                      The context of the operation.
+	 * @returns {Promise<foundry.abstract.Document>}    A promise that resolves to the updated document.
+	 */
+	async delete(operation = {}) {
+		if (!this.isSource) throw new Error("You cannot delete a non-source pseudo-document!");
+		Object.assign(operation, { pseudo: { operation: "delete", type: this.constructor.documentName, uuid: this.uuid } });
+		const update = { [`${this.fieldPath}.${this.id}`]: _del };
+		this.constructor._configureUpdates("delete", this.document, update, operation);
+		return this.document.update(update, operation);
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Duplicate this pseudo-document.
+	 * @returns {Promise<foundry.abstract.Document>}    A promise that resolves to the updated document.
+	 */
+	async duplicate() {
+		if (!this.isSource) throw new Error("You cannot duplicate a non-source pseudo-document!");
+		const activityData = foundry.utils.mergeObject(this.toObject(), {
+			name: _loc("DOCUMENT.CopyOf", { name: this.name }),
+		});
+		return this.constructor.create(activityData, { parent: this.document });
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Update this pseudo-document.
+	 * @param {object} [change]                         The change to perform.
+	 * @param {object} [operation]                      The context of the operation.
+	 * @returns {Promise<foundry.abstract.Document>}    A promise that resolves to the updated document.
+	 */
+	async update(change = {}, operation = {}) {
+		if (!this.isSource) throw new Error("You cannot update a non-source pseudo-document!");
+		const path = [this.fieldPath, this.id].join(".");
+		const update = { [path]: change };
+		this.constructor._configureUpdates("update", this.document, update, operation);
+		return this.document.update(update, operation);
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Allow for subclasses to configure the CRUD workflow.
+	 * @param {"create"|"update"|"delete"} action     The operation.
+	 * @param {foundry.abstract.Document} document    The parent document.
+	 * @param {object} update                         The data used for the update.
+	 * @param {object} operation                      The context of the operation.
+	 */
+	static _configureUpdates(action, document, update, operation) {}
+}

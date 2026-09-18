@@ -1,9 +1,10 @@
+import SystemModel4e from "../system-model.mjs";
 import WealthTemplate from "../actor/templates/wealth.mjs";
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class BackpackData extends foundry.abstract.TypeDataModel {
+export default class BackpackData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

@@ -1,3 +1,4 @@
+import SystemModel4e from "../system-model.mjs";
 import { BonusField, Dnd4eBonusesField } from "./fields/_module.mjs";
 import MappingField from "../fields/mapping-field.mjs";
 import SourceField from "../fields/source-field.mjs";
@@ -6,7 +7,7 @@ import { AttributesField, CombatantTemplate, DetailsField, SpeedTemplate } from 
 
 const { BooleanField, DocumentUUIDField, HTMLField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class HazardData extends foundry.abstract.TypeDataModel {
+export default class HazardData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

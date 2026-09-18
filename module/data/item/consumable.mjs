@@ -1,10 +1,11 @@
+import SystemModel4e from "../system-model.mjs";
 import { FormulaField, MappingField } from "../fields/_module.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class ConsumableData extends foundry.abstract.TypeDataModel {
+export default class ConsumableData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

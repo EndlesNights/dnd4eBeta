@@ -1,10 +1,11 @@
+import SystemModel4e from "../system-model.mjs";
 import { FormulaField, MappingField } from "../fields/_module.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
 
-export default class PowerData extends foundry.abstract.TypeDataModel {
+export default class PowerData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

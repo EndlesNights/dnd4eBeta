@@ -2,8 +2,8 @@ import { DND4E } from "../../config.mjs";
 
 import { ActiveEffect4e, Item4e } from "../../documents/_module.mjs";
 import * as utils from "../../utils/utils.mjs";
-
 import * as apps from "../apps/_module.mjs";
+import Dialog4e from "../api/dialog.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -1167,7 +1167,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static async #onItemImport(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const { json = null } = await foundry.applications.api.Dialog.input({
+		const { json = null } = await Dialog4e.input({
 			window: {
 				title: `${this.actor.name} - JSON Item Importer`,
 			},
@@ -1291,7 +1291,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (item) {
 			let shouldDelete = true;
 			if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
-				shouldDelete = await foundry.applications.api.Dialog.confirm({
+				shouldDelete = await Dialog4e.confirm({
 					window: {
 						title: _loc("DND4E.DeleteConfirmTitle", { name: item.name }),
 					},
@@ -1724,7 +1724,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static async #onConvertCurrency(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		let shouldConvert = await foundry.applications.api.Dialog.confirm({
+		let shouldConvert = await Dialog4e.confirm({
 			window: { title: `${_loc("DND4E.CurrencyConvert")}` },
 			content: `<p>${_loc("DND4E.CurrencyConvertHint")}</p>`,
 		});
@@ -1824,7 +1824,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		event.preventDefault();
 		const label = target.getAttribute("data-app-title") || "Label error";
 		const currValue = foundry.utils.getProperty(this.actor, target.dataset.target) ?? [];
-		const { traits = "" } = await foundry.applications.api.Dialog.input({
+		const { traits = "" } = await Dialog4e.input({
 			id: "trait-selector",
 			classes: ["dnd4e", "list-string-input", "standard-form", "default"],
 			window: {

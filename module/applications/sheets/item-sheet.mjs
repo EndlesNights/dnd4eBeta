@@ -4,6 +4,7 @@ import * as utils from "../../utils/utils.mjs";
 import * as macros from "../../helpers/macros.mjs";
 import SourceConfig from "../apps/source-config.mjs";
 import Item4e from "../../documents/item.mjs";
+import Dialog4e from "../api/dialog.mjs";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -610,7 +611,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			return item.sheet.render({ force: true });
 		}
 		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
-			return foundry.applications.api.Dialog.confirm({
+			return Dialog4e.confirm({
 				window: {
 					title: _loc("DND4E.DeleteConfirmTitle", { name: item.name }),
 				},
@@ -644,7 +645,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static async #onConvertCurrency(event, target) {
 		if (!this.item.actor.isOwner) return;
 		event.preventDefault();
-		let shouldConvert = await foundry.applications.api.Dialog.confirm({
+		let shouldConvert = await Dialog4e.confirm({
 			window: { title: `${_loc("DND4E.CurrencyConvert")}` },
 			content: `<p>${_loc("DND4E.CurrencyConvertHint")}</p>`,
 		});

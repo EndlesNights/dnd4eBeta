@@ -3,6 +3,7 @@ import { DND4E } from "../config.mjs";
 import * as utils from "../utils/utils.mjs";
 import * as macros from "../helpers/macros.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
+import BaseDocumentMixin from "./base-document-mixin.mjs";
 import Roll4e from "../rolls/roll.mjs";
 import SourceField from "../data/fields/source-field.mjs";
 
@@ -13,7 +14,7 @@ import SourceField from "../data/fields/source-field.mjs";
 /**
  * Override and extend the basic :class:`Item` implementation
  */
-export default class Item4e extends Item {
+export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 
 	/** @inheritdoc */
 	async _preUpdate(changed, options, user) {

@@ -1,32 +1,30 @@
+import Dialog4e from "../api/dialog.mjs";
+
 /**
  * A specialized Dialog subclass for ability usage
  * @type {foundry.applications.api.Dialog}
  */
-export default class AbilityUseDialog extends foundry.applications.api.Dialog {
+export default class AbilityUseDialog extends Dialog4e {
 	constructor({ item, ...options }) {
 		super(options);
 
 		/**
-     * Store a reference to the Item entity being used
-     * @type {Item4e}
-     */
+		 * Store a reference to the Item entity being used
+		 * @type {Item4e}
+		 */
 		this.item = item;
 	}
-
-	static DEFAULT_OPTIONS = {
-		classes: ["dnd4e", "dialog", "default"],
-	};
 
 	/* -------------------------------------------- */
 	/*  Rendering                                   */
 	/* -------------------------------------------- */
 
 	/**
-   * A constructor function which displays the Spell Cast Dialog app for a given Actor and Item.
-   * Returns a Promise which resolves to the dialog FormData once the workflow has been completed.
-   * @param {Item4e} item
-   * @returns {Promise}
-   */
+	 * A constructor function which displays the Spell Cast Dialog app for a given Actor and Item.
+	 * Returns a Promise which resolves to the dialog FormData once the workflow has been completed.
+	 * @param {Item4e} item
+	 * @returns {Promise}
+	 */
 	static async create(item) {
 		if (!item.isOwned) throw new Error("You cannot display an ability usage dialog for an unowned item");
 
@@ -83,9 +81,9 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
 	/* -------------------------------------------- */
 
 	/**
-   * Get the ability usage note that is displayed
-   * @private
-   */
+	 * Get the ability usage note that is displayed
+	 * @private
+	 */
 	static _getAbilityUseNote(item, uses, recharge) {
 
 		// Zero quantity

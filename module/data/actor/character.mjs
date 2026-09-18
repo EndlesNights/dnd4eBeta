@@ -1,10 +1,11 @@
+import SystemModel4e from "../system-model.mjs";
 import { BonusField, Dnd4eBonusesField, SimpleTraitField } from "./fields/_module.mjs";
 import FormulaField from "../fields/formula-field.mjs";
 import { AttributesField, CombatantTemplate, CreatureTemplate, DetailsField, SpeedTemplate, WealthTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, ObjectField, StringField, SchemaField } = foundry.data.fields;
 
-export default class CharacterData extends foundry.abstract.TypeDataModel {
+export default class CharacterData extends SystemModel4e {
 	/** @inheritDoc */
 	static defineSchema() {
 		const { details: creatureDetails, ...creatureSchema } = CreatureTemplate.defineSchema();
