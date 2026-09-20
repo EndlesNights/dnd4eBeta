@@ -564,6 +564,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		context.systemFields = this.document.system.schema.fields;
 
+		context.systemFields = this.document.system.schema.fields;
+
 		return context;
 	}
 
