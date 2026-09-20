@@ -1,0 +1,21 @@
+<section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <fieldset data-pseudo-document-name="PowerBehavior">
+    <legend>{{localize systemFields.behaviors.label}}</legend>
+    <div class="section-header">
+      <button type="button" data-action="createPseudoDocument">
+        <i class="{{powerRollEffectIcon}}"></i>
+        {{localize "DOCUMENT.Create" type=(localize "DND4E.Behavior")}}
+      </button>
+    </div>
+    {{#each document.system.behaviors}}
+    <div class="form-group draggable" data-pseudo-id="{{id}}">
+      <img class="pre-img" src="{{img}}" alt="{{name}}">
+      <label> {{name}} </label>
+      <div class="form-fields">
+        <button type="button" data-action="renderPseudoDocumentSheet" class="icon fa-fw fa-solid fa-cog"></button>
+        <button type="button" data-action="deletePseudoDocument" class="icon fa-fw fa-solid fa-trash"></button>
+      </div>
+    </div>
+    {{/each}}
+  </fieldset>
+</section>

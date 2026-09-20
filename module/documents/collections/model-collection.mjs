@@ -4,6 +4,9 @@
  * @import Collection from "@common/utils/collection.mjs";
  */
 
+import { powerBehaviors } from "../../data/pseudo-documents/_module.mjs";
+import BasePowerBehavior from "../../data/pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
+
 /**
  * Specialized collection type for stored data models.
  * @param {Array<string, DataModel>} entries    Array containing the data models to store.
@@ -39,7 +42,7 @@ export default class ModelCollection extends foundry.utils.Collection {
 	 * @type {Record<string, typeof PseudoDocument>}
 	 */
 	static documentClasses = {
-
+		PowerBehavior: BasePowerBehavior,
 	};
 
 	/* -------------------------------------------------- */

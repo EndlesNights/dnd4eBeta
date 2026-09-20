@@ -34,7 +34,8 @@ export default class PseudoDocumentSheet extends HandlebarsApplicationMixin(Appl
 		classes: ["dnd4e", "default"],
 		form: {
 			handler: PseudoDocumentSheet.#onSubmitForm,
-			submitOnChange: true,
+			submitOnChange: false,
+			closeOnSubmit: true,
 		},
 		position: {
 			width: 500,

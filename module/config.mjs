@@ -1,4 +1,5 @@
 import { preLocalize } from "./utils/utils.mjs";
+import * as data from "./data/_module.mjs";
 
 // Namespace D&D4e Configuration Values
 export const DND4E = {};
@@ -2200,6 +2201,20 @@ DND4E.script = {
 	Rellanic: "DND4E.ScriptRellanic",
 };
 preLocalize("script", { sort: true });
+
+DND4E.PowerBehavior = {
+	applyActiveEffect4e: {
+		label: "DND4E.applyActiveEffect4e.Label",
+		defaultImage: "icons/svg/aura.svg",
+		documentClass: data.pseudoDocuments.powerBehaviors.ApplyActiveEffectPowerBehavior,
+	},
+	difficultTerrain: {
+		label: "DND4E.difficultTerrain.Label",
+		defaultImage: "systems/dnd4e/icons/ui/difficultTerrain.svg",
+		documentClass: data.pseudoDocuments.powerBehaviors.DifficultTerrainPowerBehavior,
+	},
+};
+preLocalize("PowerBehavior", { key: "label" });
 
 //use @lv to derive value
 DND4E.SCALE = {

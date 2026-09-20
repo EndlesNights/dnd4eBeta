@@ -1,11 +1,23 @@
 import SystemModel4e from "../system-model.mjs";
-import { FormulaField, MappingField } from "../fields/_module.mjs";
+import { CollectionField, FormulaField, MappingField } from "../fields/_module.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
+import { default as PowerBehavior } from "../pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
 import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 export default class PowerData extends SystemModel4e {
+	/** @inheritdoc */
+	static get metadata() {
+		return {
+			...super.metadata,
+			type: "power",
+			embedded: {
+				PowerBehavior: "system.behaviors",
+			},
+		};
+	}
+
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
@@ -66,6 +78,7 @@ export default class PowerData extends SystemModel4e {
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
 			chatFlavor: new StringField({ initial: "" }),
+			behaviors: new CollectionField(PowerBehavior, { label: "DND4E.PowerBehaviors" }),
 		};
 	}
 

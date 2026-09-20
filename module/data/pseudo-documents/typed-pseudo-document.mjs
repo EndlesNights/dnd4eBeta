@@ -67,9 +67,7 @@ export default class TypedPseudoDocument extends PseudoDocument {
 	/** @inheritdoc */
 	prepareDerivedData() {
 		super.prepareDerivedData();
-		if (!this.name) {
-			this.name = _loc(`TYPES.${this.documentName}.${this.type}`);
-		}
+		this.name ||= _loc(`TYPES.${this.documentName}.${this.type}`);
 	}
 
 	/* -------------------------------------------------- */

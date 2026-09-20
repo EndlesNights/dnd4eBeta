@@ -1007,6 +1007,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 
 	/** @inheritdoc */
 	prepareDerivedData() {
+		super.prepareDerivedData();
 		SourceField.prepareData.call(this.system.source);
 	}
 
