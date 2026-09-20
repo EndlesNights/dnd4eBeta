@@ -553,8 +553,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
 
-		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
-
 		context.shouldHideMacroType = [];
 		context.editorLangs = [];
 		for (const macro of [...this.item.system.macros]) {
