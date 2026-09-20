@@ -2208,10 +2208,20 @@ DND4E.PowerBehavior = {
 		defaultImage: "icons/svg/aura.svg",
 		documentClass: data.pseudoDocuments.powerBehaviors.ApplyActiveEffectPowerBehavior,
 	},
+	damagingRegion: {
+		label: "DND4E.damagingRegion.Label",
+		defaultImage: "icons/svg/fire.svg",
+		documentClass: data.pseudoDocuments.powerBehaviors.DamagingRegionPowerBehavior,
+	},
 	difficultTerrain: {
 		label: "DND4E.difficultTerrain.Label",
 		defaultImage: "systems/dnd4e/icons/ui/difficultTerrain.svg",
 		documentClass: data.pseudoDocuments.powerBehaviors.DifficultTerrainPowerBehavior,
+	},
+	obscuredTerrain: {
+		label: "DND4E.obscuredTerrain.Label",
+		defaultImage: "systems/dnd4e/icons/statusEffects/concealment.svg",
+		documentClass: data.pseudoDocuments.powerBehaviors.ObscuredTerrainPowerBehavior,
 	},
 };
 preLocalize("PowerBehavior", { key: "label" });
