@@ -5,6 +5,7 @@ import * as macros from "../../helpers/macros.mjs";
 import SourceConfig from "../apps/source-config.mjs";
 import Item4e from "../../documents/item.mjs";
 import Dialog4e from "../api/dialog.mjs";
+import BasePowerBehavior from "../../data/pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -549,6 +550,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			const tab = context.tabs[key];
 			if (tab?.condition && !tab.condition(this.document)) delete context.tabs[key];
 		}
+
+		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
+
+		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
 
 		context.shouldHideMacroType = [];
 		context.editorLangs = [];

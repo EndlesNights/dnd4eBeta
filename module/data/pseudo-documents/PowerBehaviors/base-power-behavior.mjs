@@ -6,7 +6,7 @@ import PowerBehaviorSheet from "../../../applications/sheets/pseudo-documents/po
  */
 
 /**
- * Pseudodocument used by abilities to represent the tiered results of a power roll.
+ * Pseudodocument used by powers to define region behaviors applied to their templates.
  */
 export default class BasePowerBehavior extends TypedPseudoDocument {
 	/** @inheritdoc */
