@@ -265,6 +265,7 @@ export default class RegionBehaviorGridIcons {
 		Hooks.on("createRegion", () => this.queueRefresh());
 		Hooks.on("updateRegion", () => this.queueRefresh());
 		Hooks.on("deleteRegion", () => this.queueRefresh());
+		Hooks.on("refreshRegion", () => this.queueRefresh());
 		Hooks.on("createRegionBehavior", () => this.queueRefresh());
 		Hooks.on("updateRegionBehavior", () => this.queueRefresh());
 		Hooks.on("deleteRegionBehavior", () => this.queueRefresh());
