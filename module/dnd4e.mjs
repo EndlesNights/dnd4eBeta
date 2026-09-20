@@ -231,6 +231,17 @@ Hooks.once("init", async function() {
  */
 Hooks.once("i18nInit", function() {
 	utils.performPreLocalization(CONFIG.DND4E);
+
+	// Localize pseudo-documents. Base first, then loop through the types in use
+	foundry.helpers.Localization.localizeDataModel(data.pseudoDocuments.powerBehaviors.BasePowerBehavior);
+
+	const localizePseudos = record => {
+		for (const cls of Object.values(record)) {
+			foundry.helpers.Localization.localizeDataModel(cls);
+		}
+	};
+
+	localizePseudos(data.pseudoDocuments.powerBehaviors.BasePowerBehavior.TYPES);
 });
 
 Hooks.once("ready", async function() {

@@ -30,7 +30,7 @@ export default class PseudoDocument extends foundry.abstract.DataModel {
 	static defineSchema() {
 		return {
 			_id: new DocumentIdField({ initial: () => foundry.utils.randomID() }),
-			name: new StringField({ required: true, label: "DND4E.Name" }),
+			name: new StringField({ required: true }),
 			img: new FilePathField({ categories: ["IMAGE"] }),
 			sort: new IntegerSortField(),
 		};
