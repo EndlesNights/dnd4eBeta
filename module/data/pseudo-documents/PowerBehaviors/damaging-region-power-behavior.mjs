@@ -3,6 +3,9 @@ import PowerBehaviorSheet from "../../../applications/sheets/pseudo-documents/po
 import DamagingRegionRegionBehaviorType from "../../region-behaviors/damaging-region.mjs";
 const { SchemaField } = foundry.data.fields;
 
+/**
+ * Pseudodocument used by powers to apply a DamagingRegion region behavior to their templates.
+ */
 export default class DamagingRegionPowerBehavior extends BasePowerBehavior {
 
 	/** @inheritdoc */

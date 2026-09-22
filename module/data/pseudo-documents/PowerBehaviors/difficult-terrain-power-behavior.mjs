@@ -3,6 +3,9 @@ import DifficultTerrainPowerBehaviorSheet from "../../../applications/sheets/pse
 import DifficultTerrainRegionBehaviorType from "../../region-behaviors/difficult-terrain.mjs";
 const { SchemaField } = foundry.data.fields;
 
+/**
+ * Pseudodocument used by powers to apply a DifficultTerrain region behavior to their templates.
+ */
 export default class DifficultTerrainPowerBehavior extends BasePowerBehavior {
 
 	/** @inheritdoc */

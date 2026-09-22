@@ -3,6 +3,9 @@ import PowerBehaviorSheet from "../../../applications/sheets/pseudo-documents/po
 import ApplyActiveEffectRegionBehaviorType from "../../region-behaviors/apply-active-effect.mjs";
 const { SchemaField } = foundry.data.fields;
 
+/**
+ * Pseudodocument used by powers to apply an ApplyActiveEffect region behavior to their templates.
+ */
 export default class ApplyActiveEffectPowerBehavior extends BasePowerBehavior {
 
 	/** @inheritdoc */

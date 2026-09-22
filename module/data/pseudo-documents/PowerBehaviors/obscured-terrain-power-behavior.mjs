@@ -3,6 +3,9 @@ import PowerBehaviorSheet from "../../../applications/sheets/pseudo-documents/po
 import ObscuredTerrainRegionBehaviorType from "../../region-behaviors/obscured-terrain.mjs";
 const { SchemaField } = foundry.data.fields;
 
+/**
+ * Pseudodocument used by powers to apply an ObscuredTerrain region behavior to their templates.
+ */
 export default class DamagingRegionPowerBehavior extends BasePowerBehavior {
 
 	/** @inheritdoc */
