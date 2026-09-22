@@ -11,7 +11,7 @@ export default class ConsumableData extends SystemModel4e {
 	static get metadata() {
 		return {
 			...super.metadata,
-			type: "power",
+			type: "consumable",
 			embedded: {
 				PowerBehavior: "system.behaviors",
 			},
