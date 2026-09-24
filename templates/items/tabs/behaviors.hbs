@@ -1,6 +1,10 @@
-<section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+<section class="tab scrollable{{#if tab.active}} active{{/if}} {{tab.id}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
   <fieldset data-pseudo-document-name="PowerBehavior">
-    <legend>{{localize systemFields.behaviors.label}}</legend>
+    {{#if hasAuraSize}}
+	{{formGroup systemFields.auraSize value=source.system.auraSize localize=true}}
+	{{formGroup systemFields.showAura value=source.system.showAura localize=true}}
+	{{/if}}
+	<legend>{{localize systemFields.behaviors.label}}</legend>
     <div class="section-header">
       <button type="button" data-action="createPseudoDocument">
         <i class="{{powerBehaviorIcon}}"></i>

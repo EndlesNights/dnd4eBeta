@@ -253,7 +253,6 @@ export default class Actor4e extends BaseDocumentMixin(foundry.documents.Actor) 
 			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 		}
-
 	}
 
 	prepareDerivedData() {
@@ -1076,6 +1075,31 @@ export default class Actor4e extends BaseDocumentMixin(foundry.documents.Actor) 
 	_prepareDerivedDataMagicItemUse(actorData, system) {
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamp(Math.floor((system.details.level - 1) / 10 + 1), 1, 3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+	}
+
+	_prepareAuraData() {
+		const auraTargets = {};
+		const auraValues = {};
+		for (const effect of [...this.appliedEffects]) {
+			if (effect.system.keywords.has("aura") && (fromUuidSync(effect.origin) instanceof RegionBehavior)) {
+				for (const change of effect.changes) {
+					auraValues[change.key] ||= 0;
+					const worstPenalty = parseInt(auraValues[change.key]);
+					const thisPenalty = parseInt(change.value);
+					if (!(isNaN(worstPenalty) || isNaN(thisPenalty)) && (thisPenalty < worstPenalty)) {
+						auraTargets[change.key] = effect.id;
+						auraValues[change.key] = thisPenalty;
+					}
+				}
+			}
+		}
+		this.system.auraTargets = auraTargets;
+	}
+
+	/** @inheritDoc */
+	prepareEmbeddedDocuments() {
+		this._prepareAuraData();
+		super.prepareEmbeddedDocuments();
 	}
 
 	/**

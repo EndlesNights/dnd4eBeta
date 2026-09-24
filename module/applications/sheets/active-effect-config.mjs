@@ -1,5 +1,5 @@
 import ActiveEffect4e from "../../documents/active-effect.mjs";
-import { DND4E } from "../../config.mjs";
+import BasePowerBehavior from "../../data/pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
 import * as utils from "../../utils/utils.mjs";
 
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
@@ -26,6 +26,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			deleteStatus: ActiveEffectConfig4e.#onEffectStatusControl,
 			addKeyword: ActiveEffectConfig4e.#onEffectKeywordControl,
 			deleteKeyword: ActiveEffectConfig4e.#onEffectKeywordControl,
+			createPseudoDocument: ActiveEffectConfig4e.#createPseudoDocument,
+			deletePseudoDocument: ActiveEffectConfig4e.#deletePseudoDocument,
+			renderPseudoDocumentSheet: ActiveEffectConfig4e.#renderPseudoDocumentSheet,
 			addMacro: ActiveEffectConfig4e.#onMacroControl,
 			deleteMacro: ActiveEffectConfig4e.#onMacroControl,
 			expandMacro: ActiveEffectConfig4e.#onMacroControl,
@@ -43,12 +46,16 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			template: "systems/dnd4e/templates/sheets/active-effect/details.hbs",
 			scrollable: [".scrollable"],
 		},
-		activation: {
-			template: "systems/dnd4e/templates/sheets/active-effect/activation.hbs",
-			scrollable: [".scrollable"],
-		},
 		changes: {
 			template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs",
+			scrollable: [".scrollable"],
+		},
+		behaviors: {
+			template: "systems/dnd4e/templates/items/tabs/behaviors.hbs",
+			scrollable: [""],
+		},
+		activation: {
+			template: "systems/dnd4e/templates/sheets/active-effect/activation.hbs",
 			scrollable: [".scrollable"],
 		},
 		macros: {
@@ -64,6 +71,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				{ id: "description", label: "DND4E.Sheet.Description" },
 				{ id: "details", label: "DND4E.Sheet.Details" },
 				{ id: "changes", label: "EFFECT.TABS.changes" },
+				{ id: "behaviors", label: "DND4E.BehaviorPl" },
 				{ id: "activation", label: "DND4E.Sheet.Activation" },
 				{ id: "macros", label: "DND4E.Macros" },
 			],
@@ -71,12 +79,11 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		},
 	};
 
-	/* ----------------------------------------- */
+	/* -------------------------------------------- */
 
 	/** @inheritDoc */
-	async _preparePartContext(partId, context) {
-		const partContext = await super._preparePartContext(partId, context);
-		if (partId in partContext.tabs) partContext.tab = partContext.tabs[partId];
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
 		const effect = this.document;
 		context.config = {
 			...CONFIG.DND4E,
@@ -87,7 +94,18 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				...CONFIG.DND4E.powerSource,
 			},
 		};
-		context.systemFields = effect.schema.fields;
+		context.systemFields = effect.system.schema.fields;
+		context.hasAuraSize = true;
+		return context;
+	}
+
+	/* ----------------------------------------- */
+
+	/** @inheritDoc */
+	async _preparePartContext(partId, context) {
+		const partContext = await super._preparePartContext(partId, context);
+		if (partId in partContext.tabs) partContext.tab = partContext.tabs[partId];
+		const effect = this.document;
 		const damageTypes = { ...CONFIG.DND4E.damageTypes };
 		switch (partId) {
 			case "description":
@@ -148,6 +166,10 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				partContext.macroFields = effect.system.schema.fields.macros.element.fields;
 				break;
 			}
+			case "behaviors": {
+				partContext.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
+				break;
+			}
 			case "footer":
 				partContext.buttons = [{ type: "submit", icon: "fa-solid fa-floppy-disk", label: "EFFECT.Submit" }];
 				break;
@@ -156,6 +178,43 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				break;
 		}
 		return partContext;
+	}
+
+	/* -------------------------------------------------- */
+	/*   Helper Functions                               */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Fetches the embedded document representing the containing HTML element.
+	 *
+	 * @param {HTMLElement} target    The element subject to search.
+	 * @returns {Document} The embedded document.
+	 */
+	_getEmbeddedDocument(target) {
+		const documentUuid = target.closest("[data-document-uuid]").dataset.documentUuid;
+
+		// fromUuidSync doesn't allow  retrieving embedded compendium documents, so manually retrieving each child document from the base document.
+		const { collection, embedded, documentId } = foundry.utils.parseUuid(documentUuid);
+		let document = collection.get(documentId);
+		while (document && (embedded.length > 1)) {
+			const [embeddedName, embeddedId] = embedded.splice(0, 2);
+			document = document.getEmbeddedDocument(embeddedName, embeddedId);
+		}
+
+		return document;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Helper method to retrieve an embedded pseudo-document.
+	 * @param {HTMLElement} element   The element with relevant data.
+	 * @returns {PseudoDocument}
+	 */
+	_getPseudoDocument(element) {
+		const documentName = element.closest("[data-pseudo-document-name]").dataset.pseudoDocumentName;
+		const id = element.closest("[data-pseudo-id]").dataset.pseudoId;
+		return this.document.getEmbeddedDocument(documentName, id);
 	}
 
 	/* ----------------------------------------- */
@@ -248,7 +307,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 
 	/**
 		 * Add or remove a macro
-		 * @this {ItemSheet4e}
+		 * @this {ActiveEffectConfig4e}
 		 * @param {Event} event     		The original click event
 		 * @param {HTMLElement} target	    The target of the event
 		 * @returns {Promise}
@@ -283,11 +342,64 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 
 	}
 
+	/* -------------------------------------------------- */
+
+	/**
+	 * Create a pseudo-document.
+	 * @this ActiveEffectConfig4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #createPseudoDocument(event, target) {
+		const origin = fromUuidSync(this.document.origin, { strict: false });
+		if (origin && (origin instanceof RegionBehavior)) return ui.notifications.warn("DND4E.PSEUDO.Notifications.CannotCreateFromRegion", { localize: true });
+		const documentName = target.closest("[data-pseudo-document-name]").dataset.pseudoDocumentName;
+		const type = target.closest("[data-pseudo-type]")?.dataset.pseudoType;
+		/** @type {ModelCollection} */
+		const collection = this.document.getEmbeddedCollection(documentName);
+		const Cls = collection.documentClass;
+
+		// Ensure the new document has a non-zero sort value
+		const sort = (collection.sortedContents.at(-1)?.sort ?? 0) + CONST.SORT_INTEGER_DENSITY;
+
+		if (!type && (foundry.utils.isSubclass(Cls, dnd4e.data.pseudoDocuments.TypedPseudoDocument))) {
+			await Cls.createDialog({ sort }, { parent: this.document });
+		} else {
+			await Cls.create({ sort, type }, { parent: this.document });
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Delete a pseudo-document.
+	 * @this ActiveEffectConfig4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #deletePseudoDocument(event, target) {
+		const doc = this._getPseudoDocument(target);
+		await doc.delete();
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Render the sheet of a pseudo-document.
+	 * @this ActiveEffectConfig4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #renderPseudoDocumentSheet(event, target) {
+		const doc = this._getPseudoDocument(target);
+		await doc.sheet.render({ force: true });
+	}
+
 	/* ----------------------------------------- */
 
 	/**
-	* Handle adding a new dot to the dots array - adapted from _addEffectChange
-	*/
+	 * Handle adding a new dot to the dots array - adapted from _addEffectChange
+	 */
 	async _addEffectDot() {
 		return this.submit({ preventClose: true, updateData: {
 			["system.dots"]: [{ amount: 0, types: new Set() }],
@@ -297,8 +409,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/* ----------------------------------------- */
 
 	/**
-	* Handle adding a new status to the statuses array - adapted from _addEffectChange
-	*/
+	 * Handle adding a new status to the statuses array - adapted from _addEffectChange
+	 */
 	async _addEffectStatus() {
 		const i = this.document._source.statuses.size;
 		return this.submit({ preventClose: true, updateData: {
@@ -309,8 +421,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/* ----------------------------------------- */
 
 	/**
-	* Handle adding a new dot to the keywords array - adapted from _addEffectChange
-	*/
+	 * Handle adding a new dot to the keywords array - adapted from _addEffectChange
+	 */
 	async _addEffectKeyword() {
 		return this.submit({ preventClose: true, updateData: {
 			["system.keywords"]: ["unknown"],
@@ -320,8 +432,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	/* ----------------------------------------- */
 
 	/**
-	* Copy fluff to effect from status condition config
-	*/
+	 * Copy fluff to effect from status condition config
+	 */
 	async _copyStatusDetails(statusId, scope = "copy-all") {
 		if (!statusId) return;
 

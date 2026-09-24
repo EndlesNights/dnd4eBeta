@@ -1,3 +1,6 @@
+import CollectionField from "../fields/collection-field.mjs";
+import PowerBehavior from "../pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
+
 const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 /**
@@ -19,6 +22,9 @@ const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringFiel
  */
 
 /**
+ * @import { SubtypeMetadata } from "../_types.mjs";
+ */
+/**
  * System data model for active effects.
  * @extends {ActiveEffectDataModel<ActiveEffectSystemData>}
  * @mixes ActiveEffectSystemData
@@ -28,14 +34,27 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 	/*  Model Configuration                         */
 	/* -------------------------------------------- */
 
+	/**
+     * Metadata for this document subtype.
+     * @type {SubtypeMetadata}
+     */
+	static get metadata() {
+		return {
+			type: "activeEffect",
+			embedded: {
+				PowerBehavior: "system.behaviors",
+			},
+		};
+	}
+
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.Effect"];
 
 	/* -------------------------------------------- */
 
 	/** @inheritDoc
-   * @returns {ActiveEffectSystemData}
-  */
+	 * @returns {ActiveEffectSystemData}
+	 */
 	static defineSchema() {
 		const keywords = {
 			...CONFIG.DND4E.effectTypes,
@@ -69,6 +88,9 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 				command: new StringField({ initial: "" }),
 				enabled: new BooleanField({ initial: true }),
 			}), { initial: [] }),
+			auraSize: new NumberField({ initial: null, required: true, nullable: true, label: "DND4E.AuraSize" }),
+			showAura: new BooleanField({ initial: true, label: "DND4E.ShowAura" }),
+			behaviors: new CollectionField(PowerBehavior, { label: "DND4E.BehaviorPl" }),
 		};
 	}
 
