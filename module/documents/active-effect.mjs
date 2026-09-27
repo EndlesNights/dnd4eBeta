@@ -102,7 +102,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 					}
 					const combatant = this.start?.combat?.getCombatantsByActor(relevantActor)[0];
 					if (combatant && (combatant.turnNumber !== null)) updates.start = { combatant: combatant.id };
-					const decreaseDuration = combatant?.turnNumber > this.start.combat?.turn;
+					const decreaseDuration = combatant?.turnNumber > this.start?.combat?.turn;
 					if (decreaseDuration) updates["duration.value"] = durationConfig.value - 1;
 				}
 			}
