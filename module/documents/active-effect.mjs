@@ -100,7 +100,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 							relevantActor = fromUuidSync(this.origin);
 							break;
 					}
-					const combatant = this.start.combat?.getCombatantsByActor(relevantActor)[0];
+					const combatant = this.start?.combat?.getCombatantsByActor(relevantActor)[0];
 					if (combatant && (combatant.turnNumber !== null)) updates.start = { combatant: combatant.id };
 					const decreaseDuration = combatant?.turnNumber > this.start.combat?.turn;
 					if (decreaseDuration) updates["duration.value"] = durationConfig.value - 1;
@@ -127,7 +127,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 	/** @inheritDoc */
 	async _preUpdate(changed, opions, userId) {
-		if ("durationType" in changed.system) {
+		if (("system" in changed) && ("durationType" in changed.system)) {
 			const durationType = changed.system.durationType;
 			const duration = {};
 			if (durationType && ("duration" in CONFIG.DND4E.durationType[durationType])) {
