@@ -489,6 +489,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			relativeTo: this.item,
 		});
 
+		context.systemFields = this.item.system.schema.fields;
 		context.autoanimationsActive = game.modules.get("autoanimations")?.active;
 		context.autoAnimationsField = this.item.system.schema.fields.autoanimationsHook;
 		context.detailsPartial = `dnd4e.details-${itemData.type}`;

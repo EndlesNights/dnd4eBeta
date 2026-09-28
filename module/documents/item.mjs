@@ -529,6 +529,16 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
+	 * Does the Item have an area of effect target
+	 * @type {boolean}
+	 */
+	get useWeaponRange() {
+		return (this.system.rangeType === "weapon") || (["rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) && (this.system.useWeaponRange));
+	}
+
+	/* -------------------------------------------- */
+
+	/**
 	 * Should this item's active effects be suppressed.
 	 * @type {boolean}
 	 */
@@ -753,7 +763,7 @@ export default class Item4e extends Item {
 						} else {
 							labels.toolType = _loc("DND4E.Weapon");
 						}
-					} else if (system?.rangeType === "weapon") {
+					} else if (this.useWeaponRange) {
 						labels.toolType = _loc("DND4E.Weapon");
 					}
 				}
@@ -921,7 +931,7 @@ export default class Item4e extends Item {
 				//Range
 				if (["power", "consumable"].includes(itemData.type) && system?.rangeType) {
 					let rangeString = "";
-					if (system?.rangeType === "weapon") {
+					if (this.useWeaponRange) {
 						const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
 						if (weaponUse != null) {
 							if (weaponUse.isRanged) {
@@ -1867,6 +1877,7 @@ export default class Item4e extends Item {
 	rangeData() {
 		const C = CONFIG.DND4E;
 		const actorData = this.actor?.getRollData();
+		const weaponUse = utils.getWeaponUse(this.system, this.actor);
 		let rangeData = {};
 		let area;
 		if (this.system.area) {
@@ -1889,21 +1900,39 @@ export default class Item4e extends Item {
 			rangeData.rangeTextShort = C.rangeType.closeBurst.abbr;
 			rangeData.rangeTextBlock = `${area}`;
 		} else if (this.system.rangeType === "rangeBurst") {
-			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.rangeBurst.abbr;
-			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			if (this.useWeaponRange) {
+				rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
+			else {
+				rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
 		} else if (this.system.rangeType === "closeBlast") {
 			rangeData.rangeText = `${C.rangeType.closeBlast.label} ${area}`;
 			rangeData.rangeTextShort = C.rangeType.closeBlast.abbr;
 			rangeData.rangeTextBlock = `${area}`;
 		} else if (this.system.rangeType === "rangeBlast") {
-			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.rangeBlast.abbr;
-			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			if (this.useWeaponRange) {
+				rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
+			else {
+				rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
 		} else if (this.system.rangeType === "wall") {
-			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.wall.abbr;
-			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			if (this.useWeaponRange) {
+				rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
+			else {
+				rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			}
 		} else if (this.system.rangeType === "personal") {
 			rangeData.rangeText = C.rangeType.personal.label;
 			rangeData.rangeTextShort = C.rangeType.personal.abbr;
@@ -1926,10 +1955,9 @@ export default class Item4e extends Item {
 			rangeData.rangeTextShort = C.rangeType.reach.abbr;
 			rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 
-		} else if (this.system.rangeType === "weapon") {
+		} else if (this.useWeaponRange) {
 
 			try {
-				const weaponUse = utils.getWeaponUse(this.system, this.actor);
 				if (weaponUse.system.isRanged && (this.system.weaponType !== "melee")) {
 					rangeData.rangeText = `${_loc("DND4E.rangeWeaponRanged")} - ${weaponUse.name}`;
 					rangeData.rangeTextShort = _loc("DND4E.rangeWeaponRangedAbbr");

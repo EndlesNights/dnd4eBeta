@@ -1,5 +1,4 @@
 import { FormulaField, MappingField } from "../fields/_module.mjs";
-import SourceField from "../fields/source-field.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
@@ -31,7 +30,8 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
 			requirements: new StringField({ initial: "" }),
 			weaponType: new StringField({ initial: "melee" }),
 			weaponUse: new StringField({ initial: "default" }),
-			rangeType: new StringField({ initial: "weapon" }),
+			useWeaponRange: new BooleanField({ initial: false, label: "DND4E.InheritWeaponRange" }),
+			rangeType: new StringField({ choices: CONFIG.DND4E.rangeType, label: "DND4E.RangePower" }),
 			autoTarget: new SchemaField({
 				mode: new StringField({ initial: "none" }),
 				includeSelf: new BooleanField({ initial: true }),

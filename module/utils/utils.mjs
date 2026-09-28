@@ -729,7 +729,8 @@ export function preparePowerCardData(chatData, actorData = null, attackTotal = n
 		powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${_rangeValue(chatData.area ?? null, actorData)}</span>`;
 	}
 	else if (["rangeBurst", "rangeBlast", "wall"].includes(chatData.rangeType)) {
-		powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${_rangeValue(chatData.area ?? null, actorData)}</span> <span class="label-within">${_loc("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
+		const rangeString = chatData.useWeaponRange ? _loc("DND4E.WeaponRange").toLocaleLowerCase() : chatData.rangePower;
+		powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${_rangeValue(chatData.area ?? null, actorData)}</span> <span class="label-within">${_loc("DND4E.RangeWithin")}</span> <span class="range-within">${rangeString}</span>`;
 	}
 	else if (chatData.rangeType === "personal") {
 		powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;

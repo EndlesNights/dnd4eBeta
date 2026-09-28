@@ -67,37 +67,35 @@
 <div class="form-group short">
   <label>{{ localize "DND4E.RangePower" }}</label>
   <div class="form-fields item-range">
-    <select name="system.rangeType">
-      {{selectOptions config.rangeType selected=system.rangeType labelAttr="label"}}
-    </select>
+    {{formInput systemFields.rangeType value=system.rangeType}}
     {{#if system.isArea}}
     <span>{{ localize "DND4E.AreaOf" }}</span>
     <input type="text" name="system.area" value="{{system.area}}">
     {{/if}}
     {{#if system.isRange}}
     {{#unless (eq system.rangeType 'weapon')}}
-    {{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
-
-    {{#unless system.isArea}}
-    <div class="form-fields">
-      {{/unless}}
-
-      <input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="String">
-
-      {{#unless system.isArea}}
-      <input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="String">
-      {{#if (eq system.rangeType 'range')}}
-      <span class="sep">/</span>
-      <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();">
-      {{/if}}
-      {{/unless}}
-
-      {{#unless system.isArea}}
-    </div>
-    {{/unless}}
-
-    {{/unless}}
+    {{#if system.isArea}}
+  </div></div>
+<div class="form-group short">
+  <label>{{ localize "DND4E.RangeWithinOf" }}</label>
+  <div class="form-fields item-range">
     {{/if}}
+
+    <div class="form-fields">
+      {{#if system.isArea}}{{formGroup systemFields.useWeaponRange value=system.useWeaponRange localize=true}}{{/if}}
+      <input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="String" {{#if system.useWeaponRange}}disabled{{/if}}>
+      <input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="String" {{#if system.useWeaponRange}}disabled{{/if}}>
+      {{#unless (or (eq system.rangeType 'melee') (eq system.rangeType 'touch') (eq system.rangeType 'reach'))}}
+      <span class="sep">/</span>
+      <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();" {{#if system.useWeaponRange}}disabled{{/if}}>
+      {{/unless}}
+    </div>
+
+    {{#if system.isArea}}
+  </div></div>
+{{/if}}
+{{/unless}}
+{{/if}}
   </div>
 </div>
 
