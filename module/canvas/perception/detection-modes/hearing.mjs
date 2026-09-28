@@ -16,7 +16,7 @@ export default class DetectionModeHearing extends foundry.canvas.perception.Dete
 
 	/** @override */
 	static getDetectionFilter() {
-		return this._detectionFilter ??= OutlineOverlayFilter.create({
+		return this._detectionFilter ??= foundry.canvas.rendering.filters.OutlineOverlayFilter.create({
 			outlineColor: [1, 1, 1, 1],
 			knockout: true,
 			wave: true,
