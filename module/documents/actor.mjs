@@ -178,7 +178,7 @@ export default class Actor4e extends BaseDocumentMixin(foundry.documents.Actor) 
 
 	/** @inheritdoc */
 	getRollData() {
-		const data = super.getRollData();
+		const data = { ...super.getRollData() };
 
 		data.name = this.name;
 		data.statuses = {};
