@@ -247,6 +247,7 @@ Hooks.once("init", async function() {
 		CONFIG.statusEffects.unconscious.statuses.push("helpless");
 	}
 
+	CONFIG.Canvas.detectionModes.awareness = new canvas.perception.DetectionModeAwareness();
 	CONFIG.Canvas.detectionModes.hearing = new canvas.perception.DetectionModeHearing();
 
 	// Set up token movement actions
