@@ -44,6 +44,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	/* -------------------------------------------- */
 	/*  Detection                                   */
 	/* -------------------------------------------- */
+
 	/**
 	 * Test whether this Token can detect another Token via any of its enabled detection modes.
 	 * If this Token has no active vision source, an ephemeral one is constructed using the token's standard vision data

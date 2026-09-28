@@ -1,3 +1,4 @@
+import SystemModel4e from "../system-model.mjs";
 import { BonusField, Dnd4eBonusesField } from "./fields/_module.mjs";
 import MappingField from "../fields/mapping-field.mjs";
 import SourceField from "../fields/source-field.mjs";
@@ -6,7 +7,7 @@ import { AttributesField, CombatantTemplate, CreatureTemplate, DetailsField, Spe
 
 const { BooleanField, DocumentUUIDField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class NPCData extends foundry.abstract.TypeDataModel {
+export default class NPCData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

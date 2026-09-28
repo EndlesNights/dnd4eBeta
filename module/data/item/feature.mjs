@@ -1,9 +1,10 @@
+import SystemModel4e from "../system-model.mjs";
 import MappingField from "../fields/mapping-field.mjs";
 import { ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, StringField } = foundry.data.fields;
 
-export default class FeatureData extends foundry.abstract.TypeDataModel {
+export default class FeatureData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

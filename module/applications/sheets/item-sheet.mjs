@@ -4,6 +4,8 @@ import * as utils from "../../utils/utils.mjs";
 import * as macros from "../../helpers/macros.mjs";
 import SourceConfig from "../apps/source-config.mjs";
 import Item4e from "../../documents/item.mjs";
+import Dialog4e from "../api/dialog.mjs";
+import BasePowerBehavior from "../../data/pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -67,6 +69,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			addMacro: ItemSheet4e.#onMacroControl,
 			deleteMacro: ItemSheet4e.#onMacroControl,
 			expandMacro: ItemSheet4e.#onMacroControl,
+			createPseudoDocument: ItemSheet4e.#createPseudoDocument,
+			deletePseudoDocument: ItemSheet4e.#deletePseudoDocument,
+			renderPseudoDocumentSheet: ItemSheet4e.#renderPseudoDocumentSheet,
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
@@ -101,6 +106,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		},
 		effects: {
 			template: "systems/dnd4e/templates/items/tabs/effects.hbs",
+			scrollable: [""],
+		},
+		behaviors: {
+			template: "systems/dnd4e/templates/items/tabs/behaviors.hbs",
 			scrollable: [""],
 		},
 		macros: {
@@ -138,6 +147,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					label: "DND4E.Sheet.Effects",
 					// Custom logic, not core
 					condition: (item) => item.type !== "ritual",
+				},
+				{
+					id: "behaviors",
+					label: "DND4E.BehaviorPl",
+					// Custom logic, not core
+					condition: (item) => item.hasAreaTarget,
 				},
 				{
 					id: "macros",
@@ -193,6 +208,43 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			};
 			return new foundry.applications.ux.DragDrop.implementation(d);
 		});
+	}
+
+	/* -------------------------------------------------- */
+	/*   Helper Functions                               */
+	/* -------------------------------------------------- */
+
+	/**
+	 * Fetches the embedded document representing the containing HTML element.
+	 *
+	 * @param {HTMLElement} target    The element subject to search.
+	 * @returns {Document} The embedded document.
+	 */
+	_getEmbeddedDocument(target) {
+		const documentUuid = target.closest("[data-document-uuid]").dataset.documentUuid;
+
+		// fromUuidSync doesn't allow  retrieving embedded compendium documents, so manually retrieving each child document from the base document.
+		const { collection, embedded, documentId } = foundry.utils.parseUuid(documentUuid);
+		let document = collection.get(documentId);
+		while (document && (embedded.length > 1)) {
+			const [embeddedName, embeddedId] = embedded.splice(0, 2);
+			document = document.getEmbeddedDocument(embeddedName, embeddedId);
+		}
+
+		return document;
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Helper method to retrieve an embedded pseudo-document.
+	 * @param {HTMLElement} element   The element with relevant data.
+	 * @returns {PseudoDocument}
+	 */
+	_getPseudoDocument(element) {
+		const documentName = element.closest("[data-pseudo-document-name]").dataset.pseudoDocumentName;
+		const id = element.closest("[data-pseudo-id]").dataset.pseudoId;
+		return this.document.getEmbeddedDocument(documentName, id);
 	}
 
 	/* -------------------------------------------- */
@@ -499,12 +551,18 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			if (tab?.condition && !tab.condition(this.document)) delete context.tabs[key];
 		}
 
+		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
+
+		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
+
 		context.shouldHideMacroType = [];
 		context.editorLangs = [];
 		for (const macro of [...this.item.system.macros]) {
 			context.shouldHideMacroType.push(CONFIG.DND4E.macroLaunchOrder[macro.launchOrder]?.hideType ?? false);
 			context.editorLangs.push(macro?.type === "script" ? "javascript" : "");
 		}
+
+		context.systemFields = this.document.system.schema.fields;
 
 		return context;
 	}
@@ -610,7 +668,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			return item.sheet.render({ force: true });
 		}
 		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
-			return foundry.applications.api.Dialog.confirm({
+			return Dialog4e.confirm({
 				window: {
 					title: _loc("DND4E.DeleteConfirmTitle", { name: item.name }),
 				},
@@ -644,7 +702,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static async #onConvertCurrency(event, target) {
 		if (!this.item.actor.isOwner) return;
 		event.preventDefault();
-		let shouldConvert = await foundry.applications.api.Dialog.confirm({
+		let shouldConvert = await Dialog4e.confirm({
 			window: { title: `${_loc("DND4E.CurrencyConvert")}` },
 			content: `<p>${_loc("DND4E.CurrencyConvertHint")}</p>`,
 		});
@@ -1603,6 +1661,57 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			target.parentElement.classList.toggle("collapsed");
 		}
 
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Create a pseudo-document.
+	 * @this ItemSheet4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #createPseudoDocument(event, target) {
+		const documentName = target.closest("[data-pseudo-document-name]").dataset.pseudoDocumentName;
+		const type = target.closest("[data-pseudo-type]")?.dataset.pseudoType;
+		/** @type {ModelCollection} */
+		const collection = this.document.getEmbeddedCollection(documentName);
+		const Cls = collection.documentClass;
+
+		// Ensure the new document has a non-zero sort value
+		const sort = (collection.sortedContents.at(-1)?.sort ?? 0) + CONST.SORT_INTEGER_DENSITY;
+
+		if (!type && (foundry.utils.isSubclass(Cls, dnd4e.data.pseudoDocuments.TypedPseudoDocument))) {
+			await Cls.createDialog({ sort }, { parent: this.document });
+		} else {
+			await Cls.create({ sort, type }, { parent: this.document });
+		}
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Delete a pseudo-document.
+	 * @this ItemSheet4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #deletePseudoDocument(event, target) {
+		const doc = this._getPseudoDocument(target);
+		await doc.delete();
+	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Render the sheet of a pseudo-document.
+	 * @this ItemSheet4e
+	 * @param {PointerEvent} event    The initiating click event.
+	 * @param {HTMLElement} target    The capturing HTML element which defined a [data-action].
+	 */
+	static async #renderPseudoDocumentSheet(event, target) {
+		const doc = this._getPseudoDocument(target);
+		await doc.sheet.render({ force: true });
 	}
 
 	/* -------------------------------------------- */

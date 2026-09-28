@@ -1,3 +1,4 @@
+import SystemModel4e from "../system-model.mjs";
 import DamagePartsField from "./fields/damage-parts-field.mjs";
 import { FormulaField, MappingField } from "../fields/_module.mjs";
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
@@ -5,7 +6,7 @@ import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
-export default class WeaponData extends foundry.abstract.TypeDataModel {
+export default class WeaponData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

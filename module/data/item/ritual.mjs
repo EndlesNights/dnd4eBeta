@@ -1,8 +1,9 @@
+import SystemModel4e from "../system-model.mjs";
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
-export default class RitualData extends foundry.abstract.TypeDataModel {
+export default class RitualData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

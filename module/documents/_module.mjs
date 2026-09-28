@@ -7,3 +7,5 @@ export { default as Combat4e } from "./combat.mjs";
 export { default as Combatant4e } from "./combatant.mjs";
 export { default as Item4e } from "./item.mjs";
 export { default as TokenDocument4e } from "./token.mjs";
+
+export { default as BaseDocumentMixin } from "./base-document-mixin.mjs";

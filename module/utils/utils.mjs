@@ -1922,6 +1922,70 @@ export function debugLog(msg) {
 }
 
 /**
+ * Handles auto-targeting on template placement
+ * @param {foundry.canvas.placeables.Region} regionDoc
+ * @returns
+ */
+export async function handleAutoTarget(regionDoc) {
+	if (!regionDoc.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)) return;
+	const originUuid = regionDoc.getFlag("dnd4e", "origin");
+	const actorUuid = regionDoc.getFlag("dnd4e", "actorUuid");
+	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
+	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
+	if (!flagDocument || (flagDocument.system.autoTarget.mode === "none")) return;
+	if (!actorUuid) return;
+	const token = tokenForActor(await fromUuid(actorUuid));
+	if (!token) return;
+	let tokens = new Set();
+	for (const token of game.canvas.scene.tokens) {
+		if (token.testInsideRegion(regionDoc)) tokens.add(token);
+	}
+	if (!tokens.size) return;
+	const disposition = token.document.disposition;
+	const excludeUser = !flagDocument.system.autoTarget.includeSelf || (flagDocument.system.autoTarget.mode === "enemies");
+	const targets = new Set();
+	for (let targetToken of tokens) {
+		if ((excludeUser && (targetToken.actor.uuid === actorUuid)) || targetToken.actor.statuses.has("dead")) continue;
+		switch (flagDocument.system.autoTarget.mode) {
+			case "all":
+				targets.add(targetToken.id);
+				break;
+			case "allies":
+				if (targetToken.disposition === disposition) {
+					targets.add(targetToken.id);
+				}
+				break;
+			case "enemies":
+				if (targetToken.disposition === -1 * disposition) {
+					targets.add(targetToken.id);
+				}
+				break;
+		}
+	}
+	game.canvas.tokens.setTargets(targets);
+}
+
+/**
+ * Handles auto-targeting on template placement
+ * @param {foundry.canvas.placeables.Region} regionDoc
+ * @returns
+ */
+export async function handleBehaviorCreation(regionDoc) {
+	if (!game.user.isActiveGM) return;
+
+	const originUuid = regionDoc.getFlag("dnd4e", "origin");
+	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
+	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
+	if (!flagDocument) return;
+	const behaviors = [...flagDocument.system.behaviors].map((b) => b.toObject());
+	if (!behaviors?.length) return;
+
+	// TODO: Add pre- and post- hooks
+
+	regionDoc.createEmbeddedDocuments("RegionBehavior", behaviors);
+}
+
+/**
  * Socket handler to apply effect to a token
  * @param {Object} data
  * @param {Scene} data.scene
@@ -2367,8 +2431,8 @@ export function getHumanReadableAttributeLabel(attr, { actor } = {}) {
 
 	// Attempt to find the attribute in a data model.
 	if (!label) {
-		const { CharacterData, NPCData, VehicleData, GroupData } = DND4E.dataModels.actor;
-		for (const model of [CharacterData, NPCData, VehicleData, GroupData]) {
+		const { CharacterData, HazardData, NPCData } = dnd4e.data.actor;
+		for (const model of [CharacterData, HazardData, NPCData]) {
 			const field = model.schema.getField(attr);
 			if (field) {
 				label = field.label;

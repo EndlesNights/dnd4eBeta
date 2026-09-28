@@ -1,8 +1,9 @@
+import SystemModel4e from "../system-model.mjs";
 import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 
 const { ArrayField, BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class EquipmentData extends foundry.abstract.TypeDataModel {
+export default class EquipmentData extends SystemModel4e {
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];

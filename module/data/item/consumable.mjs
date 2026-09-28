@@ -1,10 +1,23 @@
-import { FormulaField, MappingField } from "../fields/_module.mjs";
+import SystemModel4e from "../system-model.mjs";
+import { CollectionField, FormulaField, MappingField } from "../fields/_module.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
+import { default as PowerBehavior } from "../pseudo-documents/PowerBehaviors/base-power-behavior.mjs";
 import { processPart } from "./_utils.mjs";
 
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
-export default class ConsumableData extends foundry.abstract.TypeDataModel {
+export default class ConsumableData extends SystemModel4e {
+	/** @inheritdoc */
+	static get metadata() {
+		return {
+			...super.metadata,
+			type: "consumable",
+			embedded: {
+				PowerBehavior: "system.behaviors",
+			},
+		};
+	}
+
 	/* -------------------------------------------- */
 	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
@@ -57,6 +70,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
 			enhance: new NumberField({ initial: 0, integer: true }),
+			behaviors: new CollectionField(PowerBehavior, { label: "DND4E.PowerBehaviors" }),
 		};
 	}
 

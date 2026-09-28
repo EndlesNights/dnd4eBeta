@@ -1,15 +1,15 @@
 import { d20Roll } from "../helpers/dice.mjs";
 import { DND4E } from "../config.mjs";
 import * as utils from "../utils/utils.mjs";
-import SaveThrowDialog from "../applications/apps/save-throw.mjs";
+import BaseDocumentMixin from "./base-document-mixin.mjs";
 import Roll4e from "../rolls/roll.mjs";
+import SaveThrowDialog from "../applications/apps/save-throw.mjs";
 import SourceField from "../data/fields/source-field.mjs";
 
 /**
- * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
- * @extends {Actor}
+ * A document subclass adding system-specific behavior and registered in CONFIG.Actor.documentClass.
  */
-export default class Actor4e extends Actor {
+export default class Actor4e extends BaseDocumentMixin(foundry.documents.Actor) {
 	constructor(data, context) {
 		super(data, context);
 

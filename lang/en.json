@@ -1,5 +1,7 @@
 {
-	
+"DOCUMENT": {
+    "PowerBehavior": "Power Behavior"
+},
 "Dungeons & Dragons 4th Edition": "Dungeons & Dragons 4th Edition ",
 "DND4E.title": "Dungeons & Dragons 4th Edition ",
 "DND4E.1H": "1H",
@@ -158,6 +160,8 @@
 "DND4E.BasicSightMode": "Basic Sight Mode",
 "DND4E.Beast": "Beast",
 "DND4E.BeastForm": "Beast Form",
+"DND4E.Behavior": "Behavior",
+"DND4E.BehaviorPl": "Behaviors",
 "DND4E.Biography": "Biography",
 "DND4E.Bonus": "Bonus",
 "DND4E.Bonuses": "Bonuses",
@@ -776,6 +780,7 @@
 "DND4E.PowerAt": "At-Will",
 "DND4E.PowerAttack": "Attack",
 "DND4E.PowerBaseDamage": "Base Damage",
+"DND4E.PowerBehaviors": "Power Behaviors",
 "DND4E.PowerCreate": "Create Power",
 "DND4E.PowerDaily": "Daily",
 "DND4E.PowerDamBonusNull": "Ignores Bonus Damage",
@@ -1480,6 +1485,30 @@
 	"Shadow": "Shadow"
 },
 
+"DND4E.PSEUDO": {
+	"FIELDS": {
+		"name": {
+			"label": "Name"
+		},
+		"img": {
+			"label": "Image"
+		},
+		"type": {
+			"label": "Type"
+		}
+		},
+	"SHEET": {
+		"baseConfiguration": "Base Configuration",
+		"TABS": {
+			"details": "Details",
+			"identity": "Identity"
+		}
+	},
+	"Notifications": {
+		"DeletedInfo": "Deleted {pseudoName} {id} with type {type} from {name}"
+	}
+},
+
 "DND4E.RegionBehaviors": {
 	"ApplyActiveEffect": {
 		"FIELDS": {
@@ -2093,6 +2122,12 @@
 		"ritual": "Ritual",
 		"tool": "Tool",
 		"weapon": "Weapon"
+	},
+	"PowerBehavior": {
+		"applyActiveEffect4e": "Apply Active Effect",
+		"damagingRegion": "Damaging Region",
+		"difficultTerrain": "Difficult Terrain",
+		"obscuredTerrain": "Obscured Terrain"
 	}
 }
 

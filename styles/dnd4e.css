@@ -2970,6 +2970,12 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
       flex-basis:calc(100% - 2em);
     }
   }
+  .tab.behaviors{
+    .pre-img {
+      flex: 0 0 var(--input-height);
+      max-height: var(--input-height);
+    }
+  }
 }
 .sheet.default .item-consumable .form-group :is(.display-effect,.effect-html){
 	text-align:right;
