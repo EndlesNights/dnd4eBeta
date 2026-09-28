@@ -70,7 +70,7 @@ export default class ObscuredTerrainRegionBehaviorType extends foundry.data.regi
 			key: "obscurement",
 			type: "fontAwesome",
 			source,
-			tint: Number(this.gridIconsTint),
+			tint: Number(this.gridIconTint),
 			alpha: this.gridIconAlpha,
 			priority: this.level,
 			order: 10,
