@@ -499,7 +499,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			if (tab?.condition && !tab.condition(this.document)) delete context.tabs[key];
 		}
 
-		context.editorLang = this.document.system.macro?.type === "script" ? "javascript" : "";
+		context.shouldHideMacroType = [];
+		context.editorLangs = [];
+		for (const macro of [...this.item.system.macros]) {
+			context.shouldHideMacroType.push(CONFIG.DND4E.macroLaunchOrder[macro.launchOrder]?.hideType ?? false);
+			context.editorLangs.push(macro?.type === "script" ? "javascript" : "");
+		}
 
 		return context;
 	}

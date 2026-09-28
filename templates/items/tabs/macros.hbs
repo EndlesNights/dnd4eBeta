@@ -15,7 +15,7 @@
         </select>
       </div>
 
-      {{#unless (or (eq macro.launchOrder "comBonAttacker") (eq macro.launchOrder "comBonTarget") (eq macro.launchOrder "preAttackAttacker") (eq macro.launchOrder "preAttackTarget") (eq macro.launchOrder "evalDef"))}}
+      {{#unless (lookup @root.shouldHideMacroType @index)}}
       <div class="form-group loose">
         <label>{{ localize "Type" }}</label>
         <select name="system.macros.{{@index}}.type" class="macro-type">
@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-group stacked macro-text" tabindex="0">
-      <code-mirror name="system.macros.{{@index}}.command" language="{{editorLanguage}}" tabindex="0">
+      <code-mirror name="system.macros.{{@index}}.command" language="{{lookup @root.editorLangs @index}}" tabindex="0">
         {{~ macro.command ~}}
       </code-mirror>
     </div>

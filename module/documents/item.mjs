@@ -2192,6 +2192,14 @@ export default class Item4e extends Item {
 			}
 		}
 
+		for (const actorItem of [...this.actor.items]) {
+			for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preDamage"))) {
+				const func = new Function("source", "item", "attacker", "config", macro.command);
+				func(actorItem, this, this.actor, { parts, partsMiss, partsCrit, partsExpressionReplacements, partsMissExpressionReplacement, partsCritExpressionReplacement, damageTypes: pD, options });
+			}
+		}
+		Hooks.callAll("dnd4e.preDamageRoll", this, this.actor, { parts, partsMiss, partsCrit, partsExpressionReplacements, partsMissExpressionReplacement, partsCritExpressionReplacement, damageTypes: pD, options });
+
 		primaryDamage = pD.join(", ");
 
 		let damageFormula = "";
