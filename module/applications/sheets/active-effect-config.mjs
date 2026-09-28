@@ -340,21 +340,6 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		}
 
 		submitData.system.keywords = Array.from(Object.values(submitData.system.keywords || {})).filter(x => x);
-
-		const durationType = submitData.system.durationType;
-		if (durationType) {
-			const durationConfig = CONFIG.DND4E.durationType[durationType].duration;
-			for (const [key, value] of Object.entries(durationConfig)) {
-				submitData[`duration.${key}`] = value;
-			}
-		} else {
-			const noDuration = {
-				value: null,
-				units: "seconds",
-				expiry: null,
-			};
-			submitData.duration = noDuration;
-		}
 		// CHANGES FROM CORE END HERE
 
 		this.document.validate({ changes: submitData, clean: true, fallback: false });

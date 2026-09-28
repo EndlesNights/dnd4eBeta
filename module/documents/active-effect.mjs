@@ -100,9 +100,9 @@ export default class ActiveEffect4e extends ActiveEffect {
 							relevantActor = fromUuidSync(this.origin);
 							break;
 					}
-					const combatant = this.start.combat?.getCombatantsByActor(relevantActor)[0];
+					const combatant = this.start?.combat?.getCombatantsByActor(relevantActor)[0];
 					if (combatant && (combatant.turnNumber !== null)) updates.start = { combatant: combatant.id };
-					const decreaseDuration = combatant?.turnNumber > this.start.combat?.turn;
+					const decreaseDuration = combatant?.turnNumber > this.start?.combat?.turn;
 					if (decreaseDuration) updates["duration.value"] = durationConfig.value - 1;
 				}
 			}
@@ -123,6 +123,26 @@ export default class ActiveEffect4e extends ActiveEffect {
 		await super._onCreate(data, options, userId);
 		// Manage mutually exclusive effects
 		if (game.settings.get("dnd4e", "dynamicAutomation") && (game.user.id == userId)) this.managePeers("create");
+	}
+
+	/** @inheritDoc */
+	async _preUpdate(changed, opions, userId) {
+		if (("system" in changed) && ("durationType" in changed.system)) {
+			const durationType = changed.system.durationType;
+			const duration = {};
+			if (durationType && ("duration" in CONFIG.DND4E.durationType[durationType])) {
+				const durationConfig = CONFIG.DND4E.durationType[durationType].duration;
+				for (const [key, value] of Object.entries(durationConfig)) {
+					duration[key] = value;
+				}
+			} else {
+				duration.value = null;
+				duration.units = "seconds";
+				duration.expiry = null;
+			}
+			changed.duration = duration;
+		}
+
 	}
 
 	/** @inheritdoc */
