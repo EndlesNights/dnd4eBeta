@@ -362,6 +362,20 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 
 Hooks.on("getChatMessageContextOptions", helpers.chat.addChatMessageContextOptions);
 
+Hooks.on("getSceneControlButtons", (controls) => {
+	const templateMode = game.canvas.regions?.templateMode;
+	// Loose equality intentional, do not replace with ===
+	if ((templateMode == null) || !("regions" in controls) || !("tools" in controls.regions)) return;
+	for (const tool of Object.values(controls.regions.tools)) {
+		if (!("shapeData" in tool)) continue;
+		if (templateMode) {
+			tool.shapeData.gridBased = true;
+		} else if ("gridBased" in tool.shapeData) {
+			delete tool.shapeData.gridBased;
+		}
+	}
+});
+
 Hooks.on("renderChatLog", (app, element, context) => {
 	// Revert Foundy's bizarre decision to force light theme in chat
 	try {
