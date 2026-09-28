@@ -540,7 +540,7 @@
   <ol class="onetext-parts form-group">
     {{#each system.specialAdd.parts as |part i| }}
     <li class="onetext-part flexrow" data-special-part="{{i}}">
-      <input type="text" name="system.specialAdd.parts.{{i}}" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
+      <input type="text" name="system.specialAdd.parts.{{i}}" value="{{part}}" placeholder="{{ localize 'DND4EUI.PowerTextFieldsPlaceholder'}}">
       <a class="onetext-control" data-action="deleteSpecial"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
