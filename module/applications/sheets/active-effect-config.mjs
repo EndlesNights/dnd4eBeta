@@ -26,6 +26,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			deleteStatus: ActiveEffectConfig4e.#onEffectStatusControl,
 			addKeyword: ActiveEffectConfig4e.#onEffectKeywordControl,
 			deleteKeyword: ActiveEffectConfig4e.#onEffectKeywordControl,
+			addMacro: ActiveEffectConfig4e.#onMacroControl,
+			deleteMacro: ActiveEffectConfig4e.#onMacroControl,
+			expandMacro: ActiveEffectConfig4e.#onMacroControl,
 		},
 	};
 
@@ -48,6 +51,10 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs",
 			scrollable: [".scrollable"],
 		},
+		macros: {
+			template: "systems/dnd4e/templates/sheets/active-effect/macros.hbs",
+			scrollable: [".scrollable"],
+		},
 		footer: { template: "templates/generic/form-footer.hbs" },
 	};
 
@@ -58,6 +65,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				{ id: "details", label: "DND4E.Sheet.Details" },
 				{ id: "changes", label: "EFFECT.TABS.changes" },
 				{ id: "activation", label: "DND4E.Sheet.Activation" },
+				{ id: "macros", label: "DND4E.Macros" },
 			],
 			initial: "details",
 		},
@@ -79,6 +87,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				...CONFIG.DND4E.powerSource,
 			},
 		};
+		context.systemFields = effect.schema.fields;
 		const damageTypes = { ...CONFIG.DND4E.damageTypes };
 		switch (partId) {
 			case "description":
@@ -132,6 +141,11 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				partContext.cltEnabled = context.config.statusEffects.length !== Object.keys(context.config.statusEffect).length;
 				partContext.statuses = Object.values(CONFIG.statusEffects)
 					.map(s => ({ value: s.id, label: _loc(s.name) }));
+				break;
+			}
+			case "macros": {
+				partContext.macros = effect.system.macros;
+				partContext.macroFields = effect.system.schema.fields.macros.element.fields;
 				break;
 			}
 			case "footer":
@@ -228,6 +242,45 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				target.closest(".effect-keyword").remove();
 				return this.submit({ preventClose: true }).then(() => this.render());
 		}
+	}
+
+	/* ----------------------------------------- */
+
+	/**
+		 * Add or remove a macro
+		 * @this {ItemSheet4e}
+		 * @param {Event} event     		The original click event
+		 * @param {HTMLElement} target	    The target of the event
+		 * @returns {Promise}
+		 */
+	static async #onMacroControl(event, target) {
+		const action = target.dataset.action;
+		// Add new damage component
+		if (action === "addMacro") {
+			await this.submit(event); // Submit any unsaved changes
+			const macros = this.document.system.macros;
+			return this.document.update({ "system.macros": macros.concat([{
+				launchOrder: "off",
+				command: "",
+				enabled: true,
+			}]) });
+		}
+
+		// Remove a damage component
+		if (action === "deleteMacro") {
+			await this.submit(event); // Submit any unsaved changes
+			const macro = target.closest(".collapsible");
+			const index = macro.getAttribute("data-macro-number");
+			const macros = foundry.utils.duplicate(this.document.system.macros);
+			macros.splice(index, 1);
+			return this.document.update({ "system.macros": macros });
+		}
+
+		// Expand macro text
+		if (action === "expandMacro") {
+			target.parentElement.classList.toggle("collapsed");
+		}
+
 	}
 
 	/* ----------------------------------------- */

@@ -42,6 +42,13 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 			...CONFIG.DND4E.damageTypes,
 			...CONFIG.DND4E.powerSource,
 		};
+		const macroPasses = foundry.utils.deepClone(CONFIG.DND4E.macroLaunchOrder);
+		//delete macroPasses.off;
+		delete macroPasses.pre;
+		delete macroPasses.post;
+		delete macroPasses.both;
+		delete macroPasses.sub;
+
 		return {
 			...super.defineSchema(),
 			durationType: new StringField({ initial: "" }),
@@ -57,6 +64,11 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 			useSourceActorData: new BooleanField({ initial: true }),
 			saveDC: new NumberField(),
 			durationAction: new StringField({ initial: "" }),
+			macros: new ArrayField(new SchemaField({
+				launchOrder: new StringField({ initial: "off", choices: macroPasses, required: true, nullable: false, blank: false }),
+				command: new StringField({ initial: "" }),
+				enabled: new BooleanField({ initial: true }),
+			}), { initial: [] }),
 		};
 	}
 

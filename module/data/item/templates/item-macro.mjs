@@ -7,7 +7,7 @@ export default class ItemMacroTemplate extends foundry.abstract.DataModel {
 			macros: new ArrayField(new SchemaField({
 				type: new StringField({ initial: "script" }),
 				scope: new StringField({ initial: "global" }),
-				launchOrder: new StringField({ initial: "off" }),
+				launchOrder: new StringField({ initial: "off", required: true, nullable: false, blank: false }),
 				command: new StringField({ initial: "" }),
 				author: new StringField({ initial: "" }),
 				enabled: new BooleanField({ initial: true }),
