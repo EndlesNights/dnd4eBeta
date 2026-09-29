@@ -308,7 +308,7 @@ Hooks.once("ready", async function() {
 	});
 
 	// Apply custom status config to AE compendium
-	await helpers.customization.applyCustomStatusToCompendium();
+	if (game.user.isActiveGM) await helpers.customization.applyCustomStatusToCompendium();
 
 	// Determine whether a system migration is required and feasible
 	if (!game.user.isGM) return;

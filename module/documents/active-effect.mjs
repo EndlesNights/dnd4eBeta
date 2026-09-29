@@ -433,7 +433,7 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 	/* --------------------------------------------- */
 
 	/**
-	 * Wrapper for _refreshBehaviors that uses a semaphor to ensure proper concurrency when receiving multiple updates in quick succession.
+	 * Wrapper for _refreshBehaviors that uses a semaphore to ensure proper concurrency when receiving multiple updates in quick succession.
 	 * @param {Object} [options]
 	 * @param {Set<string>} [options.tokens] Set of tokens to refresh behaviors for. Tokens not in this set will not be processed. Defaults to all tokens belonging to the effect's actor.
 	 * @param {boolean} [options.delete] True if we're deleting the effect.
