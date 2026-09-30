@@ -453,16 +453,13 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 		let parentActor;
 		if (!tokens) {
 			if (this.parent instanceof Actor) {
-				tokens = new Set(this.parent?.getDependentTokens());
 				parentActor = this.parent;
 			} else if ((this.parent instanceof Item) && this.parent.actor) {
-				tokens = new Set(this.parent.actor.getDependentTokens());
 				parentActor = this.parent.actor;
-			} else {
-				// No tokens to create regions around, abort
-				return;
 			}
+			tokens = new Set(parentActor.getDependentTokens());
 		}
+		if (!tokens.size) return;
 		const tokenArray = [...tokens];
 		const regionData = this.getFlag("dnd4e", "behaviorRegions") ?? [];
 		const regionUuids = regionData.filter(data => tokenArray.some(t => data.tokenUuid === t.uuid)).map(data => data.regionUuid);
