@@ -2941,6 +2941,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 	 * @private
 	 */
 	getRollData(options = {}) {
+		if (!this.actor) return { item: { ...this.system } };
 		const data = { ...(this.actor?.getRollData(options) ?? {}), item: { ...this.system } };
 		data.item.name = this.name;
 		data.item.flags = foundry.utils.duplicate(this.flags);
