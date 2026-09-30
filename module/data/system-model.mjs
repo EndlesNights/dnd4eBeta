@@ -1,5 +1,5 @@
 /**
- * @import SubtypeMetadata from "./_types.mjs";
+ * @import { SubtypeMetadata } from "./_types.mjs";
  */
 
 /**

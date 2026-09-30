@@ -1,8 +1,14 @@
+import BaseDocumentMixin from "./base-document-mixin.mjs";
+
+const semaphore = new foundry.utils.Semaphore();
+
+/** @import { RegionBehavior } from "@client/config.mjs"; */
+
 /**
  * Extend the base ActiveEffect class to implement system-specific logic.
  * @extends {ActiveEffect}
  */
-export default class ActiveEffect4e extends ActiveEffect {
+export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.ActiveEffect) {
 	constructor(data, context) {
 		if (data.id) {
 			foundry.utils.setProperty(data, "flags.core.statusId", data.id);
@@ -12,6 +18,8 @@ export default class ActiveEffect4e extends ActiveEffect {
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 			if (["power", "consumable"].includes(context?.parent?.type)) {
 				data.transfer = false;
+
+				data.system.keywords ||= [];
 
 				if (context.parent.system?.damageType) {
 					for (const [key, value] of Object.entries(context.parent.system?.damageType)) {
@@ -23,6 +31,8 @@ export default class ActiveEffect4e extends ActiveEffect {
 						if (value) data.system.keywords.push(key);
 					}
 				}
+				if (context.parent.system?.effectType?.aura && context.parent.system?.auraSize && parseInt(context.parent.system.auraSize)) data.system.auraSize = parseInt(context.parent.system.auraSize);
+
 				if (context.parent.system?.keywordsCustom) data.system.keywordsCustom = context.parent.system?.keywordsCustom;
 
 				if (["equipment", "weapon"].includes(context?.parent?.type)) {
@@ -75,8 +85,17 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
-		await super._preCreate(data, options, user);
 		const updates = {};
+
+		const origin = fromUuidSync(data.origin, { strict: false });
+		if (origin && (origin instanceof RegionBehavior)) {
+			updates["system.auraSize"] = null;
+			updates["system.behaviors"] = _replace({});
+			/*for (const behavior of [...this.system.behaviors]) {
+				const path = `system.behaviors.${behavior.id}`;
+				updates[path] = _del;
+			}*/
+		}
 
 		// Set initial duration data for Actor-owned effects
 		if (this.parent instanceof Actor) {
@@ -117,12 +136,16 @@ export default class ActiveEffect4e extends ActiveEffect {
 		if (Object.keys(updates).length) {
 			this.updateSource(updates);
 		}
+
+		await super._preCreate(data, options, user);
 	}
 
+	/** @inheritdoc */
 	async _onCreate(data, options, userId) {
 		await super._onCreate(data, options, userId);
 		// Manage mutually exclusive effects
 		if (game.settings.get("dnd4e", "dynamicAutomation") && (game.user.id == userId)) this.managePeers("create");
+		if (game.user.isActiveGM) await this.refreshBehaviors();
 	}
 
 	/** @inheritDoc */
@@ -148,15 +171,19 @@ export default class ActiveEffect4e extends ActiveEffect {
 	/** @inheritdoc */
 	async _onUpdate(changed, options, userId) {
 		await super._onUpdate(changed, options, userId);
+		// Manage behavior region
 		if (game.settings.get("dnd4e", "dynamicAutomation") && (game.user.id == userId) && Object.hasOwn(changed, "disabled")) {
 			this.managePeers(changed.disabled ? "disable" : "enable");
 		}
+		if (game.user.isActiveGM && !options.behaviorFlags) await this.refreshBehaviors();
 	}
 
 	/** @inheritdoc */
 	async _onDelete(options, userId) {
 		await super._onDelete(options, userId);
 		if (game.settings.get("dnd4e", "dynamicAutomation") && (game.user.id == userId)) await this.managePeers("delete");
+		const NO_TOKENS = undefined;
+		if (game.user.isActiveGM) await this.refreshBehaviors(NO_TOKENS, { delete: true });
 	}
 
 	/* --------------------------------------------- */
@@ -166,6 +193,16 @@ export default class ActiveEffect4e extends ActiveEffect {
 		if (change.key.startsWith("@")) {
 			change.key = change.key.replace("@", "flags.dnd4e.custom-variables.");
 		}
+
+		const origin = fromUuidSync(change.effect.origin, { strict: false });
+		if (origin) {
+			if (targetDoc.system.auraTargets && (change.value < 0) && change.effect.system.keywords.has("aura") && (origin instanceof RegionBehavior)) {
+				targetDoc.system.auraTargets[change.key] ||= 0;
+				const worstPenaltyId = targetDoc.system.auraTargets[change.key];
+				if (change.effect.id !== worstPenaltyId) change.value = 0;
+			}
+		}
+
 		return super.applyChange(targetDoc, change, { replacementData, modifyTarget });
 	}
 
@@ -383,7 +420,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 				if (this.system.allKeywords.has("polymorph") && (this.getFlag("dnd4e", "status.suspendedBy") === undefined)) {
 					for (let effect of this.actor.allApplicableEffects()) {
 						if (effect.system.allKeywords.has("polymorph") && (effect.uuid !== this.uuid) && (effect.getFlag("dnd4e", "status.suspendedBy") === this.uuid)) {
-							effect.update({ disabled: false });
+							await effect.update({ disabled: false });
 						}
 					}
 				}
@@ -391,6 +428,95 @@ export default class ActiveEffect4e extends ActiveEffect {
 		} catch(e) {
 			console.error(`There was an error during automatic effect management | mode: ${action} | details: ${e}`);
 		}
+	}
+
+	/* --------------------------------------------- */
+
+	/**
+	 * Wrapper for _refreshBehaviors that uses a semaphore to ensure proper concurrency when receiving multiple updates in quick succession.
+	 * @param {Object} [options]
+	 * @param {Set<string>} [options.tokens] Set of tokens to refresh behaviors for. Tokens not in this set will not be processed. Defaults to all tokens belonging to the effect's actor.
+	 * @param {boolean} [options.delete] True if we're deleting the effect.
+	 */
+	async refreshBehaviors(tokens = undefined, options = {}) {
+		await semaphore.add(() => {
+			return this._refreshBehaviors(tokens, options);
+		});
+	}
+
+	/**
+	 * Handles (re)creation of region behaviors attached to this effect.
+	 * @param {Object} [options]
+	 * @param {Set<string>} [options.tokens] Set of tokens to refresh behaviors for. Tokens not in this set will not be processed. Defaults to all tokens belonging to the effect's actor.
+	 * @param {boolean} [options.delete] True if we're deleting the effect.
+	 */
+	async _refreshBehaviors(tokens = new Set(this.parent?.getDependentTokens()), options = {}) {
+		const tokenArray = [...tokens];
+		const regionData = this.getFlag("dnd4e", "behaviorRegions") ?? [];
+		const regionUuids = regionData.filter(data => tokenArray.some(t => data.tokenUuid === t.uuid)).map(data => data.regionUuid);
+
+		const deleteBatch = [];
+		for (const regionUuid of regionUuids) {
+			const regionDoc = fromUuidSync(regionUuid, { strict: false });
+			if (regionDoc) {
+				await regionDoc.update({ locked: false });
+				deleteBatch.push({
+					action: "delete",
+					documentName: "Region",
+					parent: regionDoc.parent,
+					ids: [regionDoc.id],
+				});
+			}
+		}
+		if (deleteBatch.length) await foundry.documents.modifyBatch(deleteBatch);
+
+		const regionBehaviors = regionData.filter(data => !regionUuids.includes(data.regionUuid));
+
+		if (options.delete) return;
+		if (this.disabled || !this.system.auraSize || !(this.parent instanceof Actor)) {
+			await this.update({ "flags.dnd4e.behaviorRegions": regionBehaviors }, { behaviorFlags: true });
+			return;
+		}
+
+		for (const token of tokens) {
+			const tokenOwner = game.users.getDesignatedUser(u => u.character === token.actor) ?? game.users.activeGM;
+			const regionData = {
+				attachment: {
+					token: token.id,
+				},
+				color: (tokenOwner?.color)?.css,
+				displayMeasurements: false,
+				flags: {
+					"dnd4e.origin": this.uuid,
+					"dnd4e.actorUuid": this.parent?.uuid,
+				},
+				levels: [token.level],
+				locked: true,
+				name: this.name,
+				restriction: {
+					enabled: true,
+					type: "move",
+				},
+				shapes: [{
+					type: "emanation",
+					base: {
+						type: "token",
+						x: token._source.x,
+						y: token._source.y,
+						width: token._source.width,
+						height: token._source.height,
+						shape: token._source.shape,
+					},
+					gridBased: true,
+					hole: false,
+					radius: token.parent.dimensions.distancePixels * this.system.auraSize,
+				}],
+				visibility: this.system.showAura ? CONST.REGION_VISIBILITY.ALWAYS : CONST.REGION_VISIBILITY.LAYER_UNLOCKED,
+			};
+			const [newRegion] = await token.parent.createEmbeddedDocuments("Region", [regionData]);
+			regionBehaviors.push({ tokenUuid: token.uuid, regionUuid: newRegion.uuid });
+		}
+		await this.update({ "flags.dnd4e.behaviorRegions": regionBehaviors }, { behaviorFlags: true });
 	}
 
 	/* --------------------------------------------- */

@@ -27,6 +27,15 @@ export default class TokenDocument4e extends TokenDocument {
 		return this.ring.enabled;
 	}
 
+	/** @inheritdoc */
+	_onCreate(data, options, userId) {
+		super._onCreate(data, options, userId);
+		if (!game.user.isActiveGM) return;
+		for (const effect of [...this.actor.appliedEffects]) {
+			effect.refreshBehaviors(new Set([this]));
+		}
+	}
+
 	/* -------------------------------------------- */
 	/*  Data Preparation                            */
 	/* -------------------------------------------- */

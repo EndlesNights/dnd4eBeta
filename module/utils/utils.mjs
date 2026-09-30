@@ -1932,7 +1932,7 @@ export async function handleAutoTarget(regionDoc) {
 	const actorUuid = regionDoc.getFlag("dnd4e", "actorUuid");
 	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
 	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
-	if (!flagDocument || (flagDocument.system.autoTarget.mode === "none")) return;
+	if (!flagDocument || !(flagDocument instanceof Item) || (flagDocument.system.autoTarget.mode === "none")) return;
 	if (!actorUuid) return;
 	const token = tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
@@ -1979,8 +1979,6 @@ export async function handleBehaviorCreation(regionDoc) {
 	if (!flagDocument) return;
 	const behaviors = [...flagDocument.system.behaviors].map((b) => b.toObject());
 	if (!behaviors?.length) return;
-
-	// TODO: Add pre- and post- hooks
 
 	regionDoc.createEmbeddedDocuments("RegionBehavior", behaviors);
 }

@@ -11,10 +11,10 @@ import TypedPseudoDocument from "../pseudo-documents/typed-pseudo-document.mjs";
  */
 export default class CollectionField extends foundry.data.fields.TypedObjectField {
 	/**
-   * @param {typeof TypedPseudoDocument} model    The value type of each entry in this object.
-   * @param {DataFieldOptions} [options]          Options which configure the behavior of the field.
-   * @param {DataFieldContext} [context]          Additional context which describes the field.
-   */
+	 * @param {typeof TypedPseudoDocument} model    The value type of each entry in this object.
+	 * @param {DataFieldOptions} [options]          Options which configure the behavior of the field.
+	 * @param {DataFieldContext} [context]          Additional context which describes the field.
+	 */
 	constructor(model, options = {}, context = {}) {
 		if (!foundry.utils.isSubclass(model, TypedPseudoDocument)) {
 			throw new Error("A CollectionField can only be instantiated with a TypedPseudoDocument subclass.");
@@ -33,9 +33,9 @@ export default class CollectionField extends foundry.data.fields.TypedObjectFiel
 	/* -------------------------------------------------- */
 
 	/**
-   * The Collection implementation to use when initializing the collection.
-   * @type {typeof ModelCollection}
-   */
+	 * The Collection implementation to use when initializing the collection.
+	 * @type {typeof ModelCollection}
+	 */
 	static get implementation() {
 		return ModelCollection;
 	}
@@ -51,9 +51,9 @@ export default class CollectionField extends foundry.data.fields.TypedObjectFiel
 	/* -------------------------------------------------- */
 
 	/**
-   * The pseudo-document class.
-   * @type {typeof TypedPseudoDocument}
-   */
+	 * The pseudo-document class.
+	 * @type {typeof TypedPseudoDocument}
+	 */
 	get documentClass() {
 		return this.#documentClass;
 	}
@@ -80,6 +80,14 @@ export default class CollectionField extends foundry.data.fields.TypedObjectFiel
 		if (!src || !value) {
 			source[key] = value;
 			return;
+		}
+
+		// Account for forced replacement
+		if (diff instanceof foundry.data.operators.ForcedReplacement) {
+			const newValue = foundry.data.operators.DataFieldOperator.get(diff);
+			for (const k of Object.keys(src)) {
+				if (!(k in newValue)) delete src[k];
+			}
 		}
 
 		// Reconstruct the source array, retaining object references

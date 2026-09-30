@@ -70,7 +70,7 @@ export default class ConsumableData extends SystemModel4e {
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
 			enhance: new NumberField({ initial: 0, integer: true }),
-			behaviors: new CollectionField(PowerBehavior, { label: "DND4E.PowerBehaviors" }),
+			behaviors: new CollectionField(PowerBehavior, { label: "DND4E.PowerBehaviorPl" }),
 		};
 	}
 

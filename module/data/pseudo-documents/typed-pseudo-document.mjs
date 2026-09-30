@@ -88,7 +88,7 @@ export default class TypedPseudoDocument extends PseudoDocument {
 	static _prepareCreateDialogContext(parent) {
 
 		/** @type {FormSelectOption[]} */
-		const typeOptions = Object.entries(this.documentConfig).map(([value, { label }]) => ({ value, label }));
+		const typeOptions = Object.entries(this.documentConfig).filter(([value, { condition }]) => (condition === undefined) || condition()).map(([value, { label }]) => ({ value, label }));
 
 		return {
 			typeOptions,

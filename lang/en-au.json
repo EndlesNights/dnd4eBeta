@@ -780,7 +780,8 @@
 "DND4E.PowerAt": "At-Will",
 "DND4E.PowerAttack": "Attack",
 "DND4E.PowerBaseDamage": "Base Damage",
-"DND4E.PowerBehaviors": "Power Behaviours",
+"DND4E.PowerBehavior": "Power Behaviour",
+"DND4E.PowerBehaviorPl": "Power Behaviours",
 "DND4E.PowerCreate": "Create Power",
 "DND4E.PowerDaily": "Daily",
 "DND4E.PowerDamBonusNull": "Ignores Bonus Damage",
@@ -987,6 +988,7 @@
 "DND4E.ShortRestResult": "{name} takes a short rest, spending {surges} healing surges to recover {healing} hit points.",
 "DND4E.ShortRestSelect": "Number of surges to spend",
 "DND4E.ShortRestTake": "Take a short rest",
+"DND4E.ShowAura": "Show Aura",
 "DND4E.Size": "Size",
 "DND4E.SizeGargantuan": "Gargantuan",
 "DND4E.SizeHuge": "Huge",
@@ -1505,7 +1507,8 @@
 		}
 	},
 	"Notifications": {
-		"DeletedInfo": "Deleted {pseudoName} {id} with type {type} from {name}"
+		"DeletedInfo": "Deleted {pseudoName} {id} with type {type} from {name}",
+		"CannotCreateFromRegion": "Region Behaviours cannot be added to effects created by region behaviours."
 	}
 },
 
@@ -1541,7 +1544,7 @@
 				"label": "Damage"
 			},
 			"damageTypes": {
-				"hint": "Damage types done by this region behavior.",
+				"hint": "Damage types done by this region behaviour.",
 				"label": "Damage Types"
 			},
 			"dispositions": {

@@ -553,14 +553,14 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
 
-		context.powerBehaviorIcon = BasePowerBehavior.metadata.icon;
-
 		context.shouldHideMacroType = [];
 		context.editorLangs = [];
 		for (const macro of [...this.item.system.macros]) {
 			context.shouldHideMacroType.push(CONFIG.DND4E.macroLaunchOrder[macro.launchOrder]?.hideType ?? false);
 			context.editorLangs.push(macro?.type === "script" ? "javascript" : "");
 		}
+
+		context.systemFields = this.document.system.schema.fields;
 
 		context.systemFields = this.document.system.schema.fields;
 

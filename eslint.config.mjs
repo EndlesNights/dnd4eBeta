@@ -47,7 +47,6 @@ export default defineConfig([
 				Hooks: "readonly",
 				Item: "readonly",
 				Macro: "readonly",
-				OutlineOverlayFilter: "readonly",
 				PIXI: "readonly",
 				ProseMirror: "readonly",
 				RegionBehavior: "readonly",
