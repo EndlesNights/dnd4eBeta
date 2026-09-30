@@ -165,7 +165,6 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 			}
 			changed.duration = duration;
 		}
-
 	}
 
 	/** @inheritdoc */
@@ -450,7 +449,20 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 	 * @param {Set<string>} [options.tokens] Set of tokens to refresh behaviors for. Tokens not in this set will not be processed. Defaults to all tokens belonging to the effect's actor.
 	 * @param {boolean} [options.delete] True if we're deleting the effect.
 	 */
-	async _refreshBehaviors(tokens = new Set(this.parent?.getDependentTokens()), options = {}) {
+	async _refreshBehaviors(tokens = undefined, options = {}) {
+		let parentActor;
+		if (!tokens) {
+			if (this.parent instanceof Actor) {
+				tokens = new Set(this.parent?.getDependentTokens());
+				parentActor = this.parent;
+			} else if ((this.parent instanceof Item) && this.parent.actor) {
+				tokens = new Set(this.parent.actor.getDependentTokens());
+				parentActor = this.parent.actor;
+			} else {
+				// No tokens to create regions around, abort
+				return;
+			}
+		}
 		const tokenArray = [...tokens];
 		const regionData = this.getFlag("dnd4e", "behaviorRegions") ?? [];
 		const regionUuids = regionData.filter(data => tokenArray.some(t => data.tokenUuid === t.uuid)).map(data => data.regionUuid);
@@ -473,7 +485,7 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 		const regionBehaviors = regionData.filter(data => !regionUuids.includes(data.regionUuid));
 
 		if (options.delete) return;
-		if (this.disabled || !this.system.auraSize || !(this.parent instanceof Actor)) {
+		if (this.disabled || !this.system.auraSize) {
 			await this.update({ "flags.dnd4e.behaviorRegions": regionBehaviors }, { behaviorFlags: true });
 			return;
 		}
@@ -488,7 +500,7 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 				displayMeasurements: false,
 				flags: {
 					"dnd4e.origin": this.uuid,
-					"dnd4e.actorUuid": this.parent?.uuid,
+					"dnd4e.actorUuid": parentActor?.uuid,
 				},
 				levels: [token.level],
 				locked: true,
