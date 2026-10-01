@@ -6,7 +6,7 @@ const { SchemaField } = foundry.data.fields;
 /**
  * Pseudodocument used by powers to apply an ObscuredTerrain region behavior to their templates.
  */
-export default class DamagingRegionPowerBehavior extends BasePowerBehavior {
+export default class ObscuredTerrainPowerBehavior extends BasePowerBehavior {
 
 	/** @inheritdoc */
 	static get metadata() {
