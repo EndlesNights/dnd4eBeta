@@ -106,6 +106,11 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 				delete system.oldRitualNeedsUpdating;
 			}
 		}
+    
+    // Unset "useWeaponRange" if required weapon cannot have a range
+		if ((this.type === "power") && (changed.system?.weaponType === "implement" || changed.system?.weaponType === "none") && (this.system.useWeaponRange)) {
+			foundry.utils.setProperty(changed, "system.useWeaponRange", false);
+		}
 	}
 
 	async _preDelete(options, user) {

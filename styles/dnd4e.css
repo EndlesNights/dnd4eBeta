@@ -463,6 +463,13 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		border:var(--border-faint);
 		line-height:1;
 	}
+  input:is([type=text],[type=number],[type=password],[type=date],[type=time],[type=datetime-local],[type=search],[type=file]):disabled,
+  select:disabled,
+  input:disabled+.sep{
+    cursor:not-allowed;
+    opacity:0.3;
+    border:1px solid var(--input-background-color);
+  }
 	multi-select>.tags.input-element-tags{
 		justify-content:flex-start;
 		align-items:stretch;
@@ -543,35 +550,34 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			flex:100% 0 0;
 			max-width:unset;
 		}
-		.form-fields{
+		& .form-fields{
 			display:flex;
 			flex-direction:row;
 			flex-wrap:wrap;
-			justify-content:flex-start;
-			
-			> label{
+			justify-content:flex-start;			
+			&> label{
 				white-space:nowrap;
 			}
-			> *{
+			&> *{
 				margin:0 3px 0 0;
 				flex:1;
 			}
-			> *:last-child{
+			&> *:last-child{
 				margin-right:0;
 			}
-			.flex1{
+			& .flex1{
 				flex:1;
 			}
-			.flex2{
+			& .flex2{
 				flex:2;
 			}
-			.flex3{
+			& .flex3{
 				flex:3;
 			}
-			.flex4{
+			& .flex4{
 				flex:4;
 			}
-			.tight{
+			& .tight{
 				width:fit-content;
 				flex:fit-content 0 0;
 			}
@@ -615,10 +621,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			flex-basis:fit-content;
 		}
 	}
-	.label,.list-label{
-		font-weight:bold;
-	}
-	:not(.form-group,.form-header)>.checkbox .label{
+	& .list-label,
+  & .checkbox :is(label,.label){
 		font-weight:bold;
 	}
 	.rich-effect{
@@ -978,18 +982,45 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		font-size:0.7em;
 		text-transform:uppercase;
 	}	
-	.form-group{
+	& .form-group{
+    & .flexrow{
+      gap:1.5em;
+    }
+    &.checkbox,
 		span.checkbox{
 			display:flex;
 			align-items:center;
 			justify-content:flex-start;
-		}		
-		label.checkbox.small{
+		}
+		label.checkbox.small,
+		.checkbox.small label{
 			font-size:0.9em;
+      max-width:fit-content;
+      flex-grow:4;
+      gap:0.25em;
+      span{
+        text-align:left;
+      }
 		}
 		ul,ol{
 			margin-top:0;
 		}
+    &.checkbox{
+      gap:0.25rem;
+      padding:0;
+      flex-wrap:nowrap;
+    }
+    & .form-fields .checkbox{
+      flex-basis:fit-content;
+      max-width:unset;
+      & .form-fields,
+      & label{
+        max-width:fit-content;
+      }
+      & .form-fields{
+        order:-1;
+      }
+    }
 	}
 	.right{
 		margin-left:auto;
