@@ -499,6 +499,7 @@
 "DND4E.EquipmentWondrousItem": "Wondrous Item",
 "DND4E.Equipped": "Equipped",
 "DND4E.Evocation": "Evocation",
+"DND4E.executeScript.Label": "Execute Script",
 "DND4E.Exhaustion": "Exhaustion",
 "DND4E.Exp": "XP",
 "DND4E.Experiences": "Experience",
@@ -1507,8 +1508,9 @@
 		}
 	},
 	"Notifications": {
+		"CannotCreateFromRegion": "Region Behaviours cannot be added to effects created by region behaviours.",
 		"DeletedInfo": "Deleted {pseudoName} {id} with type {type} from {name}",
-		"CannotCreateFromRegion": "Region Behaviours cannot be added to effects created by region behaviours."
+		"PowerBehaviorPermissions": "Only GMs may edit this behaviour."
 	}
 },
 
@@ -2130,6 +2132,7 @@
 		"applyActiveEffect4e": "Apply Active Effect",
 		"damagingRegion": "Damaging Region",
 		"difficultTerrain": "Difficult Terrain",
+		"executeScript": "Execute Script",
 		"obscuredTerrain": "Obscured Terrain"
 	}
 }

@@ -1711,6 +1711,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 */
 	static async #renderPseudoDocumentSheet(event, target) {
 		const doc = this._getPseudoDocument(target);
+		if (doc.constructor.metadata.condition && !doc.constructor.metadata.condition()) {
+			return ui.notifications.error(_loc(doc.constructor.metadata.warningString));
+		}
 		await doc.sheet.render({ force: true });
 	}
 

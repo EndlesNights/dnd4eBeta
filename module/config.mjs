@@ -2227,6 +2227,12 @@ DND4E.PowerBehavior = {
 		defaultImage: "systems/dnd4e/icons/ui/difficultTerrain.svg",
 		documentClass: data.pseudoDocuments.powerBehaviors.DifficultTerrainPowerBehavior,
 	},
+	executeScript: {
+		label: "DND4E.executeScript.Label",
+		defaultImage: "icons/svg/book.svg",
+		documentClass: data.pseudoDocuments.powerBehaviors.ExecuteScriptPowerBehavior,
+		condition: () => game.user.isGM,
+	},
 	obscuredTerrain: {
 		label: "DND4E.obscuredTerrain.Label",
 		defaultImage: "systems/dnd4e/icons/statusEffects/concealment.svg",
