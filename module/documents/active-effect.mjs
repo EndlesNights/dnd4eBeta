@@ -91,10 +91,10 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 		if (origin && (origin instanceof RegionBehavior)) {
 			updates["system.auraSize"] = null;
 			updates["system.behaviors"] = _replace({});
-			/*for (const behavior of [...this.system.behaviors]) {
-				const path = `system.behaviors.${behavior.id}`;
-				updates[path] = _del;
-			}*/
+		}
+
+		if (data.statuses.length) {
+			updates["statuses"] = this.constructor._applyRiderStatuses(data.statuses);
 		}
 
 		// Set initial duration data for Actor-owned effects
@@ -149,7 +149,7 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 	}
 
 	/** @inheritDoc */
-	async _preUpdate(changed, opions, userId) {
+	async _preUpdate(changed, options, userId) {
 		if (("system" in changed) && ("durationType" in changed.system)) {
 			const durationType = changed.system.durationType;
 			const duration = {};
@@ -164,6 +164,10 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 				duration.expiry = null;
 			}
 			changed.duration = duration;
+		}
+
+		if (changed.statuses?.length) {
+			changed.statuses = this.constructor._applyRiderStatuses(changed.statuses);
 		}
 	}
 
@@ -183,6 +187,24 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 		if (game.settings.get("dnd4e", "dynamicAutomation") && (game.user.id == userId)) await this.managePeers("delete");
 		const NO_TOKENS = undefined;
 		if (game.user.isActiveGM) await this.refreshBehaviors(NO_TOKENS, { delete: true });
+	}
+
+	/**
+	 * A helper function for rider status handling
+	 * @param {string[]} statusArray 	An array of statuses to add riders for
+	 * @return {string[]}				The original statuses, plus all their riders
+	 */
+	static _applyRiderStatuses(statusArray) {
+		const statusSet = new Set(statusArray);
+		for (const status of statusArray) {
+			statusSet.add(status);
+			if (CONFIG.statusEffects[status]?.statuses) {
+				for (const riderStatus of CONFIG.statusEffects[status].statuses) {
+					statusSet.add(riderStatus);
+				}
+			}
+		}
+		return [...statusSet];
 	}
 
 	/* --------------------------------------------- */
