@@ -93,10 +93,6 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 			updates["system.behaviors"] = _replace({});
 		}
 
-		if (data.statuses.length) {
-			updates["statuses"] = this.constructor._applyRiderStatuses(data.statuses);
-		}
-
 		// Set initial duration data for Actor-owned effects
 		if (this.parent instanceof Actor) {
 			//const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
@@ -165,10 +161,6 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 			}
 			changed.duration = duration;
 		}
-
-		if (changed.statuses?.length) {
-			changed.statuses = this.constructor._applyRiderStatuses(changed.statuses);
-		}
 	}
 
 	/** @inheritdoc */
@@ -189,25 +181,18 @@ export default class ActiveEffect4e extends BaseDocumentMixin(foundry.documents.
 		if (game.user.isActiveGM) await this.refreshBehaviors(NO_TOKENS, { delete: true });
 	}
 
-	/**
-	 * A helper function for rider status handling
-	 * @param {string[]} statusArray 	An array of statuses to add riders for
-	 * @return {string[]}				The original statuses, plus all their riders
-	 */
-	static _applyRiderStatuses(statusArray) {
-		const statusSet = new Set(statusArray);
-		for (const status of statusArray) {
-			statusSet.add(status);
+	/* --------------------------------------------- */
+
+	/** @inheritdoc */
+	prepareData() {
+		for (const status of this._source.statuses) {
 			if (CONFIG.statusEffects[status]?.statuses) {
 				for (const riderStatus of CONFIG.statusEffects[status].statuses) {
-					statusSet.add(riderStatus);
+					this.statuses.add(riderStatus);
 				}
 			}
 		}
-		return [...statusSet];
 	}
-
-	/* --------------------------------------------- */
 
 	/** @inheritdoc */
 	static applyChange(targetDoc, change, { replacementData = {}, modifyTarget = true } = {}) {
