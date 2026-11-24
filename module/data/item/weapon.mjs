@@ -44,6 +44,7 @@ export default class WeaponData extends SystemModel4e {
 			profImpBonus: new NumberField({ initial: 0, integer: true }),
 			enhance: new NumberField({ initial: 0, integer: true }),
 			isRanged: new BooleanField({ initial: false }),
+			rangeType: new StringField({ initial: "" }),
 			range: new SchemaField({
 				value: new NumberField({ initial: 5 }),
 				long: new NumberField({ initial: 10 }),
