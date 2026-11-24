@@ -1,5 +1,3 @@
-<h3 class="form-header">{{ localize "DND4E.PowerDetails" }}</h3>
-
 {{!-- Power Source & Keywords --}}
 <div class="form-group short power-source two-input">
   <label>{{ localize "DND4E.PowerSource" }}</label>
@@ -32,22 +30,7 @@
     {{selectOptions config.powerSubtype selected=system.powerSubtype labelAttr="label"}}
   </select>
 </div>
-<div class="form-group select">
-  <label>{{ localize 'DND4E.Usage' }}</label>
-  <select name="system.useType">
-    {{selectOptions config.powerUseType selected=system.useType labelAttr="label"}}
-  </select>
-</div>
 
-{{!-- Action Type --}}
-<div class="form-group select">
-  <label>{{ localize "DND4E.ItemActionType" }}</label>
-  <select name="system.actionType">
-    {{selectOptions config.abilityActivationTypes selected=system.actionType labelAttr="label"}}
-  </select>
-</div>
-
-{{!-- Weapon Range and AoE--}}
 <div class="form-group short power-weapon two-input">
   <label>{{ localize "DND4E.WeaponTypeRequired" }}</label>
   <select name="system.weaponType">
@@ -64,108 +47,162 @@
   {{/if}}
 </div>
 
-<div class="form-group short">
-  <label>{{ localize "DND4E.RangePower" }}</label>
-  <div class="form-fields item-range">
-    {{formInput systemFields.rangeType value=system.rangeType}}
-    {{#if system.isArea}}
-    <span>{{ localize "DND4E.AreaOf" }}</span>
-    <input type="text" name="system.area" value="{{system.area}}">
-    {{/if}}
-    {{#if system.isRange}}
-    {{#unless (eq system.rangeType 'weapon')}}
-    {{#if system.isArea}}
-  </div></div>
-<div class="form-group short">
-  <label>{{ localize "DND4E.RangeWithinOf" }}</label>
-  <div class="form-fields item-range">
-    {{/if}}
-
+<fieldset class="usage"> {{!-- USAGE --}}
+  <legend>{{ localize 'DND4E.Usage' }}</legend>
+  
+  {{!-- Action Type --}}
+  <div class="form-group select">
+    <label>{{ localize "DND4E.Action" }}</label>
+    <select name="system.actionType">
+      {{selectOptions config.abilityActivationTypes selected=system.actionType labelAttr="label"}}
+    </select>
+  </div>
+  
+  {{!-- Usage Type --}}
+  <div class="form-group select">
+    <label>{{ localize 'DND4E.USAGE.UsageCategory' }} <i data-tooltip="{{ localize 'DND4E.USAGE.UsageCategoryHint' }}" class="fa-solid fa-circle-question"></i></label>
+    <select name="system.useType">
+      {{selectOptions config.powerUseType selected=system.useType labelAttr="label"}}
+    </select>
+  </div>
+  
+  {{!-- Usage Limit --}}
+  <div class="form-group uses-per two-input">
+    <label>{{ localize "DND4E.LimitedUses"}}</label>
     <div class="form-fields">
-      {{#unless (or (eq system.weaponType 'implement') (eq system.weaponType 'none'))}}{{#if (or system.isArea system.useWeaponRange)}}{{formGroup systemFields.useWeaponRange value=system.useWeaponRange localize=true classes="checkbox small"}}{{/if}}{{/unless}}
-      <input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="String" {{#if system.useWeaponRange}}disabled{{/if}}>
-      <input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="String" {{#if system.useWeaponRange}}disabled{{/if}}>
-      {{#unless (or (eq system.rangeType 'melee') (eq system.rangeType 'touch') (eq system.rangeType 'reach'))}}
-      <span class="sep">/</span>
-      <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();" {{#if system.useWeaponRange}}disabled{{/if}}>
+      <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number">
+      <span class="sep">{{ localize "DND4E.of" }}</span>
+      <input type="text" name="system.uses.max" value="{{system.uses.max}}">
+      <span class="sep">{{ localize "DND4E.per" }}</span>
+      <select name="system.uses.per">
+        {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
+      </select>
+    </div>
+  </div>
+  
+  {{!-- Recharge Value/Detail --}}
+  {{#if system.isRecharge}}
+  <div class="form-group">
+    <label>{{ localize "DND4E.PowerRechargeCondition" }} Condition</label>
+    <div class="form-fields">
+      <input type="text" name="system.rechargeCondition" value="{{system.rechargeCondition}}" placeholder="Text Condition">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{ localize "DND4E.PowerRechargeCondition" }} roll</label>
+    <div class="form-fields">
+      <input type="text" name="system.rechargeRoll" value="{{system.rechargeRoll}}" placeholder="{{ localize 'DND4E.PowerRechargePlaceholder' }}">
+    </div>
+  </div>
+  {{/if}}
+  
+  {{!-- Sustain Action --}}
+  <div class="form-group select">
+    <label>{{ localize "DND4E.USAGE.SustainAction" }}</label>
+    <select name="system.sustain.actionType">
+      <option value="" {{#if (eq system.sustain.actionType null)}}selected{{/if}}>&nbsp;</option>
+      {{selectOptions config.abilityActivationTypes selected=system.sustain.actionType labelAttr="label"}}
+    </select>
+  </div>
+
+  {{!--Resource Consumption --}}
+  <div class="form-group">
+    <label>{{ localize "DND4E.ConsumeTitle" }}</label>
+    <div class="form-fields consumption">
+      <select name="system.consume.type" class="consume-type">
+        {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
+      </select>
+      <select name="system.consume.target" class="consume-target">
+        {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
+      </select>
+      <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number">
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="range"> {{!-- RANGE/AREA --}}
+  <legend>{{ localize 'DND4E.RANGE.RangeAndArea' }}</legend>
+
+  <div class="form-group short">
+    <label>{{ localize "DND4E.RANGE.TypeSize" }}</label>
+    <div class="form-fields item-range">
+    
+      {{!-- ORIGIN (melee, close etc) --}}
+      {{formInput systemFields.range.fields.origin value=system.range.origin}}
+      
+      {{!-- FORM (weapon, burst, etc) --}}
+      {{#unless (eq system.range.origin 'personal')}}
+      <select name="system.range.form" class="range-form">
+        {{#if rangeFormRequired}}
+          {{selectOptions rangeForms selected=system.range.form}}
+        {{else}}
+          {{selectOptions rangeForms selected=system.range.form blank=''}}
+        {{/if}}
+      </select>
+      {{/unless}}
+      
+      {{!-- AREA (size of burst/blast) --}}
+      {{#if system.isArea}}
+      {{formInput systemFields.range.fields.area value=system.range.area}}
+      {{/if}}
+      
+      {{!-- RANGE for melee attacks only --}}
+      {{#if (and (eq system.range.origin 'melee') (ne system.range.form 'weapon') (ne system.range.form 'touch'))}}
+      {{formInput systemFields.range.fields.value value=system.range.value}}
+      {{/if}}
+      
+    </div>
+  </div>
+  {{#if (or system.isRange (eq system.range.form 'weapon'))}}
+    <div class="form-group short">
+      <label>{{#if (eq system.range.origin 'area')}}{{ localize "DND4E.RANGE.WithinOf" }}{{else}}{{ localize "DND4E.RANGE.Range" }}{{/if}}</label>
+      <div class="form-fields item-range">
+
+        <div class="form-fields{{#if (eq system.range.form 'weapon')}} locked{{/if}}" data-tooltip="{{localize 'DND4EUI.UseWeaponRangeTip'}}">
+          {{#if (or (and (ne system.weaponType 'implement') (ne system.weaponType 'none')) (eq system.weaponType "meleeRanged") (eq system.weaponType "any") system.range.useWeapon)}}
+          {{formGroup systemFields.range.fields.useWeapon value=system.range.useWeapon localize=true classes="checkbox small" disabled=(eq system.range.form 'weapon')}}
+          {{/if}}
+          {{#if labels.rangeValue}}
+            <span class="replacement">{{#if (or (eq system.range.origin 'variable')(eq system.range.origin 'special'))}}{{labels.range}}{{else}}{{labels.rangeValue}}{{/if}}</span>
+          {{else if system.isRange}}
+            {{#unless system.range.useWeapon}}
+              <input type="text" name="system.range.value" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.range.value}}" data-dtype="String" {{#if system.range.useWeapon}}disabled{{/if}}>
+              <span class="sep">/</span>
+              <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="String" onClick="this.select();" {{#if system.range.useWeapon}}disabled{{/if}}>
+            {{/unless}}
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if system.isArea}}
+  <div class="form-group short">
+    <label>{{ localize "DND4E.AutoTarget" }}</label>
+    <div class="form-fields auto-target">
+      <select name="system.autoTarget.mode">
+        {{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
+      </select>
+      {{#unless system.excludeUserFromTargeting}}
+      <div class="form-group checkbox small">
+        <label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
+        <div class="form-fields">
+          <input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}>
+        </div>
+      </div>
       {{/unless}}
     </div>
-
-    {{#if system.isArea}}
   </div>
-</div>
-{{/if}}
-{{/unless}}
-{{/if}}
+  {{/if}}
+  
+  {{#if system.effectType.aura}}
+  <div class="form-group short">
+    <label>{{ localize "DND4E.AuraSize" }}</label>
+    <input type="text" name="system.auraSize" value="{{system.auraSize}}" placeholder="{{ localize 'DND4E.AuraSize' }}">
   </div>
-</div>
-
-{{#if system.isArea}}
-<div class="form-group short">
-  <label>{{ localize "DND4E.AutoTarget" }}</label>
-  <div class="form-fields auto-target">
-    <select name="system.autoTarget.mode">
-      {{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
-    </select>
-    {{#unless system.excludeUserFromTargeting}}
-    <label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
-    <span class="checkbox">
-      <input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}>
-    </span>
-    {{/unless}}
-  </div>
-</div>
-{{/if}}
-
-<div class="form-group select">
-  <label>{{ localize "DND4E.Sustain" }}</label>
-  <select name="system.sustain.actionType">
-    <option value="" {{#if (eq system.sustain.actionType null)}}selected{{/if}}>&nbsp;</option>
-    {{selectOptions config.abilityActivationTypes selected=system.sustain.actionType labelAttr="label"}}
-  </select>
-</div>
-
-<div class="form-group uses-per two-input">
-  <label>{{ localize "DND4E.LimitedUses"}}</label>
-  <div class="form-fields">
-    <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number">
-    <span class="sep">{{ localize "DND4E.of" }}</span>
-    <input type="text" name="system.uses.max" value="{{system.uses.max}}">
-    <span class="sep">{{ localize "DND4E.per" }}</span>
-    <select name="system.uses.per">
-      {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
-    </select>
-  </div>
-</div>
-
-{{#if system.isRecharge}}
-<div class="form-group">
-  <label>{{ localize "DND4E.PowerRechargeCondition" }} Condition</label>
-  <div class="form-fields">
-    <input type="text" name="system.rechargeCondition" value="{{system.rechargeCondition}}" placeholder="Text Condition">
-  </div>
-</div>
-
-<div class="form-group">
-  <label>{{ localize "DND4E.PowerRechargeCondition" }} roll</label>
-  <div class="form-fields">
-    <input type="text" name="system.rechargeRoll" value="{{system.rechargeRoll}}" placeholder="{{ localize 'DND4E.PowerRechargePlaceholder' }}">
-  </div>
-</div>
-{{/if}}
-
-<div class="form-group">
-  <label>{{ localize "DND4E.ConsumeTitle" }}</label>
-  <div class="form-fields consumption">
-    <select name="system.consume.type" class="consume-type">
-      {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
-    </select>
-    <select name="system.consume.target" class="consume-target">
-      {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
-    </select>
-    <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number">
-  </div>
-</div>
+  {{/if}}
+</fieldset>
 
 {{!------------ ATTACK ------------}}
 <h3 class="form-header checkbox flexrow">
@@ -391,10 +428,6 @@
     {{ name }}
   </label>
   {{/each}}
-  {{#if system.effectType.aura}}
-  <label>{{ localize "DND4E.AuraSize" }}</label>
-  <input type="text" name="system.auraSize" value="{{system.auraSize}}" placeholder="{{ localize 'DND4E.AuraSize' }}">
-  {{/if}}
 </fieldset>
 
 {{#unless system.hit.isDamage}}
@@ -473,6 +506,13 @@
 </div>
 
 {{!-- Optional Parameters --}}
+<div class="form-group">
+  <label>{{ localize "DND4EUI.RangeText" }} <i data-tooltip="{{ localize 'DND4EUI.RangeTextHint' }}" class="fa-solid fa-circle-question"></i></label>
+  <div class="form-fields">
+    <input type="text" name="system.range.display" value="{{system.range.display}}">
+  </div>
+</div>
+
 <div class="form-group">
   <label>{{ localize "DND4EUI.RequirementsText" }}</label>
   <div class="form-fields">
