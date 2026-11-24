@@ -125,4 +125,25 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 	get allKeywords() {
 		return this.keywordsCustom ? this.keywords.union(new Set(this.keywordsCustom.trim().split(";").map(k => k.trim()))) : this.keywords;
 	}
+  
+  
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+    source.changes.forEach(change => {
+      if(change.key.includes("mBasic")) change.key = change.key.replace("mBasic","melee.basic");
+      if(change.key.includes("rBasic")) change.key = change.key.replace("rBasic","ranged.basic");
+      if(change.key.includes("closeBurst")) change.key = change.key.replace("closeBurst","close.burst");
+      if(change.key.includes("closeBlast")) change.key = change.key.replace("closeBlast","close.blast");
+      if(change.key.includes("areaBurst")) change.key = change.key.replace("areaBurst","area.burst");
+      if(change.key.includes("areaBlast")) change.key = change.key.replace("areaBlast","area.blast");
+      if(change.key.includes("meleeWeapon")) change.key = change.key.replace("meleeWeapon","melee.weapon");
+      if(change.key.includes("rangedWeapon")) change.key = change.key.replace("rangedWeapon","ranged.weapon");
+    });
+		return super.migrateData(source);
+	}
+  
 }
