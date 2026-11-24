@@ -1,6 +1,6 @@
 import FormulaField from "../../fields/formula-field.mjs";
 
-const { NumberField, SchemaField, StringField } = foundry.data.fields;
+const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class ActivatedEffectTemplate extends foundry.abstract.DataModel {
 	/** @inheritDoc */
@@ -25,9 +25,12 @@ export default class ActivatedEffectTemplate extends foundry.abstract.DataModel 
 				value: new FormulaField({ nullable: true, initial: null, deterministic: true }),
 				long: new FormulaField({ nullable: true, initial: null, deterministic: true }),
 				units: new StringField({ initial: "" }),
-        origin: new StringField({ choices: CONFIG.DND4E.rangeOrigin }),
-        form: new StringField({ choices: CONFIG.DND4E.rangeForm, nullable: true }),
-        area: new FormulaField({ initial: "", deterministic: true }),
+        origin: new StringField({ nullable: true, choices: CONFIG.DND4E.rangeOrigin, label: "DND4E.RANGE.Origin", initial: null }),
+        form: new StringField({ nullable: true, choices: CONFIG.DND4E.rangeForm, label: "DND4E.RANGE.Form", initial: null }),
+        area: new FormulaField({ nullable: true, initial: null, deterministic: true }),
+				display: new StringField({ nullable: true, initial: null }),
+				displayAbbr: new StringField({ nullable: true, initial: null }),
+        useWeapon: new BooleanField({ initial: false, label: "DND4E.RANGE.Inherit" }),
 			}),
 			uses: new SchemaField({
 				value: new NumberField({ min: 0, initial: 0, integer: true }),
@@ -48,48 +51,58 @@ export default class ActivatedEffectTemplate extends foundry.abstract.DataModel 
 
   /** @inheritdoc */
   static migrateData(source) {
-    switch (source.rangeType) {
-      case 'weapon':
-        source.range.form = 'weapon';
-        if (system?.weaponType == 'melee') {
+    if (!source.range.hasOwnProperty('origin')) {
+      switch (source.rangeType) {
+        case 'melee':
+        case 'personal':
+        case 'special':
+          source.range.origin = source.rangeType;
+          break;
+        case 'weapon':
+          source.range.form = 'weapon';
+          if (source?.weaponType == 'ranged') {
+            source.range.origin = 'ranged';
+            source.useWeaponRange = true;
+          } else if (source?.weaponType == 'melee') {
+            source.range.origin = 'melee';
+            source.useWeaponRange = true;
+          } else if (source?.weaponType == 'meleeRanged') {
+            source.range.origin = 'variable';
+          } else {
+            source.range.origin = 'special';
+          }
+          break;
+        case 'touch':
+          source.range.form = 'touch';
+        case 'reach':
           source.range.origin = 'melee';
-        } else if (system?.weaponType == 'ranged') {
+          break;
+        case 'range':
           source.range.origin = 'ranged';
-          source.useWeaponRange = true;
-        }
-        break;
-      case 'touch':
-      case 'reach':
-        source.range.origin = 'melee';
-        break;
-      case 'melee':
-      case 'personal':
-      case 'special':
-        source.range.origin = source.rangeType;
-        break;
-      case 'wall':
-        source.range.form = 'wall';
-        break;
-      default:
-        break;
+          break;
+        case 'wall':
+          source.range.origin = 'area';
+          source.range.form = 'wall';
+          break;
+        case 'closeBurst':
+        case 'closeBlast':
+          source.range.origin = 'close';
+          break;
+        case 'rangeBurst':
+        case 'rangeBlast':
+          source.range.origin = 'area';
+          break;
+        default:
+          source.range.origin = 'special';
+          break;
+      }
+      if (['closeBurst','closeBlast','rangeBurst','rangeBlast','wall'].includes(source.rangeType)) source.range.area = source?.area || 0;
+      if (['rangeBurst','rangeBlast','wall'].includes(source.rangeType))  source.range.value = source?.rangePower || 0;
+      if (['closeBurst','rangeBurst'].includes(source.rangeType)) source.range.form = 'burst';
+      if (['closeBlast','rangeBlast'].includes(source.rangeType)) source.range.form = 'blast';
+      source.range.useWeapon = source.UseWeaponRange;
+      return source;
     }
-    if (['closeBurst','closeBlast','rangeBurst','rangeBlast','wall'].includes(source.rangeType)) {
-      source.range.area = source.area;
-    }
-    if (['closeBurst','closeBlast'].includes(source.rangeType)) {
-      source.range.origin = 'close';
-    }
-    if (['rangeBurst','rangeBlast','wall'].includes(source.rangeType)) {
-      source.range.origin = 'area';
-      source.range.value = source.rangePower;
-    }
-    if (['closeBurst','rangeBurst'].includes(source.rangeType)) {
-      source.range.form = 'burst';     
-    }
-    if (['closeBlast','rangeBlast'].includes(source.rangeType)) {
-      source.range.form = 'blast';     
-    }
-    return source;
   }
 
 }
