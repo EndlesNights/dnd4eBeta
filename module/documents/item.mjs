@@ -107,9 +107,14 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 			}
 		}
 
-		// Unset "useWeaponRange" if required weapon cannot have a range
-		if ((this.type === "power") && ((changed.system?.weaponType === "implement") || (changed.system?.weaponType === "none")) && (this.system.useWeaponRange)) {
-			foundry.utils.setProperty(changed, "system.useWeaponRange", false);
+		// Unset range.useWeapon if required weapon cannot have a range
+		if ((this.type === "power") && ((changed.system?.weaponType === "implement") || (changed.system?.weaponType === "none")) && (this.system.range.useWeapon)) {
+			foundry.utils.setProperty(changed, "system.range.useWeapon", false);
+		}
+		// Reset range.form if it becomes invalidated by range.origin change
+		if ((changed.system?.range?.origin) && (!CONFIG.DND4E.rangeOrigin[changed.system.range.origin].valid.includes(this.system.range.form))) {
+      const newForm = changed.system.range.origin === 'personal' ? '' : CONFIG.DND4E.rangeOrigin[changed.system.range.origin].valid[0];
+			foundry.utils.setProperty(changed, "system.range.form", newForm);
 		}
 	}
 
@@ -529,7 +534,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 	 * @type {boolean}
 	 */
 	get hasAreaTarget() {
-		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || !!(this.system.effectType?.aura && this.system.auraSize);
+		return ["burst", "blast", "wall"].includes(this.system.range?.form) || !!(this.system.effectType?.aura && this.system.auraSize);
 	}
 
 	/* -------------------------------------------- */
@@ -539,7 +544,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 	 * @type {boolean}
 	 */
 	get useWeaponRange() {
-		return (this.system.rangeType === "weapon") || (["rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) && (this.system.useWeaponRange));
+		return this.system.range.useWeapon;
 	}
 
 	/* -------------------------------------------- */
@@ -622,6 +627,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 		const actorData = this.actor?.getRollData();
 		const C = CONFIG.DND4E;
 		const labels = {};
+    
 		// Feature Items
 		if (itemData.type === "feature") {
 			try {
@@ -689,6 +695,18 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 		// Weapons
 		else if (itemData.type === "weapon") {
 			try {
+        if (["simpleM","militaryM","superiorM","improvM","siegeM","naturalM"].includes(system?.weaponType)){
+          system.rangeType = "melee";
+        } else if (	["simpleR","militaryR","superiorR","improvR","siegeR","naturalR"].includes(system?.weaponType)){
+          system.rangeType = "ranged";
+        } else {
+          system.rangeType = "";
+        }
+        if(system.rangeType === "ranged" || system?.properties.thv || system?.properties.tlg){
+          system.isRanged = true;
+        } else {
+          system.isRanged = false;
+        }
 				if (system.enhance != 0) {
 					labels.enh = `${_loc("DND4E.Enhancement")}<br />+${system.enhance} ${_loc("DND4E.RollsAtkDmg")}`;
 				}
@@ -722,7 +740,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 		else if (itemData.type === "power") {
 			try {
 				//If an aura has no specified size, infer its size from power area
-				if (system.effectType.aura && !system?.auraSize) system.auraSize = system?.area || 0;
+				if (system.effectType.aura && !system?.auraSize) system.auraSize = system?.range.area || 0;
 
 				//Summary Line
 				let summaryText = "";
@@ -769,7 +787,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 						} else {
 							labels.toolType = _loc("DND4E.Weapon");
 						}
-					} else if (this.useWeaponRange) {
+					} else if (system.range.useWeapon) {
 						labels.toolType = _loc("DND4E.Weapon");
 					}
 				}
@@ -850,10 +868,7 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 		}
 
 		// Activated Items other than powers/features
-		if (!["power", "feature"].includes(itemData.type) && (system?.consumableType != "ammo") && ("activation" in system)) {
-			// Ability Activation Label
-			let act = system.activation || {};
-			if (act) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
+		if (!["power", "feature"].includes(itemData.type) && (system?.consumableType != "ammo") && ("activation" in system && system?.activation?.type)) {
 
 			// Target Label
 			let tgt = system.target || {};
@@ -863,14 +878,6 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 				tgt.units = null;
 			}
 			labels.target = [tgt.value, C.distanceUnits[tgt.units], C.targetTypes[tgt.type]].filterJoin(" ");
-
-			// Range Label
-			let rng = system.range || {};
-			if (["none", "touch", "self"].includes(rng.units) || (rng.value === 0)) {
-				rng.value = null;
-				rng.long = null;
-			}
-			labels.range = [rng.value, rng.long ? `/ ${rng.long}` : null, C.distanceUnits[rng.units]].filterJoin(" ");
 
 			// Attribute Label
 			if (system.attribute) {
@@ -926,75 +933,30 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 			console.debug(itemData);
 		}
 
+    if(("activation" in system && system?.activation?.type) || system?.actionType){
+      //Action
+      if (system?.actionType) {
+        labels.action = C.abilityActivationTypes[system.actionType].label;
+      }      
+    }
+
 		// Range, action
-		if (system?.consumableType != "ammo") {
+		if ("range" in system && system?.consumableType != "ammo" && system?.range?.origin) {
 			try {
-				//Action
-				if (system?.actionType) {
-					labels.action = C.abilityActivationTypes[system.actionType].label;
-				}
-
-				//Range
-				if (["power", "consumable"].includes(itemData.type) && system?.rangeType) {
-					let rangeString = "";
-					if (this.useWeaponRange) {
-						const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
-						if (weaponUse != null) {
-							if (weaponUse.isRanged) {
-								rangeString = `${_loc("DND4E.Ranged")} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
-							} else {
-								rangeString = _loc("DND4E.Melee");
-								if (weaponUse.system.properties.rch) {
-									rangeString += " 2";
-								} else {
-									rangeString += " 1";
-								}
-							}
-						} else {
-							if (system?.weaponType === "melee") {
-								rangeString = _loc("DND4E.WeaponMelee");
-							} else if (system?.weaponType === "ranged") {
-								rangeString = _loc("DND4E.WeaponRanged");
-							} else {
-								rangeString = C.rangeType.weapon.label;
-							}
-						}
-					} else {
-						const isRange = !["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType);
-						const isArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType);
-
-						rangeString += C.rangeType[system.rangeType].label;
-
-						if (isArea) {
-							let areaString = system.area || "";
-							if (this.actor && areaString) {
-								areaString = utils.evaluateFormula(areaString, actorData, { strict: true, contextName: "areaString" });
-							}
-							rangeString += ` ${areaString}`;
-						}
-
-						if (isArea && isRange) rangeString += ` ${_loc("DND4E.RangeWithin")}`;
-
-						if (isRange) {
-							let rangeValue = system.rangePower || "";
-							if (this.actor && rangeValue) {
-								rangeValue = utils.evaluateFormula(rangeValue, actorData, { strict: true, contextName: "rangeValue" });
-							}
-							rangeString += ` ${rangeValue}`;
-						}
-
-						if (isRange && system.range?.long && !isArea) {
-							let longRangeValue = system.range.long;
-							if (this.actor) {
-								longRangeValue = utils.evaluateFormula(longRangeValue, actorData, { strict: true, contextName: "longRangeValue" });
-							}
-							rangeString += `/${longRangeValue}`;
-						}
-					}
-					if (rangeString != "") labels.range = rangeString;
+        //Reset weapon form if weapon lacks range
+        if(['implement','none'].includes(system?.weaponType) && system.range?.form === 'weapon') system.range.form = null;
+        //Set "use weapon range" is form is weapon
+        if(system.range?.form === 'weapon') system.range.useWeapon = true;
+				//Range;
+        const rangeData = this.rangeData();
+				if (rangeData) {
+					if (rangeData?.rangeText) labels.range = rangeData.rangeText;
+					if (rangeData?.rangeTextShort) labels.rangeAbbr = rangeData.rangeTextShort;
+					if (rangeData?.rangeValue) labels.rangeValue = rangeData.rangeValue;
 				}
 			} catch(e) {
 				console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+				console.debug('ERRORED ITEM DATA:');
 				console.debug(itemData);
 			}
 		}
@@ -1881,121 +1843,63 @@ export default class Item4e extends BaseDocumentMixin(foundry.documents.Item) {
 		return bonus;
 	}
 
-	rangeData() {
+	rangeData() {   
 		const C = CONFIG.DND4E;
 		const actorData = this.actor?.getRollData();
-		const weaponUse = utils.getWeaponUse(this.system, this.actor);
+    const system = this.system;
+    const weaponUse = this.actor ? utils.getWeaponUse(system, this.actor) : null;
 		let rangeData = {};
-		let area;
-		if (this.system.area) {
-			const areaForm = utils.evaluateFormula(String(this.system.area), this.actor?.getRollData(), { strict: true, contextName: "rangeData" });
-			area = areaForm ?? this.system.area;
-		} else {
-			area = 0;
-		}
-
-		if (this.system.rangeType === "range") {
-			rangeData.rangeText = `${C.rangeType.range.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-			rangeData.rangeTextShort = C.rangeType.range.abbr;
-			rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-			if (this.system.range.long) {
-				rangeData.rangeText += `/${utils.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
-				rangeData.rangeTextBlock += `/${utils.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
-			}
-		} else if (this.system.rangeType === "closeBurst") {
-			rangeData.rangeText = `${C.rangeType.closeBurst.label} ${area}`;
-			rangeData.rangeTextShort = C.rangeType.closeBurst.abbr;
-			rangeData.rangeTextBlock = `${area}`;
-		} else if (this.system.rangeType === "rangeBurst") {
-			rangeData.rangeTextShort = C.rangeType.rangeBurst.abbr;
-			if (this.useWeaponRange) {
-				rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-			else {
-				rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-		} else if (this.system.rangeType === "closeBlast") {
-			rangeData.rangeText = `${C.rangeType.closeBlast.label} ${area}`;
-			rangeData.rangeTextShort = C.rangeType.closeBlast.abbr;
-			rangeData.rangeTextBlock = `${area}`;
-		} else if (this.system.rangeType === "rangeBlast") {
-			rangeData.rangeTextShort = C.rangeType.rangeBlast.abbr;
-			if (this.useWeaponRange) {
-				rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-			else {
-				rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-		} else if (this.system.rangeType === "wall") {
-			rangeData.rangeTextShort = C.rangeType.wall.abbr;
-			if (this.useWeaponRange) {
-				rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithinOf").toLocaleLowerCase()} ${weaponUse.name}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(weaponUse.system.range.long || weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-			else {
-				rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-				rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
-			}
-		} else if (this.system.rangeType === "personal") {
-			rangeData.rangeText = C.rangeType.personal.label;
-			rangeData.rangeTextShort = C.rangeType.personal.abbr;
-		} else if (this.system.rangeType === "special") {
-			rangeData.rangeText = C.rangeType.special.label;
-			rangeData.rangeTextShort = C.rangeType.special.abbr;
-		} else if (this.system.rangeType === "touch") {
-			rangeData.rangeTextShort = C.rangeType.touch.abbr;
-			rangeData.rangeText = C.rangeType.touch.label;
-		} else if (this.system.rangeType === "melee") {
-			rangeData.rangeTextShort = C.rangeType.melee.abbr;
-			if ((Roll.replaceFormulaData(this.system.rangePower, actorData) === undefined) || (Roll.replaceFormulaData(this.system.rangePower, actorData) === null)) {
-				rangeData.rangeText = C.rangeType.melee.label;
-			} else {
-				rangeData.rangeText = `${C.rangeType.melee.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-				rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-			}
-		} else if (this.system.rangeType === "reach") {
-			rangeData.rangeText = `${C.rangeType.reach.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-			rangeData.rangeTextShort = C.rangeType.reach.abbr;
-			rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-
-		} else if (this.useWeaponRange) {
-
-			try {
-				if (weaponUse.system.isRanged && (this.system.weaponType !== "melee")) {
-					rangeData.rangeText = `${_loc("DND4E.rangeWeaponRanged")} - ${weaponUse.name}`;
-					rangeData.rangeTextShort = _loc("DND4E.rangeWeaponRangedAbbr");
-					rangeData.rangeTextBlock = `${utils.evaluateFormula(weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })}/${utils.evaluateFormula(weaponUse.system.range.long, actorData, { strict: true, context: "rangeTextBlock" })}`;
-				} else {
-					rangeData.rangeText = `${_loc("DND4E.rangeWeaponMelee")} - ${weaponUse.name}`;
-					rangeData.rangeTextShort = _loc("DND4E.rangeWeaponMeleeAbbr");
-
-					if (!this.system.rangePower) {
-						rangeData.rangeTextBlock = (weaponUse.system.properties.rch ? "2" : "");
-					} else {
-						rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-					}
-				}
-
-			} catch {
-				rangeData.rangeText = "Weapon";
-				rangeData.rangeTextShort = this.system.weaponType === "ranged" ? _loc ("DND4E.rangeWeaponRangedAbbr") : _loc("DND4E.rangeWeaponMeleeAbbr");
-				rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-
-				if (!this.system.rangePower) {
-					rangeData.rangeTextBlock = "";
-				} else {
-					rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
-				}
-			}
-
-		} else {
-			rangeData.rangeText = _loc("DND4E.NotAvailable");
-			rangeData.rangeTextShort = _loc("DND4E.NotAvailableShort");
-		}
+      
+    let originString = C.rangeOrigin[system.range.origin].label;
+    let originStringAbbr = C.rangeOrigin[system.range.origin].abbr;
+    
+    if (system.range?.useWeapon) {
+      if (weaponUse != null) {
+        let rangeValue = weaponUse.system?.range?.value || '';
+        if (weaponUse.system?.range?.long) {
+          rangeValue += `/${weaponUse.system.range.long}`;
+        } else {
+          if (weaponUse.system.properties.rch) {
+            rangeValue = " 2";
+          } else {
+            rangeValue = " 1";
+          }
+        }
+        originString = weaponUse.system.isRanged ? _loc("DND4E.RANGE.Ranged") : _loc("DND4E.RANGE.Melee");
+        originStringAbbr = weaponUse.system.isRanged ? _loc("DND4E.RANGE.ABBR.Ranged") : _loc("DND4E.RANGE.ABBR.Melee");
+        rangeData.rangeText = _loc("DND4E.RANGE.DISPLAY.SingleValue", { origin: originString, value: rangeValue });
+        rangeData.rangeTextShort = _loc("DND4E.RANGE.DISPLAY.SingleValue", { origin: originStringAbbr, value: rangeValue });
+        rangeData.rangeValue = rangeValue;
+        //console.debug(rangeData);
+      } else {
+        rangeData.rangeText = _loc("DND4E.RANGE.DISPLAY.SingleWeapon", { origin: originString, form: C.rangeForm[system.range.form].label });
+        rangeData.rangeTextShort = _loc("DND4E.RANGE.DISPLAY.SingleWeapon", { origin: originStringAbbr, form: C.rangeForm[system.range.form].abbr });
+      }
+    } else if (system.range.origin == 'area') {
+      let rangeValue = "";
+      let shortRange = system.range?.value || "";
+      let longRange = system.range?.long || "";
+      if (this.actor && shortRange) {
+        shortRange = utils.evaluateFormula(shortRange, actorData, { strict: true, contextName: "shortRange" });
+      }
+      rangeValue = shortRange;
+      if (longRange) {
+        if (this.actor) {
+          longRange = utils.evaluateFormula(longRange, actorData, { strict: true, contextName: "longRange" });
+        }
+      rangeValue += `/${longRange}`;
+      }
+      const formValue = system.range?.form ? C.rangeForm[system.range.form].label : '';
+      rangeData.rangeText = _loc("DND4E.RANGE.DISPLAY.Area", { form: formValue, area: system.range?.area || '', range: rangeValue });
+      rangeData.rangeTextShort = _loc("DND4E.RANGE.DISPLAY.ABBR.Area", { form: C.rangeForm[system.range.form].abbr, area: system.range?.area || '', range: rangeValue });
+    } else if (system.range.origin == 'close') {
+      const formValue = system.range?.form ? C.rangeForm[system.range.form].label : '';
+      rangeData.rangeText = _loc("DND4E.RANGE.DISPLAY.Close", { form: formValue, range: system.range?.area });
+      rangeData.rangeTextShort = _loc("DND4E.RANGE.DISPLAY.ABBR.Close", { form: C.rangeForm[system.range.form].abbr, range: system.range?.area });
+    } else {
+      rangeData.rangeText = C.rangeOrigin[system.range.origin]?.label || '';
+      rangeData.rangeTextShort = C.rangeOrigin[system.range.origin]?.abbr || '';
+    }
 
 		return rangeData;
 	}
