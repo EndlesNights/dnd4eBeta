@@ -446,30 +446,36 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.itemData = context.itemData.toSorted((a, b) => (a.sort || 0) - (b.sort || 0));
 		}
 
-		if (itemData.system?.rangeType && (itemData.system?.consumableType != "ammo")) {
-			if (!["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
-			if (["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
-			if (["none", "enemies"].includes(itemData.system.autoTarget.mode)) itemData.system.excludeUserFromTargeting = true;
-
+		if (itemData.system?.range && (itemData.system?.consumableType != "ammo")) {
 			itemData.system.isRecharge = itemData.system?.useType === "recharge";
+			itemData.system.isRange = (["area", "ranged"].includes(itemData.system.range.origin)) || (["special", "variable"].includes(itemData.system.range.origin) && ["weapon", "touch"].includes(itemData.system.range?.form || ''));
+			itemData.system.isArea = (["burst", "blast", "wall"].includes(itemData.system.range?.form || '')) || (["special", "variable"].includes(itemData.system.range.origin) && !["weapon", "touch"].includes(itemData.system.range?.form || ''));
+			itemData.system.excludeUserFromTargeting = ["none", "enemies"].includes(itemData.system.autoTarget?.mode);
+
+      if(['power','consumable'].includes(itemData.type)){
+        //Setup valid range.form choices
+        context.rangeForms = !itemData.system.range?.origin ? CONFIG.DND4E.rangeForm : Object.keys(CONFIG.DND4E.rangeForm).filter((key) => CONFIG.DND4E.rangeOrigin[itemData.system.range.origin].valid.includes(key)).reduce((cur, key) => { return Object.assign(cur, { [key]: CONFIG.DND4E.rangeForm[key] })}, {});
+        if(['implement','none'].includes(itemData.system.weaponType)) delete context.rangeForms.weapon;
+        context.rangeFormRequired = ['close','area'].includes(itemData.system.range.origin);
+      }
 
 			//Setup range and area keys
 			let autoKeys = {};
-			if (["melee", "touch", "reach"].includes(itemData.system.rangeType)) autoKeys.melee = { label: _loc("DND4E.Melee") };
-			if (["range"].includes(itemData.system.rangeType)) autoKeys.ranged = { label: _loc("DND4E.rangeRanged") };
-			if (["rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType)) autoKeys.area = { label: _loc("DND4E.rangeArea") };
-			if (["closeBurst", "closeBlast"].includes(itemData.system.rangeType)) autoKeys.close = { label: _loc("DND4E.rangeClose") };
-			if (["closeBurst", "rangeBurst"].includes(itemData.system.rangeType)) autoKeys.burst = { label: _loc("DND4E.rangeJustBurst") };
-			if (["closeBlast", "rangeBlast"].includes(itemData.system.rangeType)) autoKeys.blast = { label: _loc("DND4E.rangeJustBlast") };
+			if (itemData.system.range.origin == "melee") autoKeys.melee = { label: _loc("DND4E.RANGE.Melee") };
+			if (itemData.system.range.origin == "ranged") autoKeys.ranged = { label: _loc("DND4E.RANGE.Ranged") };
+			if (itemData.system.range.origin == "area") autoKeys.area = { label: _loc("DND4E.RANGE.Area") };
+			if (itemData.system.range.origin == "close") autoKeys.close = { label: _loc("DND4E.RANGE.Close") };
+			if (itemData.system.range.form == "burst") autoKeys.burst = { label: _loc("DND4E.RANGE.Burst") };
+			if (itemData.system.range.form == "blast") autoKeys.blast = { label: _loc("DND4E.RANGE.Blast") };
 			itemData.system.autoKeys = autoKeys;
-			if (itemData.system.rangeType == "weapon") {
-				if (itemData.system.weaponType == "melee") autoKeys.melee = { label: _loc("DND4E.Melee") };
-				else if (itemData.system.weaponType == "ranged") autoKeys.ranged = { label: _loc("DND4E.rangeRanged") };
+			if (itemData.system.range.form == "weapon") {
+				if (itemData.system.range.origin == "melee") autoKeys.melee = { label: _loc("DND4E.RANGE.Melee") };
+				else if (itemData.system.range.origin == "ranged") autoKeys.ranged = { label: _loc("DND4E.RANGE.Ranged") };
 				else {
 					const weaponUse = (context.document?.parent ? utils.getWeaponUse(itemData.system, context.document.parent) : null);
 					if (weaponUse != null) {
-						if (weaponUse.system.isRanged) autoKeys.ranged = { label: _loc("DND4E.rangeRanged") };
-						else autoKeys.melee = { label: _loc("DND4E.Melee") };
+						if (weaponUse.system.isRanged) autoKeys.ranged = { label: _loc("DND4E.RANGE.Ranged") };
+						else autoKeys.melee = { label: _loc("DND4E.RANGE.Melee") };
 					}
 				}
 			}

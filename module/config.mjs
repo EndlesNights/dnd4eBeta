@@ -1495,6 +1495,13 @@ DND4E.weaponType = {
 };
 preLocalize("weaponType");
 
+DND4E.weaponRangeType = {
+	melee: "DND4E.WeaponMelee",
+	ranged: "DND4E.WeaponRanged",
+	none: "DND4E.None",
+};
+preLocalize("weaponRangeType");
+
 DND4E.rangeType = {
 	weapon: {
 		label: "DND4E.rangeWeapon",
@@ -1568,6 +1575,92 @@ DND4E.rangeType = {
 	},
 };
 preLocalize("rangeType", { keys: ["label", "abbr"] });
+
+// Power Range - Origin Component
+DND4E.rangeOrigin = {
+	melee: {
+		label: "DND4E.RANGE.Melee",
+		abbr: "DND4E.RANGE.ABBR.Melee",
+    valid: ['weapon','touch','beast','spirit'],
+	},
+	ranged: {
+		label: "DND4E.RANGE.Ranged",
+		abbr: "DND4E.RANGE.ABBR.Ranged",
+    valid: ['weapon','beast','spirit'],
+	},
+	close: {
+		label: "DND4E.RANGE.Close",
+		abbr: "DND4E.RANGE.ABBR.Close",
+    valid: ['burst','blast','wall'],
+	},
+	area: {
+		label: "DND4E.RANGE.Area",
+		abbr: "DND4E.RANGE.ABBR.Area",
+    valid: ['burst','blast','wall'],
+	},
+	personal: {
+		label: "DND4E.RANGE.Personal",
+		abbr: "DND4E.RANGE.ABBR.Personal",
+    valid: [],
+	},
+	variable: {
+    label: "DND4E.RANGE.Variable",
+		abbr: "DND4E.RANGE.ABBR.Variable",
+    valid: ['weapon','touch','burst','blast','wall','beast','spirit'],
+  },
+	special: {
+		label: "DND4E.RANGE.Special",
+		abbr: "DND4E.RANGE.ABBR.Special",
+    valid: ['weapon','touch','burst','blast','wall','beast','spirit'],
+	},
+};
+preLocalize("rangeOrigin", { keys: ["label", "abbr"], sort: false });
+
+// Power Range - Form Component
+DND4E.rangeForm = {
+	weapon: {
+		label: "DND4E.RANGE.Weapon",
+		abbr: "DND4E.RANGE.ABBR.Weapon",
+	},
+	touch: {
+		label: "DND4E.RANGE.Touch",
+		abbr: "DND4E.RANGE.ABBR.Touch",
+	},
+	burst: {
+		label: "DND4E.RANGE.Burst",
+		abbr: "DND4E.RANGE.ABBR.Burst",
+		area: {
+			type: "emanation",
+			radius: "area",
+		},
+	},
+	blast: {
+		label: "DND4E.RANGE.Blast",
+		abbr: "DND4E.RANGE.ABBR.Blast",
+		area: {
+			type: "rectangle",
+			width: "area",
+			height: "area",
+		},
+	},
+	wall: {
+		label: "DND4E.RANGE.Wall",
+		abbr: "DND4E.RANGE.ABBR.Wall",
+		area: {
+			type: "rectangle",
+			count: "area",
+		},
+	},
+	beast: {
+		label: "DND4E.RANGE.Beast",
+		abbr: "DND4E.RANGE.ABBR.Beast",
+	},
+	spirit: {
+		label: "DND4E.RANGE.Spirit",
+		abbr: "DND4E.RANGE.ABBR.Spirit",
+	},
+};
+preLocalize("rangeForm", { keys: ["label", "abbr"], sort: false });
 
 DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key]) {
 	return key !== "weapon";
@@ -1827,18 +1920,18 @@ preLocalize("spellScalingModes");
  */
 DND4E.weaponTypes = {
 	simpleM: "DND4E.WeaponSimpleM",
-	militaryM: "DND4E.WeaponMilitaryM",
-	superiorM: "DND4E.WeaponSuperiorM",
-	improvM: "DND4E.WeaponImprovisedM",
 	simpleR: "DND4E.WeaponSimpleR",
+	militaryM: "DND4E.WeaponMilitaryM",
 	militaryR: "DND4E.WeaponMilitaryR",
+	superiorM: "DND4E.WeaponSuperiorM",
 	superiorR: "DND4E.WeaponSuperiorR",
-	improvR: "DND4E.WeaponImprovisedR",
 	implement: "DND4E.WeaponImplement",
-	siegeM: "DND4E.WeaponSiegeM",
-	siegeR: "DND4E.WeaponSiegeR",
+	improvM: "DND4E.WeaponImprovisedM",
+	improvR: "DND4E.WeaponImprovisedR",
 	naturalM: "DND4E.WeaponNaturalM",
 	naturalR: "DND4E.WeaponNaturalR",
+	siegeM: "DND4E.WeaponSiegeM",
+	siegeR: "DND4E.WeaponSiegeR",
 	improv: "DND4E.WeaponImprov",
 	other: "DND4E.EquipmentTypeOther",
 };

@@ -95,9 +95,9 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 				if (targetStatus.has("grantingCA")) targetBonuses.comAdv.shouldApply = true;
 				const targetDist = target ? utils.computeDistance(attacker, target) : 0;
 				//console.debug(data);
-				if (targetStatus.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
+				if (targetStatus.has("prone") && (item?.system?.range?.origin === "melee" || (item?.system?.range?.useWeapon && weaponUse?.system.rangeType === "melee"))) {
 					let meleeVsProne = true;
-					if (item?.system.rangeType === "weapon") {
+					if (item?.system.range?.useWeapon) {
 						if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 							const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 							if (targetDist > meleeRange) {
@@ -108,7 +108,7 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 					}
 					if (meleeVsProne) targetBonuses.comAdv.shouldApply = true;
 				}
-				if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
+				if (((item?.system.range.origin === "ranged") && item?.system.range?.long && (targetDist > item?.system.range?.value)) || (item?.system?.range?.useWeapon && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range?.value))) {
 					targetBonuses.longRange.shouldApply = true;
 				}
 				if (target && !target.actor.system.senses?.allAround && utils.computeFlankingStatus(attacker, target)) {
@@ -116,7 +116,7 @@ export async function d20Roll(form, { parts = [], partsExpressionReplacements = 
 				}
 				if (targetStatus.has("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
-				const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
+				const closeOrArea = ["close", "area"].includes(item.system.range?.origin);
 				const concealment = (target && automation) ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;
 				if ((targetStatus.has("concealedTotal") || (concealment === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 				else if ((targetStatus.has("concealed") || (concealment === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;
@@ -348,9 +348,9 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					if (targetStatus.has("grantingCA")) hasComAdv = true;
 
 					const targetDist = utils.computeDistance(actor, theTargets[targetIndex]);
-					if (targetStatus.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
+					if (targetStatus.has("prone") && (item?.system?.range?.origin === "melee" || (item?.system?.range?.useWeapon && (weaponUse?.system.rangeType === "melee")))) {
 						let isThrown = false;
-						if (item?.system.rangeType === "weapon") {
+						if (item?.system.range?.useWeapon) {
 							if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 								const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 								if (targetDist > meleeRange) {
@@ -368,13 +368,13 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 						hasComAdv = true;
 					}
 
-					if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
+					if (((item?.system.range?.origin === "ranged") && item?.system.range?.long && (targetDist > item?.system.range?.value)) || (item?.system.range?.useWeapon && weaponUse?.system.range?.long && (targetDist > weaponUse?.system.range?.value))) {
 						targetBonuses.longRange.shouldApply = true;
 					}
 
 					if (targetStatus.has("bloodied")) targetBonuses.bloodied.shouldApply = true;
 
-					const closeOrArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast"].includes(item.system.rangeType);
+					const closeOrArea = ["close","area"].includes(item.system.range.origin);
 					const concealment = (target && automation) ? utils.computeConcealment(attacker, target) : CONFIG.DND4E.CONCEALMENT.NONE;
 					if ((targetStatus.has("concealedTotal") || (concealment === CONFIG.DND4E.CONCEALMENT.TOTAL)) && !closeOrArea) targetBonuses.concealTotal.shouldApply = true;
 					else if ((targetStatus.has("concealed") || (concealment === CONFIG.DND4E.CONCEALMENT.PARTIAL)) && !closeOrArea) targetBonuses.conceal.shouldApply = true;
@@ -549,7 +549,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
 			const dist = utils.computeDistance(actor, targets[rollExpressionIdx]);
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && (dist > meleeRange);
-			if (targets[rollExpressionIdx].document.actor.statuses.has("prone") && ((item?.system.rangeType === "range") || ((item?.system.rangeType === "weapon") && ((weaponUse?.system.weaponType.slice(-1) === "R") || isThrown))) && (dist > 1)) {
+			if (targets[rollExpressionIdx].document.actor.statuses.has("prone") && ((item?.system.range.origin === "ranged") || (item?.system.range?.useWeapon && ((weaponUse?.system.weaponType.slice(-1) === "R") || isThrown))) && (dist > 1)) {
 				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
 				targDefVal += proneDefenseBonusVsRanged;
 			}

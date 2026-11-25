@@ -271,7 +271,6 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 			}
 			if (powerData.weaponType) {
 				//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Melee/ranged weapons and "any" are the exceptions, so we check the equipped weapon just for those.
-
 				switch (powerData.weaponType) {
 					case "none": break;
 					case "implement":
@@ -280,24 +279,20 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 					case "melee":
 						suitableKeywords.push("weapon");
 						suitableKeywords.push("melee");
-						suitableKeywords.push("meleeWeapon");
 						break;
 					case "ranged":
 						suitableKeywords.push("weapon");
 						suitableKeywords.push("ranged");
-						suitableKeywords.push("rangedWeapon");
 						break;
 					default:
 						if (weaponData) {
 							if (weaponData.WeaponType === "implement") {
 								suitableKeywords.push("usesImplement");
-							} else if (weaponData.isRanged) {
+							} else if (weaponData.rangeType === 'ranged') {
 								suitableKeywords.push("weapon");
-								suitableKeywords.push("rangedWeapon");
 								suitableKeywords.push("ranged");
-							} else {
+							} else if (weaponData.rangeType === 'melee') {
 								suitableKeywords.push("weapon");
-								suitableKeywords.push("meleeWeapon");
 								suitableKeywords.push("melee");
 							}
 						}
@@ -326,6 +321,20 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				}
 			}
 
+      //Range/reach/area keys
+			if(powerData.range?.origin) suitableKeywords.push(powerData.range.origin);
+			if(powerData.range?.form) suitableKeywords.push(powerData.range.form);      
+      if(["variable"].includes(powerData.range?.origin) && powerData.range?.useWeapon && weaponData){
+        if (weaponData.properties.thv || weaponData.properties.tlg) {
+          const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+          if (targetDist > meleeRange) {
+            //Not in melee range so it must have been thrown
+            isThrown = true;
+          }
+        }
+      }
+      
+      /* Not needed after range/reach/area refactor
 			if (powerData.rangeType) {
 				switch (powerData.rangeType) {
 					case "closeBurst":
@@ -361,6 +370,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 						break;
 				}
 			}
+      */
 
 			//Special case for detecting one-handed weapons
 			if (weaponData) {
@@ -378,8 +388,10 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 
 			if (powerData.attack?.isBasic) {
 				suitableKeywords.push("basic");
+        /* Not needed after range/reach/area refactor
 				if (suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 				if (suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
+        */
 			}
 
 			if (powerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");

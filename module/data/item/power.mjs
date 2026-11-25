@@ -43,16 +43,16 @@ export default class PowerData extends SystemModel4e {
 			requirements: new StringField({ initial: "" }),
 			weaponType: new StringField({ initial: "melee" }),
 			weaponUse: new StringField({ initial: "default" }),
-			useWeaponRange: new BooleanField({ initial: false, label: "DND4E.InheritWeaponRange" }),
-			rangeType: new StringField({ choices: CONFIG.DND4E.rangeType, label: "DND4E.RangePower" }),
+			useWeaponRange: new BooleanField({ initial: false, label: "DND4E.RANGE.Inherit" }),
+			//rangeType: new StringField({ choices: CONFIG.DND4E.rangeType, label: "DND4E.RangePower" }),
 			autoTarget: new SchemaField({
 				mode: new StringField({ initial: "none" }),
 				includeSelf: new BooleanField({ initial: true }),
 			}),
-			rangeTextShort: new StringField({ initial: "" }),
-			rangeText: new StringField({ initial: "" }),
-			rangePower: new FormulaField({ initial: "", deterministic: true }),
-			area: new FormulaField({ initial: "0", deterministic: true }),
+			//rangeTextShort: new StringField({ initial: "" }),
+			//rangeText: new StringField({ initial: "" }),
+			//rangePower: new FormulaField({ initial: "", deterministic: true }),
+			//area: new FormulaField({ initial: "0", deterministic: true }),
 			auraSize: new FormulaField({ initial: "", deterministic: true }),
 			rechargeRoll: new StringField({ initial: "" }),
 			rechargeCondition: new StringField({ initial: "" }),
@@ -109,6 +109,7 @@ export default class PowerData extends SystemModel4e {
 		}
 		ItemDescriptionTemplate.migrateSource(source);
 		ItemMacroTemplate.migrateMacro(source);
+		ActivatedEffectTemplate.migrateData(source);
 		return super.migrateData(source);
 	}
 }

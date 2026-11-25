@@ -456,19 +456,27 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	input::placeholder{
 		opacity:0.4;
 	}
-	input[type='text'],input[type='number'],
-	input[type='password'],input[type='date'],
-	input[type='time'],input[type='datetime-local'],
-	input[type='search'],input[type='file'],select{
+	input:is([type='text'],[type='number'],[type='password'],[type='date'],[type='time'],[type='datetime-local'],[type='search'],[type='file']),
+  select{
 		border:var(--border-faint);
 		line-height:1;
 	}
-  input:is([type=text],[type=number],[type=password],[type=date],[type=time],[type=datetime-local],[type=search],[type=file]):disabled,
+  input:is([type='text'],[type='number'],[type='password'],[type='date'],[type='time'],[type='datetime-local'],[type='search'],[type='file']):disabled,
   select:disabled,
   input:disabled+.sep{
     cursor:not-allowed;
     opacity:0.3;
     border:1px solid var(--input-background-color);
+  }
+  .locked>*{
+    cursor:not-allowed;
+    opacity:0.3;
+  }
+  .locked input{
+    border:1px solid var(--input-background-color);
+  }
+  .locked>.replacement{
+    opacity:1;
   }
 	multi-select>.tags.input-element-tags{
 		justify-content:flex-start;
@@ -554,7 +562,8 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			display:flex;
 			flex-direction:row;
 			flex-wrap:wrap;
-			justify-content:flex-start;			
+			justify-content:flex-start;
+      gap:0;
 			&> label{
 				white-space:nowrap;
 			}
